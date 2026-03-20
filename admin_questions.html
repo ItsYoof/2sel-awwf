@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الأسئلة - لوحة المشرف</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100;300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-color: #0A5C4A;
+            --secondary-color: #C9A227;
+            --bg-color: #F6F8F8;
+            --text-color: #0F172A;
+            --card-bg: #FFFFFF;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Noto Sans Arabic', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            background: var(--card-bg);
+            padding: 24px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .admin-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+
+        .stats-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+        }
+
+        .search-box {
+            width: 100%;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border: 2px solid rgba(10, 92, 74, 0.1);
+            font-size: 18px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--secondary-color);
+        }
+
+        .questions-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: transform 0.2s;
+            border-right: 6px solid var(--primary-color);
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .question-index {
+            background: #E2E8F0;
+            color: #475569;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.5;
+            flex-grow: 1;
+            margin: 0 15px;
+        }
+
+        .media-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .media-item {
+            flex: 1;
+            min-width: 250px;
+            background: #F1F5F9;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .media-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748B;
+        }
+
+        .media-preview {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #cbd5e1;
+        }
+
+        .media-link {
+            font-size: 12px;
+            color: var(--primary-color);
+            text-decoration: underline;
+            word-break: break-all;
+        }
+
+        .answer-text {
+            background: #F0FAF8;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border-right: 4px solid var(--secondary-color);
+            margin-top: 10px;
+        }
+
+        .answer-label {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-left: 10px;
+        }
+
+        /* Access Protection Modal */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .login-card h2 {
+            margin-bottom: 24px;
+            color: var(--primary-color);
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #E2E8F0;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .login-card button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            .media-item {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Access Protection -->
+    <div id="login-overlay">
+        <div class="login-card">
+            <h2>دخول المشرف</h2>
+            <p style="margin-bottom: 20px; color: #64748B;">يرجى إدخال كلمة المرور للوصول لإدارة الأسئلة</p>
+            <input type="password" id="admin-pass" placeholder="كلمة المرور">
+            <button onclick="checkAccess()">دخول</button>
+            <p id="login-err" style="color: #EF4444; margin-top: 15px; display: none;">كلمة المرور غير صحيحة!</p>
+        </div>
+    </div>
+
+    <div class="admin-container">
+        <header class="admin-header">
+            <div>
+                <div class="admin-title">لوحة إدارة الأسئلة</div>
+                <div id="stats" class="stats-badge">عدد الأسئلة: 0</div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="resetToDefault()" style="background: #94A3B8; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">إعادة ضبط للملف الأصلي ↺</button>
+                <button onclick="openModal()" style="background: var(--secondary-color); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">إضافة سؤال جديد +</button>
+                <button onclick="exportQuestions()" style="background: #10B981; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">تصدير ملف الأسئلة (SAVE)</button>
+            </div>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="بحث في الأسئلة أو الأجوبة..." onkeyup="filterQuestions()">
+        </div>
+
+        <div id="questions-container" class="questions-list">
+            <!-- Questions will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Edit/Add Modal -->
+    <div id="qModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 30px; border-radius: 20px; width: 600px; max-width: 90%; display: flex; flex-direction: column; gap: 15px;">
+            <h2 id="modalTitle">إضافة سؤال جديد</h2>
+            <input type="hidden" id="edit-index">
+            
+            <div class="input-group" style="display: flex; flex-direction: column; gap: 5px;">
+                <label>نص السؤال:</label>
+                <textarea id="qText" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; height: 80px;"></textarea>
+            </div>
+
+            <div class="input-group" style="display: flex; flex-direction: column; gap: 5px;">
+                <label>رابط صورة السؤال (Media):</label>
+                <input type="text" id="qMedia" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div class="input-group" style="display: flex; flex-direction: column; gap: 5px;">
+                <label>رابط صورة الجواب (Answer Media):</label>
+                <input type="text" id="qAMedia" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div class="input-group" style="display: flex; flex-direction: column; gap: 5px;">
+                <label>نص الجواب (Answer):</label>
+                <input type="text" id="qAnswer" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button onclick="saveQuestion()" style="flex: 1; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;">حفظ</button>
+                <button onclick="closeModal()" style="flex: 1; padding: 12px; background: #94A3B8; color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="exportModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 30px; border-radius: 20px; width: 80%; height: 80%; display: flex; flex-direction: column; gap: 15px;">
+            <h2>انسخ الكود التالي وضعه في ملف questions.js</h2>
+            <p style="color: #64748B;">بسبب قيود المتصفح، يجب نسخ هذا الكود يدوياً ووضعه بدلاً من محتويات ملف questions.js القديم.</p>
+            <textarea id="exportCode" readonly style="flex: 1; width: 100%; padding: 15px; background: #f8fafc; font-family: monospace; border: 1px solid #e2e8f0; border-radius: 10px;"></textarea>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="copyCode()" style="padding: 12px 30px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;">نسخ الكود</button>
+                <button onclick="closeExport()" style="padding: 12px 30px; background: #94A3B8; color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script>
+        // Use a local copy of the database to handle sessions
+        let localDB = [];
+        const savedSync = localStorage.getItem('questionsDB_sync');
+        if (savedSync) {
+            try {
+                localDB = JSON.parse(savedSync);
+            } catch(e) {
+                localDB = [...questionsDB];
+            }
+        } else {
+            localDB = [...questionsDB];
+        }
+
+        // Simple protection (Client-side only)
+        function checkAccess() {
+            const pass = document.getElementById('admin-pass').value;
+            // Password is '512'
+            if (pass === '512') {
+                document.getElementById('login-overlay').style.display = 'none';
+                renderQuestions();
+            } else {
+                document.getElementById('login-err').style.display = 'block';
+            }
+        }
+
+        // Add keyboard support for login
+        document.getElementById('admin-pass').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkAccess();
+        });
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            const stats = document.getElementById('stats');
+            
+            stats.innerText = `عدد الأسئلة: ${localDB.length}`;
+            container.innerHTML = '';
+
+            localDB.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.setAttribute('data-text', (q.questionText + ' ' + (q.answer || '')).toLowerCase());
+
+                let mediaHtml = '';
+                if (q.media || q.answerMedia) {
+                    mediaHtml = '<div class="media-container">';
+                    if (q.media) {
+                        mediaHtml += `
+                            <div class="media-item">
+                                <span class="media-label">صورة السؤال:</span>
+                                <img src="${q.media}" class="media-preview" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                                <a href="${q.media}" target="_blank" class="media-link">${q.media}</a>
+                            </div>
+                        `;
+                    }
+                    if (q.answerMedia) {
+                        mediaHtml += `
+                            <div class="media-item">
+                                <span class="media-label">صورة الجواب:</span>
+                                <img src="${q.answerMedia}" class="media-preview" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                                <a href="${q.answerMedia}" target="_blank" class="media-link">${q.answerMedia}</a>
+                            </div>
+                        `;
+                    }
+                    mediaHtml += '</div>';
+                }
+
+                card.innerHTML = `
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="question-index">#${index + 1}</span>
+                        <div class="question-text">${q.questionText}</div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="editQuestion(${index})" style="background: #3B82F6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">تعديل</button>
+                            <button onclick="deleteQuestion(${index})" style="background: #EF4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">حذف</button>
+                        </div>
+                    </div>
+                    ${mediaHtml}
+                    <div class="answer-text">
+                        <span class="answer-label">الجواب:</span>
+                        <span>${q.answer || 'لا يوجد نص'}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterQuestions() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.getElementsByClassName('question-card');
+            
+            Array.from(cards).forEach(card => {
+                const text = card.getAttribute('data-text');
+                if (text.includes(input)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function resetToDefault() {
+            if (confirm('هل أنت متأكد من رغبتك في حذف جميع التعديلات والعودة لملف الأسئلة الأصلي؟')) {
+                localStorage.removeItem('questionsDB_sync');
+                location.reload();
+            }
+        }
+
+        // --- Question CRUD Actions ---
+
+        function openModal(index = -1) {
+            const modal = document.getElementById('qModal');
+            document.getElementById('edit-index').value = index;
+            
+            if (index > -1) {
+                const q = localDB[index];
+                document.getElementById('modalTitle').innerText = 'تعديل سؤال';
+                document.getElementById('qText').value = q.questionText;
+                document.getElementById('qMedia').value = q.media || '';
+                document.getElementById('qAMedia').value = q.answerMedia || '';
+                document.getElementById('qAnswer').value = q.answer || '';
+            } else {
+                document.getElementById('modalTitle').innerText = 'إضافة سؤال جديد';
+                document.getElementById('qText').value = '';
+                document.getElementById('qMedia').value = '';
+                document.getElementById('qAMedia').value = '';
+                document.getElementById('qAnswer').value = '';
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('qModal').style.display = 'none';
+        }
+
+        function editQuestion(index) {
+            openModal(index);
+        }
+
+        function saveQuestion() {
+            const index = parseInt(document.getElementById('edit-index').value);
+            const qData = {
+                questionText: document.getElementById('qText').value,
+                media: document.getElementById('qMedia').value,
+                answerMedia: document.getElementById('qAMedia').value,
+                answer: document.getElementById('qAnswer').value
+            };
+
+            if (index > -1) {
+                localDB[index] = qData;
+            } else {
+                localDB.push(qData);
+            }
+
+            // Sync with local storage
+            localStorage.setItem('questionsDB_sync', JSON.stringify(localDB));
+
+            closeModal();
+            renderQuestions();
+        }
+
+        function deleteQuestion(index) {
+            if (confirm('هل أنت متأكد من رغبتك في حذف هذا السؤال؟')) {
+                localDB.splice(index, 1);
+                // Sync with local storage
+                localStorage.setItem('questionsDB_sync', JSON.stringify(localDB));
+                renderQuestions();
+            }
+        }
+
+        // --- Export Feature ---
+
+        function exportQuestions() {
+            const codeArea = document.getElementById('exportCode');
+            const jsContent = `// ملف قاعدة بيانات الأسئلة تم تصديره من صفحة الإدارة\nconst questionsDB = ${JSON.stringify(localDB, null, 4)};`;
+            codeArea.value = jsContent;
+            document.getElementById('exportModal').style.display = 'flex';
+        }
+
+        function closeExport() {
+            document.getElementById('exportModal').style.display = 'none';
+        }
+
+        function copyCode() {
+            const codeArea = document.getElementById('exportCode');
+            codeArea.select();
+            document.execCommand('copy');
+            alert('تم نسخ الكود بنجاح! قم بلصقه في ملف questions.js');
+        }
+    </script>
+</body>
+</html>

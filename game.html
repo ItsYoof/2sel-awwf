@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسئل أووف - العب الآن</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100;300;400;700;900&family=Inter:wght@700;900&family=ABeeZee:ital@0;1&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --clr-blue: #1F3E5B;
+            --clr-blue-glow: rgba(31, 62, 91, 0.6);
+            --clr-red: #70191A;
+            --clr-red-glow: rgba(112, 25, 26, 0.6);
+            --clr-bg-dark: #06261F;
+            --clr-bg-light: #0A5C4A;
+            --clr-accent: #C9A227;
+            --clr-white: #FFFFFF;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, var(--clr-bg-light) 0%, var(--clr-bg-dark) 100%);
+            font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ambient Animations */
+        @keyframes floatOrb {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+
+            100% {
+                transform: translate(10vw, 5vh) scale(1.2);
+                opacity: 0.6;
+            }
+        }
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            animation: floatOrb 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .orb-1 {
+            width: 40vw;
+            height: 40vw;
+            background: rgba(32, 136, 113, 0.2);
+            top: -10%;
+            left: -10%;
+        }
+
+        .orb-2 {
+            width: 50vw;
+            height: 50vw;
+            background: rgba(201, 162, 39, 0.1);
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -5s;
+        }
+
+        /* Main Game Layout */
+        .game-layout {
+            position: relative;
+            width: 96vw;
+            height: 94vh;
+            max-width: 1600px;
+            display: flex;
+            flex-direction: column;
+            gap: 2vh;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-center-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .game-header-logo {
+            height: 60px;
+            width: auto;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
+        }
+
+        .q-brand-logo {
+            height: 50px;
+            width: auto;
+            margin-bottom: 5px;
+        }
+
+        .q-top-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ---------------- HEADER ---------------- */
+        .glass-header {
+            width: 100%;
+            height: 12vh;
+            min-height: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4vw;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 100;
+        }
+
+        .team-block {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition-smooth);
+        }
+
+        .team-block.active {
+            transform: scale(1.05);
+        }
+
+        .team-name {
+            font-size: clamp(20px, 3vh, 32px);
+            font-weight: 900;
+            color: var(--clr-white);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: var(--transition-smooth);
+        }
+
+        .team-block.active .team-name {
+            color: var(--clr-accent);
+            text-shadow: 0 0 15px rgba(201, 162, 39, 0.5);
+        }
+
+        .team-badge {
+            width: clamp(50px, 7vh, 80px);
+            height: clamp(50px, 7vh, 80px);
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: var(--transition-smooth);
+        }
+
+        .team-block.active .team-badge {
+            border-color: var(--clr-white);
+            box-shadow: 0 0 30px var(--glow-color);
+            transform: rotate(360deg);
+        }
+
+        .badge-red {
+            background: linear-gradient(135deg, #a62a2c 0%, var(--clr-red) 100%);
+            --glow-color: var(--clr-red-glow);
+        }
+
+        .badge-blue {
+            background: linear-gradient(135deg, #3a6894 0%, var(--clr-blue) 100%);
+            --glow-color: var(--clr-blue-glow);
+        }
+
+        .turn-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(60px, 8vh, 90px);
+            height: clamp(60px, 8vh, 90px);
+            background: #FFFFFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            z-index: 110;
+        }
+
+        .turn-arrow {
+            width: 50%;
+            height: 50%;
+            fill: var(--clr-bg-dark);
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ---------------- MAIN ARENA ---------------- */
+        .arena {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 2vw;
+            padding: 1vh 0;
+            overflow: hidden;
+        }
+
+        .powerup-sidebar {
+            width: 170px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: var(--transition-smooth);
+            z-index: 50;
+        }
+
+        .powerup-sidebar.active-side {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .sidebar-title {
+            color: #FFFFFF;
+            font-weight: 900;
+            font-size: 20px;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .powerup-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            align-items: center;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .powerup-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .power-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            padding: 10px;
+            border-radius: 20px;
+            width: 90%;
+        }
+
+        .power-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .power-item.active-power {
+            background: var(--clr-accent);
+            box-shadow: 0 0 20px var(--clr-accent);
+        }
+
+        .power-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+        }
+
+        .power-item span {
+            font-size: 14px;
+            color: #FFFFFF;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .power-item.used {
+            opacity: 0.2;
+            filter: grayscale(1);
+            pointer-events: none;
+        }
+
+        /* ---------------- BOARD ---------------- */
+        .board-wrapper {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .board-scaler {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s ease;
+        }
+
+        .grid-core {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            z-index: 10;
+        }
+
+        .hex-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: -25px;
+        }
+
+        .hex-row.even {
+            transform: translateX(-49px);
+        }
+
+        .hex-wrapper {
+            position: relative;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .hex-wrapper:hover {
+            transform: scale(1.2);
+            z-index: 20;
+            filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.5));
+        }
+
+        .hex-cell {
+            width: 88px;
+            height: 102px;
+            background: #FFFFFF;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--clr-bg-dark);
+            transition: var(--transition-smooth);
+        }
+
+        .hex-wrapper.taken-blue .hex-cell {
+            background: var(--clr-blue);
+            color: #FFF;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .hex-wrapper.taken-red .hex-cell {
+            background: var(--clr-red);
+            color: #FFF;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* ---------------- TOAST ---------------- */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--clr-bg-dark);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 800;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: var(--transition-smooth);
+            z-index: 6000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ---------------- MODERN & PREMIUM QUESTION OVERLAY ---------------- */
+        .q-page-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(6, 38, 31, 1);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+            padding: 20px;
+        }
+
+        .q-page-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .q-modern-container {
+            width: 95%;
+            height: 95%;
+            max-width: 1300px;
+            max-height: 850px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 40px;
+            display: flex;
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            color: #FFFFFF;
+        }
+
+        /* Ambient Glass Effects */
+        .q-modern-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(32, 136, 113, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .q-modern-sidebar {
+            width: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 10px;
+            background: rgba(0, 0, 0, 0.25);
+            z-index: 10;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        .q-modern-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .q-modern-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .side-red {
+            border-right: 2px solid rgba(112, 25, 26, 0.3);
+        }
+
+        .side-blue {
+            border-left: 2px solid rgba(31, 62, 91, 0.3);
+        }
+
+        .sidebar-team-label {
+            font-weight: 900;
+            font-size: 16px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        .q-power-item-overlay {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .q-power-item-overlay:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        .q-power-item-overlay.used {
+            opacity: 0.15;
+            filter: grayscale(1);
+            pointer-events: none;
+            cursor: default;
+        }
+
+        .q-power-item-overlay img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .q-power-item-overlay span {
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .q-modern-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 40px;
+            z-index: 5;
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        .q-top-brand {
+            font-size: 18px;
+            font-weight: 200;
+            letter-spacing: 8px;
+            color: var(--clr-accent);
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .q-header-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: fadeInDown 0.8s ease;
+            width: 100%;
+        }
+
+        .q-header-content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            width: 100%;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #q-header-full {
+            font-size: 38px;
+            font-weight: 900;
+            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            color: #FFFFFF;
+        }
+
+        .q-central-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            gap: 30px;
+        }
+
+        .q-main-text-display {
+            font-size: clamp(28px, 4.5vw, 54px);
+            font-weight: 800;
+            line-height: 1.35;
+            max-width: 950px;
+            animation: fadeInUpPremium 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+            padding: 0 20px;
+        }
+
+        @keyframes fadeInUpPremium {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .q-media-frame {
+            max-width: 600px;
+            max-height: 300px;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .q-footer-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            width: 100%;
+        }
+
+        .q-timer-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .q-timer-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #FFF;
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .q-timer-btn:hover {
+            background: var(--clr-accent);
+            color: #000;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 5px 15px rgba(201, 162, 39, 0.4);
+        }
+
+        .q-timer-btn:active {
+            transform: translateY(0) scale(0.95);
+        }
+
+        .timer-icon {
+            width: 22px;
+            height: 22px;
+        }
+
+        .q-btn-action {
+            padding: 22px 65px;
+            font-size: 28px;
+            font-weight: 900;
+            border-radius: 24px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .q-btn-rect-gold {
+            background: linear-gradient(135deg, #FACC15 0%, #C9A227 100%);
+            color: #06261F;
+            box-shadow: 0 15px 35px rgba(201, 162, 39, 0.4);
+        }
+
+        .q-btn-rect-black {
+            background: #000;
+            color: #FFF;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .q-btn-action:hover {
+            transform: translateY(-8px) scale(1.03);
+        }
+
+        .q-state-container {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .q-state-container.active {
+            display: flex;
+        }
+
+        .q-winner-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .q-winner-btn-card {
+            height: 110px;
+            border-radius: 24px;
+            border: none;
+            font-size: 22px;
+            font-weight: 900;
+            color: #FFF;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .q-winner-btn-card.blue {
+            background: linear-gradient(180deg, #3B82F6 0%, #1F3E5B 100%);
+        }
+
+        .q-winner-btn-card.red {
+            background: linear-gradient(180deg, #EF4444 0%, #70191A 100%);
+        }
+
+        .q-winner-btn-card.black {
+            background: #111111;
+        }
+
+        .q-winner-btn-card:hover {
+            transform: translateY(-10px);
+            filter: brightness(1.2);
+        }
+
+        .q-overlay-logo-fixed {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 140px;
+            height: 140px;
+            opacity: 0.9;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+        }
+
+        @media (max-width: 900px) {
+            .q-modern-container {
+                flex-direction: column;
+                overflow-y: auto;
+            }
+
+            .q-modern-sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 15px;
+            }
+
+            .q-modern-main {
+                padding: 30px 15px;
+            }
+
+            .q-main-text-display {
+                font-size: 28px;
+            }
+
+            .q-winner-buttons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .q-winner-btn-card {
+                height: 75px;
+            }
+
+            .q-overlay-logo-fixed {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        /* ---------------- WIN OVERLAY ---------------- */
+        /* ---------------- WIN OVERLAY (PREMIUM REDESIGN) ---------------- */
+        .win-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(6, 38, 31, 1) 0%, rgba(2, 6, 23, 1) 100%);
+            z-index: 8000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            font-family: 'Noto Sans Arabic', sans-serif;
+            text-align: center;
+        }
+
+        .win-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .win-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            animation: winPopIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 40px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        @keyframes winPopIn {
+            from {
+                transform: scale(0.6) translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .win-trophy {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 30px var(--clr-accent));
+            animation: bounceTrophy 3s ease-in-out infinite;
+        }
+
+        @keyframes bounceTrophy {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        .win-title {
+            font-size: clamp(32px, 6vw, 64px);
+            color: var(--clr-white);
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            margin: 0;
+        }
+
+        .win-team-label {
+            font-size: 24px;
+            color: var(--clr-accent);
+            opacity: 0.9;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .win-actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .win-btn {
+            padding: 18px 40px;
+            border-radius: 20px;
+            font-size: 22px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .win-btn-primary {
+            background: linear-gradient(135deg, #FACC15 0%, #C9A227 100%);
+            color: #06261F;
+            box-shadow: 0 10px 30px rgba(201, 162, 39, 0.4);
+        }
+
+        .win-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #FFF;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .win-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .win-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Manual Edit Button */
+        .manual-edit-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 6500;
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            color: #FFFFFF;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .manual-edit-btn.active {
+            background: var(--clr-accent);
+            color: #000;
+            border-color: #000;
+            box-shadow: 0 0 20px rgba(201, 162, 39, 0.4);
+        }
+
+        .manual-edit-btn:hover {
+            transform: translateY(-5px);
+            filter: brightness(1.2);
+        }
+
+        .win-title {
+            font-size: clamp(40px, 10vw, 72px);
+            color: #FFF;
+            font-weight: 900;
+            text-align: center;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* ---------------- MOBILE LANDSCAPE ---------------- */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .glass-header {
+                height: 70px;
+                min-height: 70px;
+                padding: 0 20px;
+                border-radius: 15px;
+            }
+
+            .team-name {
+                font-size: clamp(16px, 4vh, 22px);
+            }
+
+            .team-badge {
+                width: clamp(40px, 6vh, 55px);
+                height: clamp(40px, 6vh, 55px);
+            }
+
+            .turn-center {
+                width: 50px;
+                height: 50px;
+            }
+
+            .powerup-sidebar {
+                width: 110px;
+                padding: 10px 5px;
+                gap: 10px;
+                border-radius: 20px;
+            }
+
+            .sidebar-title {
+                font-size: 14px;
+            }
+
+            .power-item img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .power-item span {
+                font-size: 11px;
+            }
+
+            .powerup-list {
+                gap: 8px;
+            }
+        }
+
+        /* Portrait Mobile */
+        @media (max-width: 600px) and (orientation: portrait) {
+            .arena {
+                flex-direction: column;
+                height: auto;
+                overflow-y: auto;
+            }
+
+            .powerup-sidebar {
+                width: 100% !important;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .powerup-list {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .power-item {
+                width: auto;
+            }
+
+            .board-wrapper {
+                height: 400px;
+            }
+        }
+        /* ---------------- IMAGE ZOOM LIGHTBOX ---------------- */
+        .zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            cursor: zoom-out;
+        }
+
+        .zoom-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .zoom-img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .zoom-overlay.show .zoom-img {
+            transform: scale(1);
+        }
+
+        .zoom-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFF;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .zoom-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .q-media-frame img {
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+
+        .q-media-frame img:hover {
+            transform: scale(1.02);
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <div class="game-layout">
+
+        <!-- TOP INDICATOR BAR -->
+        <header class="glass-header">
+            <!-- Team 2 (Visual Left, Red) -->
+            <div class="team-block" id="block-team2">
+                <div class="team-badge badge-red"></div>
+                <div class="team-name" id="name-team2">الفريق 2</div>
+            </div>
+
+            <div class="header-center-area">
+                <img src="../عناصر/Images/شعار أوف.svg" alt="Logo" class="game-header-logo">
+                <!-- TURN CENTER -->
+                <div class="turn-center">
+                    <svg class="turn-arrow" id="turn-arrow" style="transform: rotate(180deg);" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Team 1 (Visual Right, Blue) -->
+            <div class="team-block active" id="block-team1">
+                <div class="team-name" id="name-team1">الفريق 1</div>
+                <div class="team-badge badge-blue"></div>
+            </div>
+        </header>
+
+        <!-- MAIN ARENA -->
+        <main class="arena">
+            <!-- Edit Button (Tester Only) -->
+            <button class="manual-edit-btn" id="btn-manual-edit">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                <span>وضع التعديل</span>
+            </button>
+
+            <!-- Side Red (Team 2) -->
+            <aside class="powerup-sidebar team-red-side" id="sidebar-team2">
+                <div class="sidebar-title">وسائل<br>المساعدة</div>
+                <hr class="sidebar-divider">
+                <div class="powerup-list" id="powers-team2"></div>
+            </aside>
+
+            <!-- Game Board Center -->
+            <div class="board-wrapper" id="board-container">
+                <div class="board-scaler" id="board-scaler">
+
+                    <!-- Team Base Indicators -->
+                    <div class="base-cross-blue"></div>
+                    <div class="base-cross-red"></div>
+
+                    <div class="board-bg-shape"></div>
+
+                    <div class="board-glow"></div>
+                    <div class="board-ornament"></div>
+
+                    <div class="grid-core" id="hex-grid">
+                        <!-- Instantiated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Blue (Team 1) -->
+            <aside class="powerup-sidebar team-blue-side active-side" id="sidebar-team1">
+                <div class="sidebar-title">وسائل<br>المساعدة</div>
+                <hr class="sidebar-divider">
+                <div class="powerup-list" id="powers-team1"></div>
+            </aside>
+
+        </main>
+    </div>
+
+    <div class="toast" id="toast-msg">رسالة مؤقتة</div>
+
+    <!-- QUESTION FULL SCREEN PAGE (REDESIGNED FOR PREMIUM LOOK) -->
+    <div class="q-page-overlay" id="q-page">
+        <div class="q-modern-container">
+
+            <!-- Sidebar Red -->
+            <aside class="q-modern-sidebar side-red">
+                <div class="sidebar-team-label">الفريق الأحمر</div>
+                <div class="q-modern-power-list" id="q-overlay-powers-red"></div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="q-modern-main">
+                <div class="q-top-brand">
+                    <img src="../عناصر/Images/شعار أوف.svg" alt="Logo" class="q-brand-logo">
+                    <span>أسئــــــــــــل أووف</span>
+                </div>
+
+                <header class="q-header-box">
+                    <div class="q-header-content-wrapper">
+                        <div id="q-header-full">تحميل...</div>
+                        <div class="q-timer-controls" id="q-header-timer-controls">
+                            <button class="q-timer-btn" id="btn-timer-pause" title="إيقاف/تشغيل">
+                                <svg class="timer-icon pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="6" y="4" width="4" height="16"></rect>
+                                    <rect x="14" y="4" width="4" height="16"></rect>
+                                </svg>
+                                <svg class="timer-icon play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                    style="display: none;">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                            </button>
+                            <button class="q-timer-btn" id="btn-timer-reset" title="إعادة ضبط">
+                                <svg class="timer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M23 4v6h-6"></path>
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="q-status-badge"
+                        style="display: none; background: var(--clr-accent); color: #000; padding: 4px 15px; border-radius: 20px; font-weight: 800; font-size: 14px; align-self: center; margin-top: 5px; box-shadow: 0 0 15px rgba(201, 162, 39, 0.4);">
+                    </div>
+                </header>
+
+                <!-- Stage 1: Question -->
+                <div id="q-state-1" class="q-state-container active">
+                    <div class="q-central-body">
+                        <div class="q-main-text-display" id="q-text">نص السؤال يظهر هنا...</div>
+                        <div class="q-media-frame" id="q-media-area-1"></div>
+                    </div>
+                    <footer class="q-footer-controls">
+                        <button class="q-btn-action q-btn-rect-gold" id="btn-show-ans">إظهار الجواب</button>
+                    </footer>
+                </div>
+
+                <!-- Stage 2: Answer -->
+                <div id="q-state-2" class="q-state-container">
+                    <div class="q-central-body">
+                        <div style="font-size: 20px; opacity: 0.6; margin-bottom: -15px;">الإجابة الصحيحة هي:</div>
+                        <div class="q-main-text-display" id="q-answer-text" style="color: var(--clr-accent);">...</div>
+                        <div class="q-media-frame" id="q-media-area-2"></div>
+                    </div>
+                    <footer class="q-footer-controls">
+                        <button class="q-btn-action q-btn-rect-black" id="btn-ask-who">أي فريق جابها؟</button>
+                    </footer>
+                </div>
+
+                <!-- Stage 3: Winner selection -->
+                <div id="q-state-3" class="q-state-container">
+                    <div class="q-central-body">
+                        <div style="font-size: 32px; font-weight: 900; margin-bottom: 20px;">من يستحق الخلية؟</div>
+                        <div class="q-winner-buttons-grid">
+                            <button class="q-winner-btn-card red" id="btn-win-red">الفريق الأحمر</button>
+                            <button class="q-winner-btn-card black" id="btn-win-none">لم يجاوب أحد</button>
+                            <button class="q-winner-btn-card blue" id="btn-win-blue">الفريق الأزرق</button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- Sidebar Blue -->
+            <aside class="q-modern-sidebar side-blue">
+                <div class="sidebar-team-label">الفريق الأزرق</div>
+                <div class="q-modern-power-list" id="q-overlay-powers-blue"></div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- WIN SCREEN (PREMIUM MODERN REDESIGN) -->
+    <div class="win-overlay" id="win-overlay">
+        <div class="win-content">
+            <svg class="win-trophy" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+            </svg>
+            <h1 class="win-title" id="win-title">مبروك الفوز!</h1>
+            <div class="win-team-label" id="win-team-desc">لقد سيطرتم على المعركة بجدارة!</div>
+
+            <div class="win-actions">
+                <button class="win-btn win-btn-primary" onclick="location.href='index.html'">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    إنهاء اللعبة
+                </button>
+                <button class="win-btn win-btn-secondary" onclick="location.reload()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 4v6h-6"></path>
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                    </svg>
+                    لعب مرة أخرى
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMAGE ZOOM OVERLAY -->
+    <div class="zoom-overlay" id="zoom-overlay">
+        <div class="zoom-close">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+        <img class="zoom-img" id="zoom-img" src="" alt="Enlarged image">
+    </div>
+
+    <!-- ربط ملف الأسئلة بقاعدة اللعبة -->
+    <script src="questions.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Elements ---
+            const nameT1 = document.getElementById('name-team1');
+            const nameT2 = document.getElementById('name-team2');
+            const blockT1 = document.getElementById('block-team1');
+            const blockT2 = document.getElementById('block-team2');
+            const sideT1 = document.getElementById('sidebar-team1');
+            const sideT2 = document.getElementById('sidebar-team2');
+            const arrow = document.getElementById('turn-arrow');
+            const grid = document.getElementById('hex-grid');
+            const boardScaler = document.getElementById('board-scaler');
+            const boardContainer = document.getElementById('board-container');
+            const toast = document.getElementById('toast-msg');
+
+            // --- Game State ---
+            let isEditMode = false;
+            let currentTurn = 'team1'; // team1 = Blue/Right, team2 = Red/Left
+            let trapActive = false;
+            let trapPendingQuestion = false;
+            let doubleAnswerActive = false;
+            let phase = 'beforeQuestion'; // 'beforeQuestion', 'answering', 'trapSelection'
+            let activeCellWrapper = null;
+            let activeCellNum = -1; // Added to track active cell number for question rotation
+            let nextExtraQuestionIndex = 25; // Index for the first extra question outside the initial board grid
+
+            // Timer State
+            let timerInterval = null;
+            let timerSeconds = 0;
+            let timerIsRunning = false;
+            let doubleAnswerTeams = []; // Track which teams used Two Answers for current question
+
+            // Q-Page Elements
+            const qPage = document.getElementById('q-page');
+            const qNum = document.getElementById('q-num');
+
+            // Flow Containers
+            const qState1 = document.getElementById('q-state-1');
+            const qState2 = document.getElementById('q-state-2');
+            const qState3 = document.getElementById('q-state-3');
+
+            // Elements inside states
+            const qTextElement = document.getElementById('q-text');
+            const qMediaElement1 = document.getElementById('q-media-area-1');
+            const qMediaElement2 = document.getElementById('q-media-area-2');
+            const qAnswerTextElement = document.getElementById('q-answer-text');
+
+            const btnShowAns = document.getElementById('btn-show-ans');
+            const btnAskWho = document.getElementById('btn-ask-who');
+            const btnWinBlue = document.getElementById('btn-win-blue');
+            const btnWinRed = document.getElementById('btn-win-red');
+            const btnWinNone = document.getElementById('btn-win-none');
+
+            const btnTimerPause = document.getElementById('btn-timer-pause');
+            const btnTimerReset = document.getElementById('btn-timer-reset');
+
+            // --- Initialization ---
+            nameT1.textContent = localStorage.getItem('team1Name') || 'الفريق 1 (الأزرق)';
+            nameT2.textContent = localStorage.getItem('team2Name') || 'الفريق 2 (الأحمر)';
+
+            btnWinBlue.textContent = nameT1.textContent;
+            btnWinRed.textContent = nameT2.textContent;
+
+            // Prepare Random Questions Array Without Repetition
+            let availableQuestions = [];
+            let sourceDB = [];
+
+            // Check for synced data from Admin Panel first
+            const syncedData = localStorage.getItem('questionsDB_sync');
+            if (syncedData) {
+                try {
+                    sourceDB = JSON.parse(syncedData);
+                } catch (e) {
+                    console.error("Error loading synced questions:", e);
+                }
+            }
+
+            // Fallback to questions.js if not synced or error
+            if (sourceDB.length === 0 && typeof questionsDB !== 'undefined') {
+                sourceDB = Object.values(questionsDB);
+            }
+
+            if (sourceDB.length > 0) {
+                availableQuestions = [...sourceDB];
+                // Shuffle array (Fisher-Yates)
+                for (let i = availableQuestions.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [availableQuestions[i], availableQuestions[j]] = [availableQuestions[j], availableQuestions[i]];
+                }
+            }
+
+            // --- Power-up Functions ---
+            window.refreshOverlayPowers = function () {
+                const listRed = document.getElementById('q-overlay-powers-red');
+                const listBlue = document.getElementById('q-overlay-powers-blue');
+                if (!listRed || !listBlue) return;
+
+                listRed.innerHTML = '';
+                listBlue.innerHTML = '';
+
+                const teams = [
+                    { id: 'team1', overlayList: listBlue, sideId: 'powers-team1' },
+                    { id: 'team2', overlayList: listRed, sideId: 'powers-team2' }
+                ];
+
+                teams.forEach(t => {
+                    const sidePowers = document.getElementById(t.sideId).querySelectorAll('.power-item');
+                    sidePowers.forEach(sp => {
+                        const clone = document.createElement('div');
+                        clone.className = 'q-power-item-overlay' + (sp.classList.contains('used') ? ' used' : '') + (sp.classList.contains('active-power') ? ' active-power' : '');
+
+                        const img = sp.querySelector('img').src;
+                        const name = sp.querySelector('span').textContent;
+
+                        clone.innerHTML = `<img src="${img}" alt="${name}"><span>${name}</span>`;
+
+                        clone.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            sp.click();
+                        });
+
+                        t.overlayList.appendChild(clone);
+                    });
+                });
+            };
+
+            function loadPowers(key, containerId, teamId) {
+                let powers = [];
+                try { powers = JSON.parse(localStorage.getItem(key)) || []; } catch (e) { }
+
+                const cont = document.getElementById(containerId);
+                powers.forEach(p => {
+                    const el = document.createElement('div');
+                    el.className = 'power-item';
+                    el.innerHTML = `<img src="${p.imgSrc}" alt="${p.name}"><span>${p.name}</span>`;
+
+                    el.addEventListener('click', () => {
+                        if (el.classList.contains('used')) return;
+
+                        const pName = p.name.trim();
+                        let tName = teamId === 'team1' ? nameT1.textContent : nameT2.textContent;
+
+                        if (pName.includes('حفرة') || pName === 'حفرة') {
+                            if (phase !== 'beforeQuestion' || currentTurn !== teamId) {
+                                showToast(`❌ 'حفرة': تستخدم فقط في دورك وعلى لوحة المربعات!`);
+                                return;
+                            }
+                            trapActive = true;
+                            el.classList.add('active-power');
+                        } else if (pName.includes('خلوها') || pName === 'خلوها') {
+                            if (currentTurn === teamId) {
+                                showToast(`❌ 'خلوها': يستخدمها فريق ${teamId === 'team1' ? nameT2.textContent : nameT1.textContent} ضدك!`);
+                                return;
+                            }
+                            if (phase === 'answering' && timerSeconds > 10) {
+                                showToast("❌ 'خلوها': انتهى وقت الاستخدام (أول 10 ثوانٍ فقط)!");
+                                return;
+                            }
+
+                            const badge = document.getElementById('q-status-badge');
+                            if (badge && phase === 'answering') {
+                                badge.style.display = 'block';
+                                badge.textContent = `🔥 ${tName} طفّر وطلب 'خلوها'!`;
+                                badge.style.background = '#FEE2E2';
+                                badge.style.color = '#70191A';
+                            }
+                            showToast(`🔥 ${tName} يطالب بـ 'خلوها'! سحب حق الإجابة!`, 5000);
+                        } else if (pName.includes('إجابتين') || pName === 'إجابتين') {
+                            if (phase !== 'answering') {
+                                showToast("❌ 'إجابتين': تستخدم فقط أثناء عرض السؤال!");
+                                return;
+                            }
+                            doubleAnswerActive = true;
+                            el.classList.add('active-power');
+
+                            if (!doubleAnswerTeams.includes(tName)) doubleAnswerTeams.push(tName);
+                            const badge = document.getElementById('q-status-badge');
+                            if (badge) {
+                                badge.style.display = 'block';
+                                badge.textContent = `🌟 نظام الإجابتين مفعّل لـ: ${doubleAnswerTeams.join(' و ')}`;
+                            }
+                        } else if (pName.includes('أسكت') || pName === 'أسكت') {
+                            showToast(`🤫 فريق ${tName} استخدم 'أسكت' ضد الخصم!`);
+                        }
+
+                        showToast(`🟢 تم تفعيل وسيلة: ${p.name} لـ ${tName}`);
+                        el.classList.add('used');
+                        if (window.refreshOverlayPowers) window.refreshOverlayPowers();
+                    });
+
+                    cont.appendChild(el);
+                });
+            }
+
+            loadPowers('team1Powers', 'powers-team1', 'team1');
+            loadPowers('team2Powers', 'powers-team2', 'team2');
+
+            // --- Board Generation ---
+            let cellIndex = 1;
+            for (let r = 1; r <= 5; r++) {
+                const row = document.createElement('div');
+                row.className = 'hex-row ' + (r % 2 === 0 ? 'even' : '');
+
+                for (let c = 1; c <= 5; c++) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'hex-wrapper';
+                    const hex = document.createElement('div');
+                    hex.className = 'hex-cell';
+                    const num = cellIndex++;
+                    hex.innerHTML = `<span style="z-index: 2; position: relative;">${num}</span>`;
+                    wrapper.appendChild(hex);
+
+                    wrapper.addEventListener('click', () => {
+                        const isTaken = wrapper.classList.contains('taken-blue') || wrapper.classList.contains('taken-red');
+
+                        // --- Manual Edit Mode Logic ---
+                        if (isEditMode) {
+                            if (wrapper.classList.contains('taken-blue')) {
+                                wrapper.classList.remove('taken-blue');
+                                wrapper.classList.add('taken-red');
+                                showToast("🔧 تم التغيير لـ أحمر");
+                            } else if (wrapper.classList.contains('taken-red')) {
+                                wrapper.classList.remove('taken-red');
+                                showToast("🔧 الخلية الآن فارغة");
+                            } else {
+                                wrapper.classList.add('taken-blue');
+                                showToast("🔧 تم التغيير لـ أزرق");
+                            }
+                            verifyWinningCondition();
+                            return;
+                        }
+
+                        // --- Stage 2 of Trap (Deleting opponent cell) ---
+                        if (phase === 'trapSelection') {
+                            const oppClass = currentTurn === 'team1' ? 'taken-red' : 'taken-blue';
+                            if (wrapper.classList.contains(oppClass)) {
+                                wrapper.classList.remove(oppClass);
+                                showToast(`💥 بوم! تم حذف خلية الخصم. انتهى دور ${currentTurn === 'team1' ? nameT1.textContent : nameT2.textContent}`);
+                                phase = 'beforeQuestion';
+                                toggleTurn();
+                                verifyWinningCondition();
+                            } else {
+                                showToast("⚠️ يجب اختيار خلية يملكها الخصم لحذفها!");
+                            }
+                            return;
+                        }
+
+                        if (isTaken) {
+                            showToast("⚠️ هذه الخلية مستحوذ عليها مسبقاً!");
+                            return;
+                        }
+
+                        if (trapActive) {
+                            trapPendingQuestion = true;
+                            // trapActive remains true until the question is resolved
+                        }
+
+                        activeCellWrapper = wrapper;
+                        activeCellNum = num; // Track which cell was clicked
+                        phase = 'answering';
+                        const headerBox = document.getElementById('q-header-full');
+                        if (headerBox) {
+                            headerBox.innerHTML = `خلية رقم <span id="q-num">${num}</span> - <span id="header-timer">00:00</span>`;
+                        }
+
+                        let qData = availableQuestions[num - 1] || null;
+                        if (qData) {
+                            qTextElement.textContent = qData.questionText || "لم يكتب سؤال لهذه الخلية بعد.";
+                            qAnswerTextElement.textContent = qData.answer || "الإجابة غير محددة.";
+                            // --- Media Logic ---
+                            // Question Phase Media
+                            if (qData.media && qData.media.trim() !== "") {
+                                qMediaElement1.style.display = 'flex';
+                                qMediaElement1.innerHTML = `<img src="${qData.media}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة السؤال">`;
+                            } else {
+                                qMediaElement1.style.display = 'none';
+                            }
+
+                            // Answer Phase Media
+                            let effectiveAnswerMedia = (qData.answerMedia && qData.answerMedia.trim() !== "") ? qData.answerMedia : qData.media;
+                            if (effectiveAnswerMedia && effectiveAnswerMedia.trim() !== "") {
+                                qMediaElement2.style.display = 'flex';
+                                qMediaElement2.innerHTML = `<img src="${effectiveAnswerMedia}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة الجواب">`;
+                            } else {
+                                qMediaElement2.style.display = 'none';
+                            }
+                        } else {
+                            qTextElement.textContent = `هذا هو نص السؤال المرتبط بالخلية رقم ${num}. (يجب إضافته في ملف questions.js)`;
+                            qAnswerTextElement.textContent = `الإجابة للخلية ${num} ستظهر هنا.`;
+                            qMediaElement1.style.display = 'none';
+                            qMediaElement2.style.display = 'none';
+                        }
+
+                        window.refreshOverlayPowers();
+                        const qControls = document.getElementById('q-header-timer-controls');
+                        if (qControls) qControls.style.display = 'flex';
+
+                        qState1.classList.add('active');
+                        qState2.classList.remove('active');
+                        qState3.classList.remove('active');
+                        resetTimer();
+                        startTimer();
+                        qPage.classList.add('show');
+                    });
+
+                    row.appendChild(wrapper);
+                }
+                grid.appendChild(row);
+            }
+
+            // --- Timer Logic ---
+            function updateTimerDisplay() {
+                const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+                const s = (timerSeconds % 60).toString().padStart(2, '0');
+                const timeStr = `${m}:${s}`;
+                const hTimer = document.getElementById('header-timer');
+                if (hTimer) hTimer.textContent = timeStr;
+            }
+            function startTimer() {
+                if (timerIsRunning) return;
+                timerIsRunning = true;
+                if (btnTimerPause) {
+                    btnTimerPause.querySelector('.pause-icon').style.display = 'block';
+                    btnTimerPause.querySelector('.play-icon').style.display = 'none';
+                }
+                timerInterval = setInterval(() => {
+                    timerSeconds++;
+                    updateTimerDisplay();
+                }, 1000);
+            }
+            function pauseTimer() {
+                timerIsRunning = false;
+                if (btnTimerPause) {
+                    btnTimerPause.querySelector('.pause-icon').style.display = 'none';
+                    btnTimerPause.querySelector('.play-icon').style.display = 'block';
+                }
+                clearInterval(timerInterval);
+            }
+            function resetTimer() {
+                pauseTimer();
+                timerSeconds = 0;
+                updateTimerDisplay();
+            }
+
+            if (btnTimerPause) {
+                btnTimerPause.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (timerIsRunning) pauseTimer();
+                    else startTimer();
+                });
+            }
+
+            if (btnTimerReset) {
+                btnTimerReset.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    resetTimer();
+                });
+            }
+
+            // --- Flow ---
+            btnShowAns.addEventListener('click', () => {
+                const headerBox = document.getElementById('q-header-full');
+                if (headerBox) {
+                    const num = document.getElementById('q-num').textContent;
+                    const timeStr = document.getElementById('header-timer').textContent;
+                    headerBox.innerHTML = `جواب خلية رقم <span id="q-num">${num}</span> - <span id="header-timer">${timeStr}</span>`;
+                }
+                qState1.classList.remove('active');
+                qState2.classList.add('active');
+                pauseTimer();
+            });
+
+            btnAskWho.addEventListener('click', () => {
+                const headerBox = document.getElementById('q-header-full');
+                if (headerBox) headerBox.textContent = "مين جابها صحح بينكم؟";
+                qState2.classList.remove('active');
+                qState3.classList.add('active');
+                const qControls = document.getElementById('q-header-timer-controls');
+                if (qControls) qControls.style.display = 'none';
+            });
+
+            function closeQPage() {
+                qPage.classList.remove('show');
+                phase = 'beforeQuestion';
+                pauseTimer();
+                doubleAnswerActive = false;
+                doubleAnswerTeams = [];
+                const badge = document.getElementById('q-status-badge');
+                if (badge) {
+                    badge.style.display = 'none';
+                    badge.style.background = 'var(--clr-accent)';
+                    badge.style.color = '#000';
+                }
+                document.querySelectorAll('.active-power').forEach(a => {
+                    if (a.textContent.includes('حفرة')) a.classList.remove('active-power');
+                    if (a.textContent.includes('إجابتين')) a.classList.remove('active-power');
+                });
+                // Note: Don't set trapActive=false here if we are entering trapSelection
+                if (phase !== 'trapSelection') {
+                    trapActive = false;
+                    trapPendingQuestion = false;
+                }
+                setTimeout(verifyWinningCondition, 100);
+            }
+
+            btnWinBlue.addEventListener('click', () => {
+                const wasTrap = trapPendingQuestion && currentTurn === 'team1';
+                activeCellWrapper.classList.add('taken-blue');
+
+                if (wasTrap) {
+                    showToast(`🔥 كفو! جاوبت صح والحفرة مفعّلة.. الآن اختر خلية للخصم لحذفها!`, 6000);
+                    phase = 'trapSelection';
+                    trapPendingQuestion = false;
+                    trapActive = false;
+                    closeQPage();
+                } else {
+                    showToast(`استحوذ ${nameT1.textContent} على الخلية!`);
+                    toggleTurn();
+                    closeQPage();
+                }
+            });
+
+            btnWinRed.addEventListener('click', () => {
+                const wasTrap = trapPendingQuestion && currentTurn === 'team2';
+                activeCellWrapper.classList.add('taken-red');
+
+                if (wasTrap) {
+                    showToast(`🔥 كفو! جاوبت صح والحفرة مفعّلة.. الآن اختر خلية للخصم لحذفها!`, 6000);
+                    phase = 'trapSelection';
+                    trapPendingQuestion = false;
+                    trapActive = false;
+                    closeQPage();
+                } else {
+                    showToast(`استحوذ ${nameT2.textContent} على الخلية!`);
+                    toggleTurn();
+                    closeQPage();
+                }
+            });
+
+            btnWinNone.addEventListener('click', () => {
+                // If there are extra questions available in the DB, rotate the current cell's question
+                if (activeCellNum > 0 && nextExtraQuestionIndex < availableQuestions.length) {
+                    const currentIdx = activeCellNum - 1;
+                    const nextQ = availableQuestions[nextExtraQuestionIndex];
+
+                    // Swap current failed question with an extra one
+                    const failedQ = availableQuestions[currentIdx];
+                    availableQuestions[currentIdx] = nextQ;
+                    availableQuestions[nextExtraQuestionIndex] = failedQ;
+
+                    nextExtraQuestionIndex++; // Move pointer forward for next rotation
+                    showToast("لم يجاوب أحد.. تم تغيير السؤال لهذه الخلية!");
+                } else {
+                    showToast("لم يجاوب أحد.. الخلية متاحة للعب مرة أخرى!");
+                }
+
+                trapActive = false;
+                trapPendingQuestion = false;
+                toggleTurn();
+                closeQPage();
+            });
+
+            function toggleTurn() {
+                if (currentTurn === 'team1') {
+                    currentTurn = 'team2';
+                    arrow.style.transform = 'rotate(0deg)';
+                    blockT1.classList.remove('active');
+                    sideT1.classList.remove('active-side');
+                    blockT2.classList.add('active');
+                    sideT2.classList.add('active-side');
+                } else {
+                    currentTurn = 'team1';
+                    arrow.style.transform = 'rotate(180deg)';
+                    blockT2.classList.remove('active');
+                    sideT2.classList.remove('active-side');
+                    blockT1.classList.add('active');
+                    sideT1.classList.add('active-side');
+                }
+                phase = 'beforeQuestion';
+            }
+
+            function verifyWinningCondition() {
+                const cellsGrid = [];
+                const allCells = Array.from(document.querySelectorAll('.hex-wrapper'));
+                for (let i = 0; i < 5; i++) cellsGrid.push(allCells.slice(i * 5, i * 5 + 5));
+
+                const getNeighbors = (r, c) => {
+                    const list = [[r, c - 1], [r, c + 1]];
+                    // Correcting logic for RTL and Shift-Left (translateX negative)
+                    // Row 0 (r=0) is Normal, Row 1 (r=1) is shifted Left, etc.
+                    if (r % 2 === 0) {
+                        // Normal row index (0, 2, 4): connects to (c-1) and (c) in shifted rows
+                        list.push([r - 1, c - 1], [r - 1, c], [r + 1, c - 1], [r + 1, c]);
+                    } else {
+                        // Shifted row index (1, 3): connects to (c) and (c+1) in normal rows
+                        list.push([r - 1, c], [r - 1, c + 1], [r + 1, c], [r + 1, c + 1]);
+                    }
+                    return list.filter(([nr, nc]) => nr >= 0 && nr < 5 && nc >= 0 && nc < 5);
+                };
+
+                const checkPath = (teamClass, startCondition, endCondition) => {
+                    let queue = [];
+                    let visited = new Set();
+                    for (let r = 0; r < 5; r++) for (let c = 0; c < 5; c++) {
+                        if (startCondition(r, c) && cellsGrid[r][c].classList.contains(teamClass)) {
+                            queue.push([r, c]);
+                            visited.add(`${r},${c}`);
+                        }
+                    }
+                    while (queue.length > 0) {
+                        let [r, c] = queue.shift();
+                        if (endCondition(r, c)) return true;
+                        for (let [nr, nc] of getNeighbors(r, c)) {
+                            let key = `${nr},${nc}`;
+                            if (!visited.has(key) && cellsGrid[nr][nc].classList.contains(teamClass)) {
+                                visited.add(key);
+                                queue.push([nr, nc]);
+                            }
+                        }
+                    }
+                    return false;
+                };
+
+                if (checkPath('taken-blue', (r, c) => c === 0, (r, c) => c === 4)) { triggerWin(nameT1.textContent + " حسم اللوحة!", "blue"); return; }
+                if (checkPath('taken-red', (r, c) => r === 0, (r, c) => r === 4)) { triggerWin(nameT2.textContent + " حسم اللوحة!", "red"); return; }
+
+                let full = allCells.every(c => c.classList.contains('taken-blue') || c.classList.contains('taken-red'));
+                if (full) {
+                    let b = allCells.filter(c => c.classList.contains('taken-blue')).length;
+                    let r = allCells.filter(c => c.classList.contains('taken-red')).length;
+                    if (b > r) triggerWin(nameT1.textContent + " فاز بالأكثرية!", "blue");
+                    else triggerWin(nameT2.textContent + " فاز بالأكثرية!", "red");
+                }
+            }
+
+            function triggerWin(msg, winner) {
+                const winOverlay = document.getElementById('win-overlay');
+                const winTitle = document.getElementById('win-title');
+
+                winTitle.textContent = msg;
+
+                // Set color theme based on winner
+                if (winner === 'blue') {
+                    winOverlay.style.background = 'radial-gradient(circle at center, rgba(31, 62, 91, 0.9) 0%, rgba(2, 6, 23, 1) 100%)';
+                } else if (winner === 'red') {
+                    winOverlay.style.background = 'radial-gradient(circle at center, rgba(112, 25, 26, 0.9) 0%, rgba(2, 6, 23, 1) 100%)';
+                }
+
+                winOverlay.classList.add('show');
+            }
+
+            function handleResize() {
+                const availableW = boardContainer.clientWidth;
+                const availableH = boardContainer.clientHeight;
+                const baseSize = 600;
+                const scale = Math.min((availableW * 0.9) / baseSize, (availableH * 0.9) / baseSize, 1.5);
+                boardScaler.style.transform = `scale(${scale})`;
+            }
+
+            window.addEventListener('resize', handleResize);
+            handleResize();
+
+            let toastTimer;
+            function showToast(msg) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+            const btnManualEdit = document.getElementById('btn-manual-edit');
+            btnManualEdit.addEventListener('click', () => {
+                isEditMode = !isEditMode;
+                btnManualEdit.classList.toggle('active');
+                if (isEditMode) showToast("⚠️ تم تفعيل وضع التعديل اليدوي للخلايا!");
+                else showToast("✅ تم إيقاف وضع التعديل.");
+            });
+
+            // --- Image Zoom Logic ---
+            const zoomOverlay = document.getElementById('zoom-overlay');
+            const zoomImg = document.getElementById('zoom-img');
+
+            function openZoom(src) {
+                zoomImg.src = src;
+                zoomOverlay.classList.add('show');
+            }
+
+            function closeZoom() {
+                zoomOverlay.classList.remove('show');
+            }
+
+            if (zoomOverlay) {
+                zoomOverlay.addEventListener('click', closeZoom);
+            }
+
+            if (qMediaElement1) {
+                qMediaElement1.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'IMG') openZoom(e.target.src);
+                });
+            }
+
+            if (qMediaElement2) {
+                qMediaElement2.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'IMG') openZoom(e.target.src);
+                });
+            }
+
+            setTimeout(() => showToast('🌟 بدأت اللعبة - بالتوفيق للفريقين!'), 500);
+        });
+    </script>
+</body>
+
+</html>

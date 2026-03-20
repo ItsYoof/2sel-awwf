@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسئل أووف - الرئيسية</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100;200;300;400;600;700;900&family=Inter:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="home-page">
+    <!-- Navbar / Frame 1 -->
+    <header class="main-nav">
+        <div class="nav-content">
+            <div class="nav-right">
+                <div class="logo-group" onclick="location.href='index.html'" style="cursor: pointer;">
+                    <img src="../عناصر/Images/شعار أوف.svg" alt="Logo" class="main-logo-img">
+                    <span class="logo-text">أسئل أووف</span>
+                </div>
+            </div>
+
+            <nav class="nav-links-center">
+                <a href="#home" class="nav-link">الرئيسية</a>
+                <a href="#how" class="nav-link">شرح اللعب</a>
+                <a href="#tools" class="nav-link">وسائل المساعدة</a>
+            </nav>
+
+            <div class="nav-left">
+                <button class="btn-play-now" onclick="location.href='setup.html'">العب الآن</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-full">
+            <h1 class="hero-main-title">أسئل أوووف</h1>
+            <button class="btn-start-playing" onclick="location.href='setup.html'">يلا نلعب</button>
+
+            <!-- Instructional Section -->
+            <div id="how" class="instructions-block">
+                <h2 class="instr-heading">كيف تنلعب؟</h2>
+                <p class="instr-desc-lg">اللعبة عبارة عن مربعات مرتبة مثل الخلايا، وكل خلية يحتوي على سؤال أو تحدّي.</p>
+                <div class="instr-detailed">
+                    يختار اللاعب مربعًا ويجيب عنه، وإذا كانت إجابته صحيحة يمتلك الخلية؛ والهدف هو تكوين خط متصل (الأزرق من اليمين إلى اليسار، والأحمر من الأعلى إلى الأسفل)، وإذا انتهت الأسئلة قبل اكتمال الخط، يفوز صاحب أكبر عدد من الخلايا.
+                </div>
+
+                <!-- Win Examples Frames -->
+                <div class="win-examples-row">
+                    <div class="win-case-card red-case">
+                        <span class="win-case-text">هكذا الفائز الفريق الاحمر</span>
+                        <img src="../عناصر/Images/شرح خلية احمر.png" alt="Red Win Check" class="win-instr-img">
+                    </div>
+                    <div class="win-case-card blue-case">
+                        <span class="win-case-text">هكذا الفائز الفريق الازرق</span>
+                        <img src="../عناصر/Images/شرح خلية ازرق.png" alt="Blue Win Check" class="win-instr-img">
+                    </div>
+                </div>
+
+                <div class="understood-section">
+                    <p class="understood-text">اللحين فهمت اللعبة</p>
+                    <button class="btn-start-playing bottom-btn" onclick="location.href='setup.html'">يلا نلعب</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Help Tools Section -->
+        <section id="tools" class="help-tools-white">
+            <div class="tools-top-row">
+                <div class="tools-title-stack">
+                    <h2 class="tools-main-heading">وسائل المساعدة العب بذكاء واهزمهم!</h2>
+                    <p class="tools-disclaimer">استخدمهم عدل بس ولا بتخسرهم على فاضي .</p>
+                </div>
+                <div class="tools-exclusive-badge">بس عندي تحصلها</div>
+            </div>
+
+            <div class="tools-cards-grid">
+                <!-- Tool 1: Two Answers -->
+                <div class="tool-card-premium blue-border">
+                    <div class="tool-icon-circle blue-bg">
+                        <img src="../عناصر/Images/اجابتين.png" alt="Two Answers">
+                    </div>
+                    <h4 class="tool-name">إجابتين</h4>
+                    <p class="tool-description">تقدر تقول جوابين</p>
+                </div>
+
+                <!-- Tool 2: Skip -->
+                <div class="tool-card-premium gold-border">
+                    <div class="tool-icon-circle gold-bg">
+                        <img src="../عناصر/Images/خلوها.png" alt="Skip">
+                    </div>
+                    <h4 class="tool-name">خلوها</h4>
+                    <p class="tool-description">تاخذ سؤال الخصم تجاوب قبلهم</p>
+                </div>
+
+                <!-- Tool 3: Trap -->
+                <div class="tool-card-premium red-border">
+                    <span class="timing-label">قبل سؤال</span>
+                    <div class="tool-icon-circle red-bg">
+                        <img src="../عناصر/Images/حفرة.png" alt="Trap">
+                    </div>
+                    <h4 class="tool-name">حفرة</h4>
+                    <p class="tool-description">تحذف مكان للخصم وتاخذ مكان لك</p>
+                </div>
+
+                <!-- Tool 4: Silence -->
+                <div class="tool-card-premium green-border">
+                    <div class="tool-icon-circle green-bg">
+                        <img src="../عناصر/Images/أسكت.png" alt="Silence">
+                    </div>
+                    <h4 class="tool-name">أسكت</h4>
+                    <p class="tool-description">تسكت لاعب من الخصم</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer / Frame 2 -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p class="copyright-txt">© 2030 يوسف احمد. جميع الحقوق محفوظة. | صنع بالاحساء</p>
+        </div>
+    </footer>
+    <!-- IMAGE ZOOM OVERLAY -->
+    <div class="zoom-overlay" id="zoom-overlay">
+        <div class="zoom-close">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+        <img class="zoom-img" id="zoom-img" src="" alt="Enlarged image">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const zoomOverlay = document.getElementById('zoom-overlay');
+            const zoomImg = document.getElementById('zoom-img');
+
+            function openZoom(src) {
+                zoomImg.src = src;
+                zoomOverlay.classList.add('show');
+            }
+
+            function closeZoom() {
+                zoomOverlay.classList.remove('show');
+            }
+
+            zoomOverlay.addEventListener('click', closeZoom);
+
+            // Add click listener to all instructional and tool images
+            const zoomableImages = document.querySelectorAll('.win-instr-img, .tool-icon-circle img');
+            zoomableImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    openZoom(img.src);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
