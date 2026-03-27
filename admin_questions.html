@@ -233,6 +233,103 @@
                 min-width: 100%;
             }
         }
+
+        /* FAB */
+        .fab-btn {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #FACC15 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            box-shadow: 0 15px 35px rgba(201, 162, 39, 0.4);
+            cursor: pointer;
+            z-index: 9000;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 20px 45px rgba(201, 162, 39, 0.5);
+        }
+
+        .fab-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Checkbox Styling */
+        .q-check-container {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+        }
+
+        .q-check {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        .question-card {
+            position: relative;
+        }
+
+        .question-card.selected {
+            border: 3px solid var(--secondary-color);
+            background: #FFFBEB;
+        }
+
+        /* --- PREVIEW OVERLAY (MOCKS GAME.HTML) --- */
+        #test-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #06261F;
+            z-index: 20000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+            padding: 20px;
+        }
+
+        .preview-container {
+            width: 95%; max-width: 1200px; height: 90%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            overflow: hidden;
+        }
+
+        .preview-main {
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 60px; text-align: center;
+        }
+
+        .preview-text { font-size: 40px; font-weight: 800; max-width: 1000px; margin-bottom: 20px; }
+        .preview-media { max-width: 600px; max-height: 350px; border-radius: 20px; margin: 20px 0; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .preview-footer { display: flex; gap: 20px; padding-bottom: 40px; }
+
+        .btn-preview { padding: 18px 45px; border-radius: 15px; border: none; font-weight: 900; font-size: 20px; cursor: pointer; transition: 0.3s; }
+        .btn-gold { background: var(--secondary-color); color: #06261F; }
+        .btn-black { background: #000; color: #FFF; border: 1px solid #333; }
+        .btn-close-p { position: absolute; top: 30px; left: 30px; background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; }
+        
+        .preview-nav { position: absolute; bottom: 40px; right: 40px; display: flex; gap: 10px; }
+        .nav-btn { width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -257,12 +354,19 @@
                     <div id="stats" class="stats-badge">عدد الأسئلة: 0</div>
                 </div>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="resetToDefault()" style="background: #94A3B8; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">إعادة ضبط للملف الأصلي ↺</button>
-                <button onclick="openModal()" style="background: var(--secondary-color); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">إضافة سؤال جديد +</button>
-                <button onclick="exportQuestions()" style="background: #10B981; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">تصدير ملف الأسئلة (SAVE)</button>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <div id="selection-status" style="display: none; background: #FFFBEB; border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 10px 15px; border-radius: 10px; font-weight: 700;">
+                    مُحدد (<span id="selected-count">0</span>) 
+                    <button onclick="testSelected()" style="background: var(--primary-color); color: white; border: none; margin-right: 10px; padding: 5px 15px; border-radius: 6px; cursor: pointer;">اختيار الجميع واختبار ⭐</button>
+                    <button onclick="clearSelection()" style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px;">إلغاء</button>
+                </div>
+                <button onclick="resetToDefault()" style="background: #94A3B8; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">ضبط ↺</button>
+                <button onclick="openModal()" style="background: var(--secondary-color); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">إضافة +</button>
+                <button onclick="exportQuestions()" style="background: #10B981; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">حفظ (SAVE)</button>
             </div>
         </header>
+
+        <button class="fab-btn" onclick="openModal()" title="إضافة سؤال جديد">+</button>
 
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="بحث في الأسئلة أو الأجوبة..." onkeyup="filterQuestions()">
@@ -306,6 +410,8 @@
         </div>
     </div>
 
+    </div>
+
     <!-- Export Modal -->
     <div id="exportModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; justify-content: center; align-items: center;">
         <div style="background: white; padding: 30px; border-radius: 20px; width: 80%; height: 80%; display: flex; flex-direction: column; gap: 15px;">
@@ -315,6 +421,37 @@
             <div style="display: flex; gap: 10px;">
                 <button onclick="copyCode()" style="padding: 12px 30px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;">نسخ الكود</button>
                 <button onclick="closeExport()" style="padding: 12px 30px; background: #94A3B8; color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEST MODE OVERLAY -->
+    <div id="test-overlay">
+        <button class="btn-close-p" onclick="closeTest()">إغلاق الاختبار ×</button>
+        <div class="preview-container">
+            <div class="preview-main" id="preview-scene-1">
+                <div style="color: var(--secondary-color); text-transform: uppercase; letter-spacing: 5px; font-size: 14px; margin-bottom: 20px;">اختبار السؤال (معاينة)</div>
+                <div class="preview-text" id="p-text">نص السؤال سيظهر هنا؟</div>
+                <div id="p-media-1" class="preview-media" style="display: none;"></div>
+                <div class="preview-footer">
+                    <button class="btn-preview btn-gold" onclick="showPreviewAnswer()">عرض الإجابة</button>
+                </div>
+            </div>
+
+            <div class="preview-main" id="preview-scene-2" style="display: none;">
+                <div style="color: var(--secondary-color); text-transform: uppercase; letter-spacing: 5px; font-size: 14px; margin-bottom: 20px;">الإجابة الصحيحة</div>
+                <div class="preview-text" id="p-answer-text">نص الإجابة سيظهر هنا</div>
+                <div id="p-media-2" class="preview-media" style="display: none;"></div>
+                <div class="preview-footer">
+                    <button class="btn-preview btn-black" onclick="backToPreviewQuestion()">العودة للسؤال</button>
+                    <button class="btn-preview btn-gold" onclick="closeTest()">تم الاختبار ✅</button>
+                </div>
+            </div>
+
+            <div class="preview-nav" id="p-nav">
+                <button class="nav-btn" id="p-prev" onclick="navPreview(-1)">◀</button>
+                <div style="display: flex; align-items: center; padding: 0 10px;"><span id="p-index">1</span> / <span id="p-total">1</span></div>
+                <button class="nav-btn" id="p-next" onclick="navPreview(1)">▶</button>
             </div>
         </div>
     </div>
@@ -361,6 +498,7 @@
             localDB.forEach((q, index) => {
                 const card = document.createElement('div');
                 card.className = 'question-card';
+                card.id = `q-card-${index}`;
                 card.setAttribute('data-text', (q.questionText + ' ' + (q.answer || '')).toLowerCase());
 
                 let mediaHtml = '';
@@ -388,10 +526,14 @@
                 }
 
                 card.innerHTML = `
+                    <div class="q-check-container">
+                        <input type="checkbox" class="q-check" onchange="toggleSelect(${index}, this)">
+                    </div>
                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="question-index">#${index + 1}</span>
                         <div class="question-text">${q.questionText}</div>
                         <div style="display: flex; gap: 8px;">
+                            <button onclick="testQuestion(${index})" style="background: #10B981; color: white; border: none; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700;">اختبار ⭐</button>
                             <button onclick="editQuestion(${index})" style="background: #3B82F6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">تعديل</button>
                             <button onclick="deleteQuestion(${index})" style="background: #EF4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">حذف</button>
                         </div>
@@ -404,6 +546,130 @@
                 `;
                 container.appendChild(card);
             });
+        }
+
+        // Selection Logic
+        let selectedIndices = new Set();
+
+        function toggleSelect(index, cb) {
+            const card = document.getElementById(`q-card-${index}`);
+            if (cb.checked) {
+                selectedIndices.add(index);
+                card.classList.add('selected');
+            } else {
+                selectedIndices.delete(index);
+                card.classList.remove('selected');
+            }
+            updateSelectionUI();
+        }
+
+        function clearSelection() {
+            selectedIndices.clear();
+            const checks = document.querySelectorAll('.q-check');
+            checks.forEach(c => c.checked = false);
+            const cards = document.querySelectorAll('.question-card');
+            cards.forEach(c => c.classList.remove('selected'));
+            updateSelectionUI();
+        }
+
+        function updateSelectionUI() {
+            const bar = document.getElementById('selection-status');
+            const count = document.getElementById('selected-count');
+            if (selectedIndices.size > 0) {
+                bar.style.display = 'flex';
+                count.innerText = selectedIndices.size;
+            } else {
+                bar.style.display = 'none';
+            }
+        }
+
+        // --- Test / Preview Logic ---
+        let previewQueue = [];
+        let previewCursor = 0;
+
+        function testQuestion(index) {
+            previewQueue = [localDB[index]];
+            previewCursor = 0;
+            openTestOverlay();
+        }
+
+        function testSelected() {
+            if (selectedIndices.size === 0) return;
+            previewQueue = Array.from(selectedIndices).map(idx => localDB[idx]);
+            previewCursor = 0;
+            openTestOverlay();
+        }
+
+        function openTestOverlay() {
+            document.getElementById('test-overlay').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            updatePreviewContent();
+        }
+
+        function closeTest() {
+            document.getElementById('test-overlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function updatePreviewContent() {
+            const q = previewQueue[previewCursor];
+            document.getElementById('p-text').textContent = q.questionText;
+            document.getElementById('p-answer-text').textContent = q.answer || 'لا يوجد نص للإجابة';
+            
+            // Media Preview Scene 1
+            const m1 = document.getElementById('p-media-1');
+            if (q.media) {
+                m1.style.display = 'block';
+                if (q.media.includes('<img') || q.media.includes('<a')) {
+                    m1.innerHTML = q.media;
+                    m1.querySelectorAll('img').forEach(img => img.style.maxHeight = '350px');
+                } else {
+                    m1.innerHTML = `<img src="${q.media}" style="max-height: 350px; border-radius: 12px;">`;
+                }
+            } else {
+                m1.style.display = 'none';
+            }
+
+            // Media Preview Scene 2
+            const m2 = document.getElementById('p-media-2');
+            const ansMedia = q.answerMedia || ''; // No fallback to media anymore
+            if (ansMedia) {
+                m2.style.display = 'block';
+                if (ansMedia.includes('<img') || ansMedia.includes('<a')) {
+                    m2.innerHTML = ansMedia;
+                    m2.querySelectorAll('img').forEach(img => img.style.maxHeight = '350px');
+                } else {
+                    m2.innerHTML = `<img src="${ansMedia}" style="max-height: 350px; border-radius: 12px;">`;
+                }
+            } else {
+                m2.style.display = 'none';
+            }
+
+            // Navigation
+            document.getElementById('p-index').innerText = previewCursor + 1;
+            document.getElementById('p-total').innerText = previewQueue.length;
+            document.getElementById('p-prev').disabled = previewCursor === 0;
+            document.getElementById('p-next').disabled = previewCursor === previewQueue.length - 1;
+            document.getElementById('p-nav').style.display = previewQueue.length > 1 ? 'flex' : 'none';
+
+            backToPreviewQuestion();
+        }
+
+        function showPreviewAnswer() {
+            document.getElementById('preview-scene-1').style.display = 'none';
+            document.getElementById('preview-scene-2').style.display = 'flex';
+        }
+
+        function backToPreviewQuestion() {
+            document.getElementById('preview-scene-1').style.display = 'flex';
+            document.getElementById('preview-scene-2').style.display = 'none';
+        }
+
+        function navPreview(dir) {
+            previewCursor += dir;
+            if (previewCursor < 0) previewCursor = 0;
+            if (previewCursor >= previewQueue.length) previewCursor = previewQueue.length - 1;
+            updatePreviewContent();
         }
 
         function filterQuestions() {

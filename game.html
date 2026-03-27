@@ -116,7 +116,7 @@
         .game-header-logo {
             height: 60px;
             width: auto;
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
         }
 
         .q-brand-logo {
@@ -330,12 +330,143 @@
 
         .board-scaler {
             position: relative;
-            width: 600px;
-            height: 600px;
+            width: 650px;
+            height: 650px;
             display: flex;
             justify-content: center;
             align-items: center;
             transition: transform 0.5s ease;
+        }
+
+        /* Path Indicators */
+        .path-label {
+            position: absolute;
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            pointer-events: none;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+        }
+
+        .path-blue-label {
+            color: #3a6894;
+        }
+
+        .path-red-label {
+            color: #a62a2c;
+        }
+
+        .path-right {
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .path-left {
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .path-top {
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .path-bottom {
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .path-arrow-blue {
+            font-size: 60px;
+            font-weight: 1000;
+            line-height: 1;
+            animation: pulseBlue 2s infinite;
+            filter: drop-shadow(0 0 15px var(--clr-blue));
+        }
+
+        .path-arrow-red {
+            font-size: 60px;
+            font-weight: 1000;
+            line-height: 1;
+            animation: pulseRed 2s infinite;
+            filter: drop-shadow(0 0 15px var(--clr-red));
+        }
+
+        @keyframes pulseBlue {
+
+            0%,
+            100% {
+                transform: translateX(0) scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translateX(-15px) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        /* Specialized animation for the other side to point inward */
+        .path-left .path-arrow-blue {
+            animation: pulseBlueLeft 2s infinite;
+        }
+
+        @keyframes pulseBlueLeft {
+
+            0%,
+            100% {
+                transform: translateX(0) scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translateX(15px) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulseRed {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translateY(15px) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        /* Specialized animation for the bottom side to point inward */
+        .path-bottom .path-arrow-red {
+            animation: pulseRedBottom 2s infinite;
+        }
+
+        @keyframes pulseRedBottom {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translateY(-15px) scale(1.2);
+                opacity: 1;
+            }
         }
 
         .grid-core {
@@ -532,15 +663,15 @@
         }
 
         .q-power-item-overlay img {
-            width: 45px;
-            height: 45px;
+            width: 100px;
+            height: 100px;
             object-fit: contain;
         }
 
         .q-power-item-overlay span {
-            font-size: 12px;
+            font-size: 20px;
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .q-modern-main {
@@ -1075,6 +1206,7 @@
                 height: 400px;
             }
         }
+
         /* ---------------- IMAGE ZOOM LIGHTBOX ---------------- */
         .zoom-overlay {
             position: fixed;
@@ -1136,6 +1268,10 @@
         }
 
         .q-media-frame img {
+            max-width: 100%;
+            max-height: 300px;
+            /* Matching frame max-height */
+            object-fit: contain;
             cursor: zoom-in;
             transition: transform 0.3s ease;
         }
@@ -1203,12 +1339,25 @@
             <!-- Game Board Center -->
             <div class="board-wrapper" id="board-container">
                 <div class="board-scaler" id="board-scaler">
+                    <!-- Blue Path Indicators (Right to Left / Points Inward) -->
+                    <div class="path-label path-blue-label path-right">
+                        <span class="path-arrow-blue">◀</span>
+                        <span class="path-arrow-blue">◀</span>
+                    </div>
+                    <div class="path-label path-blue-label path-left">
+                        <span class="path-arrow-blue">▶</span>
+                        <span class="path-arrow-blue">▶</span>
+                    </div>
 
-                    <!-- Team Base Indicators -->
-                    <div class="base-cross-blue"></div>
-                    <div class="base-cross-red"></div>
-
-                    <div class="board-bg-shape"></div>
+                    <!-- Red Path Indicators (Top to Bottom / Points Inward) -->
+                    <div class="path-label path-red-label path-top" style="flex-direction: row; gap: 20px;">
+                        <span class="path-arrow-red">▼</span>
+                        <span class="path-arrow-red">▼</span>
+                    </div>
+                    <div class="path-label path-red-label path-bottom" style="flex-direction: row; gap: 20px;">
+                        <span class="path-arrow-red">▲</span>
+                        <span class="path-arrow-red">▲</span>
+                    </div>
 
                     <div class="board-glow"></div>
                     <div class="board-ornament"></div>
@@ -1458,12 +1607,102 @@
             }
 
             if (sourceDB.length > 0) {
-                availableQuestions = [...sourceDB];
-                // Shuffle array (Fisher-Yates)
-                for (let i = availableQuestions.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [availableQuestions[i], availableQuestions[j]] = [availableQuestions[j], availableQuestions[i]];
+                // --- ROBUST ADVANCED CATEGORIZATION SYSTEM ---
+                const categories = {
+                    islamic: [],
+                    geography: [],
+                    sports: [],
+                    challenges: [],
+                    general: []
+                };
+
+                const detectionRules = [
+                    {
+                        id: 'islamic',
+                        keywords: ['إمام', 'نبي', 'رسول', 'محمد', 'حسين', 'علي', 'فاطمة', 'زهراء', 'قرآن', 'سورة', 'شرع', 'صلاة', 'فقه', 'حج', 'عمرة', 'كربلاء', 'آل', 'معصوم', 'صحابي', 'تكبير', 'وضوء', 'مسجد', 'كعبة', 'مكة', 'مدينة منورة', 'نجف', 'بقيع', 'غدير', 'عاشوراء', 'دين']
+                    },
+                    {
+                        id: 'geography',
+                        keywords: ['دولة', 'مدينة', 'عاصمة', 'خريطة', 'أين يقع', 'اين يقع', 'معلم', 'برج', 'مبنى', 'عالم', 'قارة', 'بحر', 'نهر', 'جبل', 'محيط', 'خمن الدولة', 'علم', 'map']
+                    },
+                    {
+                        id: 'sports',
+                        keywords: ['لاعب', 'نادي', 'منتخب', 'دوري', 'كرة', 'هدف', 'كأس', 'كورة', 'ملاعب', 'نهائي', 'ميركاتو', 'خمن اللاعب', 'خمن المنتخب', 'تشكيلة']
+                    },
+                    {
+                        id: 'challenges',
+                        keywords: ['باركود', 'ياركود', 'تحدى', 'تحدي', 'كلمة', 'كلمه', 'مثل', 'أمثال', 'قرد', 'زجاج', 'طباخ', 'ريال', 'حول', 'إيصال', 'ايصال', 'ولا كلمة']
+                    }
+                ];
+
+                sourceDB.forEach(q => {
+                    const text = (q.questionText || "").toLowerCase();
+                    const media = (q.media || "").toLowerCase();
+
+                    let detected = false;
+
+                    // Priority 1: Explicitly tagged category from JSON (for future-proofing)
+                    if (q.category && categories[q.category]) {
+                        categories[q.category].push(q);
+                        detected = true;
+                    }
+
+                    // Priority 2: Keyword detection
+                    if (!detected) {
+                        for (const rule of detectionRules) {
+                            if (rule.keywords.some(k => text.includes(k) || media.includes(k))) {
+                                categories[rule.id].push(q);
+                                detected = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    // Fallback: General category
+                    if (!detected) categories.general.push(q);
+                });
+
+                // Helper to shuffle
+                const shuffleArray = (arr) => {
+                    for (let i = arr.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [arr[i], arr[j]] = [arr[j], arr[i]];
+                    }
+                };
+                Object.values(categories).forEach(arr => shuffleArray(arr));
+
+                // SMART INTERLEAVING DISTRIBUTION (Ensure variety in paths)
+                const initial25 = [];
+                const catKeys = Object.keys(categories);
+                let catPointer = 0;
+
+                while (initial25.length < 25) {
+                    let foundAny = false;
+                    for (let step = 0; step < catKeys.length; step++) {
+                        const key = catKeys[(catPointer + step) % catKeys.length];
+                        if (categories[key].length > 0) {
+                            initial25.push(categories[key].shift());
+                            foundAny = true;
+                            if (initial25.length === 25) break;
+                        }
+                    }
+                    catPointer++;
+                    if (!foundAny) break; // All categories exhausted
                 }
+
+                // If less than 25 found due to small DB, fill with whatever
+                if (initial25.length < 25 && sourceDB.length >= 25) {
+                    // Should not happen with sourceDB fallback, but for safety
+                }
+
+                // Combine remaining for "next question" rotation
+                let remaining = [];
+                Object.values(categories).forEach(arr => {
+                    remaining = remaining.concat(arr);
+                });
+                shuffleArray(remaining);
+
+                availableQuestions = initial25.concat(remaining);
             }
 
             // --- Power-up Functions ---
@@ -1648,16 +1887,26 @@
                             // Question Phase Media
                             if (qData.media && qData.media.trim() !== "") {
                                 qMediaElement1.style.display = 'flex';
-                                qMediaElement1.innerHTML = `<img src="${qData.media}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة السؤال">`;
+                                // Detect if media field is an HTML snippet (e.g. for QR codes)
+                                if (qData.media.trim().startsWith('<')) {
+                                    qMediaElement1.innerHTML = qData.media;
+                                } else {
+                                    qMediaElement1.innerHTML = `<img src="${qData.media}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة السؤال">`;
+                                }
                             } else {
                                 qMediaElement1.style.display = 'none';
                             }
 
                             // Answer Phase Media
-                            let effectiveAnswerMedia = (qData.answerMedia && qData.answerMedia.trim() !== "") ? qData.answerMedia : qData.media;
+                            let effectiveAnswerMedia = (qData.answerMedia && qData.answerMedia.trim() !== "") ? qData.answerMedia : "";
                             if (effectiveAnswerMedia && effectiveAnswerMedia.trim() !== "") {
                                 qMediaElement2.style.display = 'flex';
-                                qMediaElement2.innerHTML = `<img src="${effectiveAnswerMedia}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة الجواب">`;
+                                // Detect if media field is an HTML snippet
+                                if (effectiveAnswerMedia.trim().startsWith('<')) {
+                                    qMediaElement2.innerHTML = effectiveAnswerMedia;
+                                } else {
+                                    qMediaElement2.innerHTML = `<img src="${effectiveAnswerMedia}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة الجواب">`;
+                                }
                             } else {
                                 qMediaElement2.style.display = 'none';
                             }
@@ -1792,7 +2041,8 @@
                     closeQPage();
                 } else {
                     showToast(`استحوذ ${nameT1.textContent} على الخلية!`);
-                    toggleTurn();
+                    // Team 1 (Blue) got it right, so they keep/get the turn
+                    setTurn('team1');
                     closeQPage();
                 }
             });
@@ -1809,7 +2059,8 @@
                     closeQPage();
                 } else {
                     showToast(`استحوذ ${nameT2.textContent} على الخلية!`);
-                    toggleTurn();
+                    // Team 2 (Red) got it right, so they keep/get the turn
+                    setTurn('team2');
                     closeQPage();
                 }
             });
@@ -1833,27 +2084,36 @@
 
                 trapActive = false;
                 trapPendingQuestion = false;
+
+                // No one got it, move turn to the OTHER team
                 toggleTurn();
                 closeQPage();
             });
 
-            function toggleTurn() {
+            function setTurn(team) {
+                currentTurn = team;
                 if (currentTurn === 'team1') {
-                    currentTurn = 'team2';
-                    arrow.style.transform = 'rotate(0deg)';
-                    blockT1.classList.remove('active');
-                    sideT1.classList.remove('active-side');
-                    blockT2.classList.add('active');
-                    sideT2.classList.add('active-side');
-                } else {
-                    currentTurn = 'team1';
                     arrow.style.transform = 'rotate(180deg)';
                     blockT2.classList.remove('active');
                     sideT2.classList.remove('active-side');
                     blockT1.classList.add('active');
                     sideT1.classList.add('active-side');
+                } else {
+                    arrow.style.transform = 'rotate(0deg)';
+                    blockT1.classList.remove('active');
+                    sideT1.classList.remove('active-side');
+                    blockT2.classList.add('active');
+                    sideT2.classList.add('active-side');
                 }
                 phase = 'beforeQuestion';
+            }
+
+            function toggleTurn() {
+                if (currentTurn === 'team1') {
+                    setTurn('team2');
+                } else {
+                    setTurn('team1');
+                }
             }
 
             function verifyWinningCondition() {

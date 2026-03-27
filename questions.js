@@ -436,5 +436,75 @@ const questionsDB = [
         "media": "<a href='https://me-qr.com' border='0' style='cursor:pointer;display:block'><img src='https://storage3.me-qr.com/qr/325811799.png?v=1774615401' alt='Create qr code for free'></a><a href='https://me-qr.com' border='0' style='cursor:default;display:none'>Create qr code for free</a>",
         "answerMedia": "      ",
         "answer": "ساعة رملية"
+    },
+    {
+        "questionText": "من هو الملقب بـ (الساجد) من الأئمة عليهم السلام؟",
+        "media": "",
+        "answer": "الإمام زين العابدين عليه السلام"
+    },
+    {
+        "questionText": "ما هي أطول سورة في القرآن الكريم؟",
+        "media": "",
+        "answer": "سورة البقرة"
+    },
+    {
+        "questionText": "في أي مدينة يقع مرقد الإمام الرضا عليه السلام؟",
+        "media": "",
+        "answer": "مشهد (إيران)"
+    },
+    {
+        "questionText": "ما هي عاصمة اليابان؟",
+        "media": "",
+        "answer": "طوكيو"
+    },
+    {
+        "questionText": "ما هي الدولة الملقبة بـ (بلد المليون شهيد)؟",
+        "media": "",
+        "answer": "الجزائر"
+    },
+    {
+        "questionText": "اين يقع برج بيزا المائل؟",
+        "media": "",
+        "answer": "إيطاليا"
+    },
+    {
+        "questionText": "من هو اللاعب الذي لقب بـ (الظاهرة)؟",
+        "media": "",
+        "answer": "رونالدو البرازيلي"
+    },
+    {
+        "questionText": "أي منتخب فاز بكأس العالم 2022؟",
+        "media": "",
+        "answer": "الأرجنتين"
+    },
+    {
+        "questionText": "ما هو النادي الذي يلقب بـ (الملكي)؟",
+        "media": "",
+        "answer": "ريال مدريد"
+    },
+    {
+        "questionText": "مثل شعبي: ما طار طير وارتفع إلا كما طار...؟",
+        "media": "",
+        "answer": "وقع"
+    },
+    {
+        "questionText": "تحدي: اذكر 5 أنواع من الفواكه تبدأ بحرف الميم خلال 10 ثواني.",
+        "media": "",
+        "answer": "موز، مانجو، مشمش، مندرين (أو أي فاكهة تبدأ بالميم)"
+    },
+    {
+        "questionText": "ما هو أسرع كائن حي على وجه الأرض؟",
+        "media": "",
+        "answer": "الفهد الصياد"
+    },
+    {
+        "questionText": "من مخترع المصباح الكهربائي؟",
+        "media": "",
+        "answer": "توماس إديسون"
+    },
+    {
+        "questionText": "ولا كلمة (واحد يصور ياركود)",
+        "media": "<a href='https://me-qr.com' border='0' style='cursor:pointer;display:block'><img src='https://storage3.me-qr.com/qr/325811799.png?v=1774615294' alt='Create qr code for free'></a>",
+        "answer": "على قد لحافك مد رجليك"
     }
 ];
