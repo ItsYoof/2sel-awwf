@@ -1764,11 +1764,7 @@
                             trapActive = true;
                             el.classList.add('active-power');
                         } else if (pName.includes('خلوها') || pName === 'خلوها') {
-                            if (currentTurn === teamId) {
-                                showToast(`❌ 'خلوها': يستخدمها فريق ${teamId === 'team1' ? nameT2.textContent : nameT1.textContent} ضدك!`);
-                                return;
-                            }
-                            if (phase === 'answering' && timerSeconds > 10) {
+                            if (phase === 'answering' && timerSeconds > 18) {
                                 showToast("❌ 'خلوها': انتهى وقت الاستخدام (أول 10 ثوانٍ فقط)!");
                                 return;
                             }
