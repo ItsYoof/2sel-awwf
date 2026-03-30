@@ -58,17 +58,8 @@ const questionsDB = [
     {
         "questionText": "هل صلاة العيد واجبة أم مستحبة؟",
         "media": "",
-        "answer": "واجبة في زمن حضور الإمام ومستحبة في عصر الغيبة \nالمصدر: منهاج الصالحين ج1,ص344،الخاتمة"
-    },
-    {
-        "questionText": "إذا دار الأمر بين القيام الركني والقيام غير الركني فأيهما يقدم؟",
-        "media": "",
-        "answer": "يقدم القيام الركني ، فلو دار الأمر بين أن يقوم حال تكبيرة الإحرام أو حال القراءة فيقدم القيام حال التكبير \nالمصدر: الفقه الميسر، العبادات ج3 ص 191"
-    },
-    {
-        "questionText": "هناك أحكام شرعية تناط موضوعاتها بالعرف أو بالصدق العرفي، فما هي الطرق التي يمكن للمكلّف اتّباعها للتوصّل إلى ذلك ؟",
-        "media": "",
-        "answer": "الطريق هو الرجوع إلى العرف، ولكن العبرة بالنظر الدقيق العرفي لا المسامحي"
+        "answerMedia": "",
+        "answer": "واجبة حضوراً، ومستحبة غيبةً."
     },
     {
         "questionText": "ما هي الدولة المحددة باللون الأحمر على الخريطة؟",
@@ -396,46 +387,16 @@ const questionsDB = [
         "answer": "الناقوس"
     },
     {
-        "questionText": "تحدي :\nكم تقدر تعدد دول حرف الميم؟",
+        "questionText": "تحدي الثلاثين:\nكم تقدر تعدد دول حرف الميم؟",
         "media": "",
         "answerMedia": "",
         "answer": "هم 13 دولة اذا قال اكثر كذاب"
     },
     {
-        "questionText": "تحدي :\nكم تقدر تعدد من الأنبياء ؟",
+        "questionText": "تحدي الثلاثين:\nكم تقدر تعدد من الأنبياء ؟",
         "media": "",
         "answerMedia": "",
         "answer": "مين جابها ؟ عدد الانبياء مذكورين 25 نبيًا."
-    },
-    {
-        "questionText": "اسرع واحد \nيحول مبلغ 1ريال لشخص من فريق الخصم",
-        "media": "",
-        "answerMedia": "",
-        "answer": "ورنا الايصال"
-    },
-    {
-        "questionText": "ولا كلمة (واحد يصور ياركود)",
-        "media": "<a href='https://me-qr.com' border='0' style='cursor:pointer;display:block'><img src='https://storage3.me-qr.com/qr/325811019.png?v=1774615216' alt='Create qr code for free'></a><a href='https://me-qr.com' border='0' style='cursor:default;display:none'>Create qr code for free</a>",
-        "answerMedia": "   ",
-        "answer": "القرد في عين أمه غزال."
-    },
-    {
-        "questionText": "ولا كلمة (واحد يصور ياركود)",
-        "media": "<a href='https://me-qr.com' border='0' style='cursor:pointer;display:block'><img src='https://storage3.me-qr.com/qr/325811799.png?v=1774615294' alt='Create qr code for free'></a><a href='https://me-qr.com' border='0' style='cursor:default;display:none'>Create qr code for free</a>",
-        "answerMedia": " ",
-        "answer": "اللي بيته من زجاج لا يرمي الناس بحجر"
-    },
-    {
-        "questionText": "ولا كلمة (واحد يصور ياركود)\n",
-        "media": "<a href='https://me-qr.com' border='0' style='cursor:pointer;display:block'><img src='https://storage3.me-qr.com/qr/325811799.png?v=1774615337' alt='Create qr code for free'></a><a href='https://me-qr.com' border='0' style='cursor:default;display:none'>Create qr code for free</a>",
-        "answerMedia": " ",
-        "answer": "طباخ السم بياكله."
-    },
-    {
-        "questionText": "ولا كلمة (واحد يصور ياركود)\n",
-        "media": "<a href='https://me-qr.com' border='0' style='cursor:pointer;display:block'><img src='https://storage3.me-qr.com/qr/325811799.png?v=1774615401' alt='Create qr code for free'></a><a href='https://me-qr.com' border='0' style='cursor:default;display:none'>Create qr code for free</a>",
-        "answerMedia": "      ",
-        "answer": "ساعة رملية"
     },
     {
         "questionText": "من هو الملقب بـ (الساجد) من الأئمة عليهم السلام؟",
@@ -488,8 +449,9 @@ const questionsDB = [
         "answer": "وقع"
     },
     {
-        "questionText": "تحدي: اذكر 5 أنواع من الفواكه تبدأ بحرف الميم خلال 10 ثواني.",
+        "questionText": "تحدي الثلاثين:\n اذكر الفواكه تبدأ بحرف الميم ",
         "media": "",
+        "answerMedia": "",
         "answer": "موز، مانجو، مشمش، مندرين (أو أي فاكهة تبدأ بالميم)"
     },
     {
@@ -503,8 +465,21 @@ const questionsDB = [
         "answer": "توماس إديسون"
     },
     {
-        "questionText": "ولا كلمة (واحد يصور ياركود)",
-        "media": "<a href='https://me-qr.com' border='0' style='cursor:pointer;display:block'><img src='https://storage3.me-qr.com/qr/325811799.png?v=1774615294' alt='Create qr code for free'></a>",
-        "answer": "على قد لحافك مد رجليك"
+        "questionText": "تحدي عشر ثواني : منتخبات حققت كأس العالم.\n",
+        "media": "",
+        "answerMedia": "",
+        "answer": "البرازيل، ألمانيا، إيطاليا، الأرجنتين، فرنسا، أوروغواي، إنجلترا، إسبانيا."
+    },
+    {
+        "questionText": "اذكر 4 دول تحد السعودية.",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الأردن، العراق، الكويت، قطر، الإمارات، عمان، اليمن."
+    },
+    {
+        "questionText": "تحدي الثلاثين:\nعدد دول اوربية",
+        "media": "",
+        "answerMedia": "",
+        "answer": "50 دولة ...  ألبانيا، أندورا، أرمينيا، النمسا، أذربيجان، بيلاروسيا،"
     }
 ];
