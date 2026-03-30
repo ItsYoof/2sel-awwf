@@ -15,13 +15,13 @@
 </head>
 
 <body class="home-page">
-    <!-- Navbar / Frame 1 -->
+    <!-- Navbar / Header -->
     <header class="main-nav">
         <div class="nav-content">
             <div class="nav-right">
                 <div class="logo-group" onclick="location.href='index.html'" style="cursor: pointer;">
                     <img src="شعار أوف.svg" alt="Logo" class="main-logo-img">
-                    <span class="logo-text">أسئل أووف</span>
+                    <h1 class="logo-text">أسئل أووف</h1>
                 </div>
             </div>
 
@@ -38,17 +38,48 @@
     </header>
 
     <main>
-        <!-- Hero Section -->
         <section id="home" class="hero-full">
+            <span class="launch-badge">إطلاق تجريبي</span>
             <h1 class="hero-main-title">أسئل أوووف</h1>
             <button class="btn-start-playing" onclick="location.href='setup.html'">يلا نلعب</button>
+
+            <div class="hero-feature-row">
+                <div class="hero-feature-right">
+                    <h2 class="hero-enjoy-text">أستمتع مع أسئل أوووف</h2>
+                    
+                    <!-- Compatibility Section inside row -->
+                    <div class="compatibility-container">
+                        <h3 class="compatibility-title">توافق الأجهزة</h3>
+                        <div class="compatibility-icons">
+                            <div class="comp-icon-box">
+                                <div class="comp-icon-inner">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0A5C4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                                </div>
+                            </div>
+                            <div class="comp-icon-box">
+                                <div class="comp-icon-inner">
+                                    <svg width="35" height="35" viewBox="0 0 24 24" fill="#0A5C4A"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"></path></svg>
+                                </div>
+                            </div>
+                            <div class="comp-icon-box">
+                                <div class="comp-icon-inner mobile-border">
+                                    <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#70191A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-feature-left">
+                    <img src="Dark Green Gradient Mockup 1.png" alt="Mockup" class="hero-mockup-img">
+                </div>
+            </div>
 
             <!-- Instructional Section -->
             <div id="how" class="instructions-block">
                 <h2 class="instr-heading">كيف تنلعب؟</h2>
-                <p class="instr-desc-lg">اللعبة عبارة عن مربعات مرتبة مثل الخلايا، وكل خلية يحتوي على سؤال أو تحدّي.</p>
+                <p class="instr-desc-lg">اللعبة عبارة عن مسار من الخلايا السداسية، يتنافس فيها الفريق الأزرق و الفريق الأحمر.</p>
                 <div class="instr-detailed">
-                    يختار اللاعب مربعًا ويجيب عنه، وإذا كانت إجابته صحيحة يمتلك الخلية؛ والهدف هو تكوين خط متصل (الأزرق من اليمين إلى اليسار، والأحمر من الأعلى إلى الأسفل)، وإذا انتهت الأسئلة قبل اكتمال الخط، يفوز صاحب أكبر عدد من الخلايا.
+                    يختار الفريق خلية ويجيب على سؤالها ليتملّكها بلونه، وإذا كانت الإجابة صحيحة يستمر الفريق في اختيار خلية أخرى. الهدف هو بناء طريق متصل، حيث يسعى الفريق الأزرق لربط الجانبين (الأيمن والأيسر), بينما يحاول الفريق الأحمر ربط الجانبين (الأعلى والأسفل). وإذا انتهت الأسئلة قبل اكتمال الخط، يفوز صاحب أكبر عدد من الخلايا.
                 </div>
 
                 <!-- Win Examples Frames -->
@@ -63,6 +94,11 @@
                     </div>
                 </div>
 
+                <div class="tips-section">
+                    <h3 class="tips-title">نصائح لتجربة أفضل .</h3>
+                    <p class="tips-text">لضمان العدل ومعرفة من يستحق الإجابة أولاً بدون خلاف، يُفضل استخدام تطبيق مثل Buzz أو موقع مثل Multibuzz. يفضل وجود "مقدم" محايد يطرح الأسئلة ويتحكم في لوحة الخلايا لضمان سلاسة اللعب.</p>
+                </div>
+
                 <div class="understood-section">
                     <p class="understood-text">اللحين فهمت اللعبة</p>
                     <button class="btn-start-playing bottom-btn" onclick="location.href='setup.html'">يلا نلعب</button>
@@ -75,7 +111,7 @@
             <div class="tools-top-row">
                 <div class="tools-title-stack">
                     <h2 class="tools-main-heading">وسائل المساعدة العب بذكاء واهزمهم!</h2>
-                    <p class="tools-disclaimer">استخدمهم عدل بس ولا بتخسرهم على فاضي .</p>
+                    <p class="tools-disclaimer">استخدمهم عدل بس ولا بتخسرهم على فاضي .<br>ترا في نوعين : قبل سؤال وبعد سؤال</p>
                 </div>
                 <div class="tools-exclusive-badge">بس عندي تحصلها</div>
             </div>
@@ -123,10 +159,12 @@
 
     <!-- Footer / Frame 2 -->
     <footer class="main-footer">
-        <div class="footer-container">
-            <p class="copyright-txt">© 2030 يوسف احمد. جميع الحقوق محفوظة. | صنع بالاحساء</p>
+        <div class="footer-bottom-content">
+            <div class="footer-made-in">صنع بالاحساء</div>
+            <div class="footer-copyright">© 2030 يوسف احمد. جميع الحقوق محفوظة.</div>
         </div>
     </footer>
+
     <!-- IMAGE ZOOM OVERLAY -->
     <div class="zoom-overlay" id="zoom-overlay">
         <div class="zoom-close">
@@ -154,8 +192,7 @@
 
             zoomOverlay.addEventListener('click', closeZoom);
 
-            // Add click listener to all instructional and tool images
-            const zoomableImages = document.querySelectorAll('.win-instr-img, .tool-icon-circle img');
+            const zoomableImages = document.querySelectorAll('.win-instr-img, .tool-icon-circle img, .hero-mockup-img');
             zoomableImages.forEach(img => {
                 img.addEventListener('click', () => {
                     openZoom(img.src);

@@ -162,11 +162,15 @@
         }
 
         .team-name {
-            font-size: clamp(20px, 3vh, 32px);
+            font-size: clamp(16px, 2.5vh, 28px); /* Slightly smaller for better fit */
             font-weight: 900;
             color: var(--clr-white);
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             transition: var(--transition-smooth);
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .team-block.active .team-name {
@@ -1555,6 +1559,7 @@
             let timerSeconds = 0;
             let timerIsRunning = false;
             let doubleAnswerTeams = []; // Track which teams used Two Answers for current question
+            let skipUsedThisQuestion = false; // NEW: Track if 'Skip' (خلوها) is used for current question
 
             // Q-Page Elements
             const qPage = document.getElementById('q-page');
@@ -1764,13 +1769,19 @@
                             trapActive = true;
                             el.classList.add('active-power');
                         } else if (pName.includes('خلوها') || pName === 'خلوها') {
+                            if (skipUsedThisQuestion) {
+                                showToast("❌ تم استخدام 'خلوها' مسبقاً لهذا السؤال بالفعل!");
+                                return;
+                            }
+                            // Allow usage before question (phase === 'beforeQuestion') or during mirroring (first 10 seconds)
                             if (phase === 'answering' && timerSeconds > 18) {
                                 showToast("❌ 'خلوها': انتهى وقت الاستخدام (أول 10 ثوانٍ فقط)!");
                                 return;
                             }
 
+                            skipUsedThisQuestion = true;
                             const badge = document.getElementById('q-status-badge');
-                            if (badge && phase === 'answering') {
+                            if (badge) {
                                 badge.style.display = 'block';
                                 badge.textContent = `🔥 ${tName} طفّر وطلب 'خلوها'!`;
                                 badge.style.background = '#FEE2E2';
@@ -2022,6 +2033,7 @@
                     trapActive = false;
                     trapPendingQuestion = false;
                 }
+                skipUsedThisQuestion = false; // Reset skip usage for next question
                 setTimeout(verifyWinningCondition, 100);
             }
 
