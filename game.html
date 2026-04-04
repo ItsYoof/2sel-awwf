@@ -1330,6 +1330,32 @@
             font-size: 16px;
             opacity: 0.7;
         }
+        /* Blur functionality */
+        .blurred-media {
+            filter: blur(20px);
+            cursor: pointer !important;
+            transition: filter 0.4s;
+        }
+        .blurred-media.revealed {
+            filter: blur(0);
+        }
+        .reveal-text-overlay {
+            position: absolute;
+            color: #FFF;
+            font-size: 24px;
+            font-weight: 900;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 30px;
+            border-radius: 15px;
+            z-index: 10;
+            transition: opacity 0.3s;
+        }
+        .revealed + .reveal-text-overlay {
+            opacity: 0;
+        }
+
+
     </style>
 
 
@@ -1482,6 +1508,7 @@
                                     <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
                                 </svg>
                             </button>
+
                         </div>
                     </div>
                     <div id="q-status-badge"
@@ -1496,7 +1523,10 @@
                         <div class="q-media-frame" id="q-media-area-1"></div>
                     </div>
                     <footer class="q-footer-controls">
-                        <button class="q-btn-action q-btn-rect-gold" id="btn-show-ans">إظهار الجواب</button>
+                        <div style="display: flex; gap: 15px;">
+                            <button class="q-btn-action q-btn-rect-black" id="btn-toggle-barcode" style="display: none;">إظهار الباركود</button>
+                            <button class="q-btn-action q-btn-rect-gold" id="btn-show-ans">إظهار الجواب</button>
+                        </div>
                     </footer>
                 </div>
 
@@ -1670,102 +1700,28 @@
             }
 
             if (sourceDB.length > 0) {
-                // --- ROBUST ADVANCED CATEGORIZATION SYSTEM ---
-                const categories = {
-                    islamic: [],
-                    geography: [],
-                    sports: [],
-                    challenges: [],
-                    general: []
-                };
+                // VERY HIGH RANDOMIZATION AND NO REPETITION LOGIC
+                let usedQTexts = [];
+                try { usedQTexts = JSON.parse(localStorage.getItem('usedQuestionsHistory') || '[]'); } catch(e){}
 
-                const detectionRules = [
-                    {
-                        id: 'islamic',
-                        keywords: ['إمام', 'نبي', 'رسول', 'محمد', 'حسين', 'علي', 'فاطمة', 'زهراء', 'قرآن', 'سورة', 'شرع', 'صلاة', 'فقه', 'حج', 'عمرة', 'كربلاء', 'آل', 'معصوم', 'صحابي', 'تكبير', 'وضوء', 'مسجد', 'كعبة', 'مكة', 'مدينة منورة', 'نجف', 'بقيع', 'غدير', 'عاشوراء', 'دين']
-                    },
-                    {
-                        id: 'geography',
-                        keywords: ['دولة', 'مدينة', 'عاصمة', 'خريطة', 'أين يقع', 'اين يقع', 'معلم', 'برج', 'مبنى', 'عالم', 'قارة', 'بحر', 'نهر', 'جبل', 'محيط', 'خمن الدولة', 'علم', 'map']
-                    },
-                    {
-                        id: 'sports',
-                        keywords: ['لاعب', 'نادي', 'منتخب', 'دوري', 'كرة', 'هدف', 'كأس', 'كورة', 'ملاعب', 'نهائي', 'ميركاتو', 'خمن اللاعب', 'خمن المنتخب', 'تشكيلة']
-                    },
-                    {
-                        id: 'challenges',
-                        keywords: ['باركود', 'ياركود', 'تحدى', 'تحدي', 'كلمة', 'كلمه', 'مثل', 'أمثال', 'قرد', 'زجاج', 'طباخ', 'ريال', 'حول', 'إيصال', 'ايصال', 'ولا كلمة']
-                    }
-                ];
+                let freshQuestions = sourceDB.filter(q => (q.questionText && !usedQTexts.includes(q.questionText)));
 
-                sourceDB.forEach(q => {
-                    const text = (q.questionText || "").toLowerCase();
-                    const media = (q.media || "").toLowerCase();
-
-                    let detected = false;
-
-                    // Priority 1: Explicitly tagged category from JSON (for future-proofing)
-                    if (q.category && categories[q.category]) {
-                        categories[q.category].push(q);
-                        detected = true;
-                    }
-
-                    // Priority 2: Keyword detection
-                    if (!detected) {
-                        for (const rule of detectionRules) {
-                            if (rule.keywords.some(k => text.includes(k) || media.includes(k))) {
-                                categories[rule.id].push(q);
-                                detected = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    // Fallback: General category
-                    if (!detected) categories.general.push(q);
-                });
-
-                // Helper to shuffle
-                const shuffleArray = (arr) => {
-                    for (let i = arr.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [arr[i], arr[j]] = [arr[j], arr[i]];
-                    }
-                };
-                Object.values(categories).forEach(arr => shuffleArray(arr));
-
-                // SMART INTERLEAVING DISTRIBUTION (Ensure variety in paths)
-                const initial25 = [];
-                const catKeys = Object.keys(categories);
-                let catPointer = 0;
-
-                while (initial25.length < 25) {
-                    let foundAny = false;
-                    for (let step = 0; step < catKeys.length; step++) {
-                        const key = catKeys[(catPointer + step) % catKeys.length];
-                        if (categories[key].length > 0) {
-                            initial25.push(categories[key].shift());
-                            foundAny = true;
-                            if (initial25.length === 25) break;
-                        }
-                    }
-                    catPointer++;
-                    if (!foundAny) break; // All categories exhausted
+                // If not enough questions for the board, reset the history
+                if (freshQuestions.length < 30) {
+                    usedQTexts = [];
+                    localStorage.removeItem('usedQuestionsHistory');
+                    freshQuestions = [...sourceDB];
                 }
 
-                // If less than 25 found due to small DB, fill with whatever
-                if (initial25.length < 25 && sourceDB.length >= 25) {
-                    // Should not happen with sourceDB fallback, but for safety
+                // Shuffle the fresh questions heavily
+                for (let i = 0; i < 3; i++) { // Shuffle multiple times for extra randomness
+                    for (let j = freshQuestions.length - 1; j > 0; j--) {
+                        const k = Math.floor(Math.random() * (j + 1));
+                        [freshQuestions[j], freshQuestions[k]] = [freshQuestions[k], freshQuestions[j]];
+                    }
                 }
 
-                // Combine remaining for "next question" rotation
-                let remaining = [];
-                Object.values(categories).forEach(arr => {
-                    remaining = remaining.concat(arr);
-                });
-                shuffleArray(remaining);
-
-                availableQuestions = initial25.concat(remaining);
+                availableQuestions = freshQuestions;
             }
 
             // --- Power-up Functions ---
@@ -1948,6 +1904,16 @@
                         if (qData) {
                             qTextElement.textContent = qData.questionText || "لم يكتب سؤال لهذه الخلية بعد.";
                             qAnswerTextElement.textContent = qData.answer || "الإجابة غير محددة.";
+                            // Register to history to avoid future repetition
+                            if (qData.questionText) {
+                                let usedQTexts = [];
+                                try { usedQTexts = JSON.parse(localStorage.getItem('usedQuestionsHistory') || '[]'); } catch(e){}
+                                if (!usedQTexts.includes(qData.questionText)) {
+                                    usedQTexts.push(qData.questionText);
+                                    localStorage.setItem('usedQuestionsHistory', JSON.stringify(usedQTexts));
+                                }
+                            }
+
                             // --- Media Logic ---
                             // Question Phase Media
                             if (qData.media && qData.media.trim() !== "") {
@@ -1957,6 +1923,40 @@
                                     qMediaElement1.innerHTML = qData.media;
                                 } else {
                                     qMediaElement1.innerHTML = `<img src="${qData.media}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة السؤال">`;
+                                }
+
+                                const btnToggleBarcode = document.getElementById('btn-toggle-barcode');
+                                // --- Blur Logic for Wala Kelma ---
+                                const isWalaKelma = qData.questionText && qData.questionText.includes('ولا كلمة');
+                                if (isWalaKelma) {
+                                    const mediaChild = qMediaElement1.firstElementChild;
+                                    if (mediaChild && btnToggleBarcode) {
+                                        mediaChild.classList.add('blurred-media');
+                                        mediaChild.classList.remove('revealed');
+                                        
+                                        btnToggleBarcode.style.display = 'block';
+                                        btnToggleBarcode.textContent = 'إظهار الباركود';
+                                        
+                                        // Remove old overlay if exists
+                                        const oldOverlay = qMediaElement1.querySelector('.reveal-text-overlay');
+                                        if(oldOverlay) oldOverlay.remove();
+                                        
+                                        // Re-assign onClick to the button
+                                        btnToggleBarcode.onclick = function(e) {
+                                            e.stopPropagation();
+                                            if (mediaChild.classList.contains('revealed')) {
+                                                mediaChild.classList.remove('revealed');
+                                                btnToggleBarcode.textContent = 'إظهار الباركود';
+                                            } else {
+                                                mediaChild.classList.add('revealed');
+                                                btnToggleBarcode.textContent = 'إخفاء الباركود';
+                                            }
+                                        };
+                                    }
+                                } else {
+                                    if (btnToggleBarcode) btnToggleBarcode.style.display = 'none';
+                                    const oldOverlay = qMediaElement1.querySelector('.reveal-text-overlay');
+                                    if(oldOverlay) oldOverlay.remove();
                                 }
                             } else {
                                 qMediaElement1.style.display = 'none';
@@ -2047,6 +2047,8 @@
                     resetTimer();
                 });
             }
+
+
 
             // --- Flow ---
             btnShowAns.addEventListener('click', () => {
