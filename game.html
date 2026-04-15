@@ -1706,6 +1706,11 @@
 
                 let freshQuestions = sourceDB.filter(q => (q.questionText && !usedQTexts.includes(q.questionText)));
 
+                const disableWalaKelma = localStorage.getItem('disableWalaKelma') === 'true';
+                if (disableWalaKelma) {
+                    freshQuestions = freshQuestions.filter(q => !(q.questionText && q.questionText.includes('ولا كلمة')));
+                }
+
                 // If not enough questions for the board, reset the history
                 if (freshQuestions.length < 30) {
                     usedQTexts = [];

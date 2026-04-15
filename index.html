@@ -157,9 +157,6 @@
                     <p class="tips-text">لضمان العدل ومعرفة من يستحق الإجابة أولاً بدون خلاف، يُفضل استخدام تطبيق مثل Buzz أو موقع مثل Multibuzz. يفضل وجود "مقدم" محايد يطرح الأسئلة ويتحكم في لوحة الخلايا لضمان سلاسة اللعب.</p>
                 </div>
 
-                <div class="understood-section">
-                    <p class="understood-text">اللحين فهمت اللعبة</p>
-                    <button class="btn-start-playing bottom-btn" onclick="location.href='setup.html'">يلا نلعب</button>
                 </div>
             </div>
         </section>
@@ -212,6 +209,117 @@
                     <p class="tool-description">تسكت لاعب من الخصم</p>
                 </div>
             </div>
+
+            <!-- Types of Questions Section -->
+            <div class="question-types-section">
+                <h3 class="types-main-heading">أنواع الأسئلة والآلية</h3>
+                <div class="types-list">
+                    <div class="type-item blue-type">
+                        <p><strong>أسئلة عامة:</strong> لكل فريق إجابة واحدة فقط.</p>
+                    </div>
+                    <div class="type-item gold-type">
+                        <p><strong>ولا كلمة:</strong> شرح لمدة دقيقة؛ المجيب هو صاحب الدور فقط، وفي حال انتهاء الوقت يحق للخصم جواب واحد.</p>
+                    </div>
+                    <div class="type-item red-type">
+                        <p><strong>تحدي الـ 10:</strong> الأسرع يجاوب خلال 10 ثوانٍ، وإن أخطأ ينتقل الدور للخصم.<br>
+                        <strong>تحدي الـ 30 (نظام المزاد):</strong> يبدأ المزاد بين الفريقين اللي يثبت عليه المزاد يعدد الإجابات في 30 ثانية، وإذا ما قدر يفوز الخصم.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Help Tools Section -->
+            <div class="tools-details-section">
+                <h3 class="details-main-heading">وسائل المساعدة (شرح الحالات)</h3>
+                <div class="details-cards-wrapper">
+                    
+                    <!-- Details Card: Silence -->
+                    <div class="detail-card">
+                        <div class="tool-icon-circle green-bg mx-auto">
+                            <img src="أسكت.png" alt="Silence">
+                        </div>
+                        <h4 class="detail-card-title">اسكت</h4>
+                        
+                        <div class="detail-box">
+                            <span class="detail-box-title text-red">الأسئلة العامة</span>
+                            <p class="detail-box-desc">تمنع لاعب من المشاركة</p>
+                        </div>
+                        <div class="detail-box">
+                            <span class="detail-box-title text-red">تحدي 10/30</span>
+                            <p class="detail-box-desc">تمنع لاعب من التحدي</p>
+                        </div>
+                        <div class="detail-box">
+                            <span class="detail-box-title text-red">ولا كلمة</span>
+                            <p class="detail-box-desc">يمنع اللاعب من الشرح، إلا إذا كان الفريق مكوناً من لاعبين فقط، فيقوم "المسكت" بالشرح.</p>
+                        </div>
+                    </div>
+
+                    <!-- Details Card: Trap -->
+                    <div class="detail-card">
+                        <div class="tool-icon-circle red-bg mx-auto">
+                            <img src="حفرة.png" alt="Trap">
+                        </div>
+                        <h4 class="detail-card-title">الحفرة</h4>
+                        
+                        <div class="detail-box">
+                            <span class="detail-box-title text-gray">الفائدة العامة</span>
+                            <p class="detail-box-desc">استحواذ وحذف خلية المنافس</p>
+                        </div>
+                        <div class="detail-box with-right-border">
+                            <span class="detail-box-title text-gray">بجميع الحالات</span>
+                            <p class="detail-box-desc">لا تغير في طبيعة السؤال</p>
+                        </div>
+                    </div>
+
+                    <!-- Details Card: Skip -->
+                    <div class="detail-card">
+                        <div class="tool-icon-circle gold-bg mx-auto">
+                            <img src="خلوها.png" alt="Skip">
+                        </div>
+                        <h4 class="detail-card-title">خلوها</h4>
+                        
+                        <div class="detail-box">
+                            <span class="detail-box-title text-dark">الأسئلة العامة</span>
+                            <p class="detail-box-desc">الأحقية لمن يطلب أولاً</p>
+                        </div>
+                        <div class="detail-box">
+                            <span class="detail-box-title text-dark">تحدي 10/30</span>
+                            <p class="detail-box-desc">في الـ 10: يصبح التحدي له. في الـ 30: يأخذ الفريق المزاد عند الرقم الذي توقف عنده الخصم.</p>
+                        </div>
+                        <div class="detail-box">
+                            <span class="detail-box-title text-dark">ولا كلمة</span>
+                            <p class="detail-box-desc">ينتقل الدور لفريقك</p>
+                        </div>
+                    </div>
+
+                    <!-- Details Card: Two Answers -->
+                    <div class="detail-card">
+                        <div class="tool-icon-circle blue-bg mx-auto">
+                            <img src="اجابتين.png" alt="Two Answers">
+                        </div>
+                        <h4 class="detail-card-title">الجوابين</h4>
+                        
+                        <div class="detail-box">
+                            <span class="detail-box-title text-blue">الأسئلة العامة</span>
+                            <p class="detail-box-desc">متاحة بشكل طبيعي.</p>
+                        </div>
+                        <div class="detail-box opacity-60">
+                            <span class="detail-box-title text-light-gray">تحدي 10/30</span>
+                            <p class="detail-box-desc">غير متاحة نهائياً.</p>
+                        </div>
+                        <div class="detail-box opacity-60">
+                            <span class="detail-box-title text-light-gray">ولا كلمة</span>
+                            <p class="detail-box-desc">غير متاحة لصاحب الدور. (للفريق الخصم جوابين في نهاية الوقت)</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Understood Section -->
+        <section class="understood-section-dark">
+            <p class="understood-text">اللحين فهمت اللعبة</p>
+            <button class="btn-play-action" onclick="location.href='setup.html'">يلا نلعب</button>
         </section>
     </main>
 

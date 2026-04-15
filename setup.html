@@ -102,6 +102,18 @@
                 </div>
             </section>
 
+            <!-- Game Settings Section -->
+            <section class="setup-section">
+                <div class="section-header">
+                    <div class="header-icon"></div>
+                    <h2>إعدادات اللعبة</h2>
+                </div>
+                <div style="background: #FFFFFF; border: 3px solid rgba(10, 92, 74, 0.1); border-radius: 16px; padding: 15px 20px; display: flex; align-items: center; gap: 15px; margin-top: 15px;">
+                    <input type="checkbox" id="disableWalaKelma" style="width: 24px; height: 24px; accent-color: #0A5C4A; cursor: pointer;">
+                    <label for="disableWalaKelma" style="font-weight: 600; font-size: 18px; color: #1F3E5B; cursor: pointer; flex-grow: 1; user-select: none;">إلغاء أسئلة "ولا كلمة" (لا يظهر سؤال من هذا النوع)</label>
+                </div>
+            </section>
+
             <!-- Power-ups Team 1 -->
             <section class="setup-section">
                 <div class="section-header-wide">
@@ -228,8 +240,8 @@
     </footer>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const team1Checkboxes = document.querySelectorAll('.setup-section:nth-of-type(2) .powerup-checkbox');
-            const team2Checkboxes = document.querySelectorAll('.setup-section:nth-of-type(3) .powerup-checkbox');
+            const team1Checkboxes = document.querySelectorAll('.setup-section:nth-of-type(3) .powerup-checkbox');
+            const team2Checkboxes = document.querySelectorAll('.setup-section:nth-of-type(4) .powerup-checkbox');
             const startBtn = document.querySelector('.final-start-btn');
 
             function handleCheckboxLimit(checkboxes) {
@@ -280,8 +292,8 @@
             startBtn.addEventListener('click', () => {
                 if (startBtn.disabled) return;
 
-                const team1Inputs = document.querySelectorAll('.setup-section:nth-of-type(2) .powerup-checkbox');
-                const team2Inputs = document.querySelectorAll('.setup-section:nth-of-type(3) .powerup-checkbox');
+                const team1Inputs = document.querySelectorAll('.setup-section:nth-of-type(3) .powerup-checkbox');
+                const team2Inputs = document.querySelectorAll('.setup-section:nth-of-type(4) .powerup-checkbox');
                 
                 // Get team names or default to "فريق 1" and "فريق 2"
                 const team1NameInput = document.querySelector('.input-group .team-1-border input').value.trim();
@@ -302,12 +314,15 @@
 
                 const team1Powers = extractPowerupsData(team1Inputs);
                 const team2Powers = extractPowerupsData(team2Inputs);
+                
+                const disableWalaKelma = document.getElementById('disableWalaKelma').checked;
 
                 // Store in browser storage
                 localStorage.setItem('team1Name', team1Name);
                 localStorage.setItem('team2Name', team2Name);
                 localStorage.setItem('team1Powers', JSON.stringify(team1Powers));
                 localStorage.setItem('team2Powers', JSON.stringify(team2Powers));
+                localStorage.setItem('disableWalaKelma', disableWalaKelma);
                 
                 // Navigate to game page
                 window.location.href = 'game.html';
