@@ -84,7 +84,7 @@ const questionsDB = [
         "answer":  "أمريكا الجنوبية"
     },
     {
-        "questionText":  "ما هو اسم أطول مبنى في العالم حالياً؟",
+        "questionText":  "ما هو اسم أطول مبنى في العالم في عام 2026؟",
         "media":  "",
         "answerMedia":  "",
         "answer":  "برج خليفة"
@@ -558,7 +558,7 @@ const questionsDB = [
         "answer":  "النخلة"
     },
     {
-        "questionText":  "أطول مبنى في المملكة العربية السعودية حالياً؟",
+        "questionText":  "أطول مبنى في المملكة العربية السعودية في عام 2026؟",
         "media":  "",
         "answerMedia":  "",
         "answer":  "برج الساعة بمكة"
