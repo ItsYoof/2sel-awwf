@@ -8,15 +8,15 @@
     <style>
         :root {
             --primary: #0A5C4A;
-            --primary-light: #13836a;
+            --primary-dark: #063B30;
             --secondary: #C9A227;
             --accent: #FACC15;
-            --bg: #0F172A;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --text: #F8FAFC;
-            --text-muted: #94A3B8;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --bg-gradient: linear-gradient(180deg, #208770 0%, #0B5D4B 100%);
+            --card-bg: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --glass: rgba(255, 255, 255, 0.77);
+            --glass-border: rgba(10, 92, 74, 0.1);
         }
 
         * {
@@ -25,279 +25,340 @@
         }
 
         body {
-            background: radial-gradient(circle at top right, #1E293B, #0F172A);
-            color: var(--text);
-            font-family: 'Outfit', 'Noto Sans Arabic', sans-serif;
+            background: var(--bg-gradient);
+            color: #FFFFFF;
+            font-family: 'Noto Sans Arabic', 'Outfit', sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar / Header */
+        .main-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 85px;
+            background: var(--glass);
+            border-bottom: 1px solid var(--glass-border);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 5000;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-content {
+            width: 100%;
+            max-width: 1440px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .logo-text {
+            font-weight: 900;
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .main-logo-img {
+            height: 50px;
+            width: auto;
         }
 
         /* Access Protection Modal */
         #login-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #020617;
+            background: rgba(10, 92, 74, 0.8);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
         }
 
         .login-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
+            background: #FFFFFF;
             padding: 50px;
-            border-radius: 32px;
+            border-radius: 40px;
             width: 450px;
             text-align: center;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.3);
         }
 
         .login-card h2 {
             margin-bottom: 24px;
             font-size: 32px;
             font-weight: 900;
-            background: linear-gradient(135deg, #FFF, var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
         }
 
         .login-card input {
             width: 100%;
             padding: 16px;
             margin-bottom: 24px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--glass-border);
+            background: #F1F5F9;
+            border: 2px solid #E2E8F0;
             border-radius: 16px;
-            font-size: 20px;
-            color: white;
+            font-size: 18px;
+            color: var(--text-main);
             text-align: center;
             outline: none;
         }
 
-        .login-card input:focus { border-color: var(--secondary); }
+        .login-card input:focus { border-color: var(--primary); }
 
         .login-card button {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            background: var(--primary);
             color: white;
             border: none;
             border-radius: 16px;
             font-size: 18px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(10, 92, 74, 0.3);
+            box-shadow: 0 10px 0px var(--primary-dark);
         }
 
-        .admin-container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .login-card button:active { transform: translateY(4px); box-shadow: 0 6px 0px var(--primary-dark); }
+
+        .admin-main {
+            margin-top: 120px;
+            width: 100%;
+            max-width: 1440px;
+            align-self: center;
+            padding: 40px;
         }
 
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 50px;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            padding: 30px 40px;
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
+        .hero-title-section {
+            text-align: center;
+            margin-bottom: 60px;
         }
 
         .admin-title {
-            font-size: 32px;
             font-weight: 900;
+            font-size: 48px;
+            text-shadow: 2px 2px 0px var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .controls-bar {
+            background: #FFFFFF;
+            border-radius: 30px;
+            padding: 25px 40px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            color: var(--text-main);
         }
 
         .stats-badge {
-            background: var(--primary);
-            color: white;
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            background: rgba(10, 92, 74, 0.05);
+            border: 1px solid rgba(10, 92, 74, 0.1);
+            padding: 10px 20px;
+            border-radius: 99px;
+            font-weight: 800;
+            color: var(--primary);
         }
 
         .actions-group {
             display: flex;
-            gap: 12px;
+            gap: 15px;
         }
 
         .btn {
-            padding: 12px 24px;
-            border-radius: 14px;
+            padding: 12px 28px;
+            border-radius: 16px;
             font-weight: 800;
             cursor: pointer;
             border: none;
+            font-size: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 15px;
         }
 
-        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary { 
+            background: var(--primary); 
+            color: white; 
+            box-shadow: 0 6px 0px var(--primary-dark);
+        }
+        .btn-primary:active { transform: translateY(3px); box-shadow: 0 3px 0px var(--primary-dark); }
+
         .btn-secondary { background: var(--secondary); color: white; }
-        .btn-success { background: #10B981; color: white; }
-        .btn-outline { background: transparent; border: 1px solid var(--glass-border); color: white; }
+        .btn-outline { background: #F1F5F9; border: 1px solid #E2E8F0; color: var(--text-main); }
+        .btn-danger { background: #FEE2E2; color: #EF4444; border: 1px solid #FECACA; }
 
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-
-        .search-container {
-            margin-bottom: 40px;
+        .search-wrapper {
+            width: 100%;
             position: relative;
+            margin-bottom: 40px;
         }
 
-        .search-container input {
+        .search-wrapper input {
             width: 100%;
-            padding: 20px 30px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            font-size: 18px;
-            color: white;
+            padding: 24px 40px;
+            background: #FFFFFF;
+            border: none;
+            border-radius: 25px;
+            font-size: 20px;
+            color: var(--text-main);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
             outline: none;
         }
 
-        .search-container input:focus { border-color: var(--secondary); background: rgba(255,255,255,0.05); }
+        .search-wrapper input:focus { box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
 
-        .questions-grid {
+        .questions-list {
             display: grid;
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
         }
 
         .question-card {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 30px;
+            background: #FFFFFF;
+            border-radius: 35px;
+            padding: 35px;
+            color: var(--text-main);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
             position: relative;
+            border-bottom: 8px solid var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .q-number {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--secondary);
+            background: #FFFBEB;
+            padding: 4px 12px;
+            border-radius: 8px;
+        }
+
+        .q-title {
+            font-size: 24px;
+            font-weight: 900;
+            line-height: 1.4;
+        }
+
+        .ans-block {
+            background: #F8FAFC;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid #F1F5F9;
+        }
+
+        .ans-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .ans-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .media-previews {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .media-box {
+            height: 140px;
+            background: #E2E8F0;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
         }
 
-        .question-card::before {
-            content: '';
-            position: absolute;
-            top: 0; right: 0; width: 6px; height: 100%;
-            background: var(--primary);
-        }
+        .media-box img { width: 100%; height: 100%; object-fit: cover; }
+        .media-empty { color: #94A3B8; font-size: 12px; }
 
-        .card-top {
+        .card-footer {
+            margin-top: auto;
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .q-id {
-            background: rgba(255,255,255,0.1);
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--secondary);
-        }
-
-        .q-text {
-            font-size: 22px;
-            font-weight: 800;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .q-info {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .info-block {
-            flex: 1;
-            min-width: 250px;
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 16px;
-        }
-
-        .info-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            display: block;
-            text-transform: uppercase;
-        }
-
-        .info-content {
-            font-weight: 600;
-            word-break: break-all;
-        }
-
-        .media-preview-mini {
-            width: 100%;
-            height: 120px;
-            object-fit: contain;
-            background: #000;
-            border-radius: 10px;
-            margin-top: 10px;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 25px;
+            gap: 12px;
             padding-top: 20px;
-            border-top: 1px solid var(--glass-border);
+            border-top: 1px solid #F1F5F9;
         }
 
         /* Modal Styles */
         .modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(10, 92, 74, 0.6);
+            backdrop-filter: blur(15px);
             z-index: 20000;
             display: none;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(10px);
         }
 
         .modal-content {
-            background: #1E293B;
-            width: 700px;
+            background: #FFFFFF;
+            width: 750px;
             max-width: 95%;
-            padding: 40px;
-            border-radius: 32px;
-            border: 1px solid var(--glass-border);
+            padding: 50px;
+            border-radius: 40px;
+            color: var(--text-main);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
+        .modal-title { font-size: 32px; font-weight: 900; color: var(--primary); }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group { display: flex; flex-direction: column; gap: 8px; }
-        .form-group label { font-weight: 700; color: var(--secondary); }
+        .form-group label { font-size: 14px; font-weight: 800; color: var(--primary); }
         .form-group input, .form-group textarea {
-            padding: 14px;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            color: white;
+            padding: 16px;
+            background: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
             font-family: inherit;
+            font-size: 16px;
         }
+        .form-group input:focus { border-color: var(--primary); outline: none; }
 
         .fab {
             position: fixed;
             bottom: 40px; left: 40px;
-            width: 70px; height: 70px;
+            width: 75px; height: 75px;
             background: var(--secondary);
             border-radius: 50%;
             display: flex;
@@ -317,79 +378,106 @@
 
     </style>
 </head>
-<body>
+<body class="admin-body">
 
-    <!-- Access Protection -->
+    <header class="main-nav">
+        <div class="nav-content">
+            <div class="logo-group" onclick="location.href='index.html'">
+                <img src="شعار أوف.svg" alt="Logo" class="main-logo-img">
+                <h1 class="logo-text">أسئل أووف</h1>
+            </div>
+            <div class="stats-badge" id="stats-header">0 سؤال في القاعدة</div>
+        </div>
+    </header>
+
     <div id="login-overlay">
         <div class="login-card">
-            <h2>دخول المشرف</h2>
+            <h2>لوحة الإدارة</h2>
             <p style="color: var(--text-muted); margin-bottom: 25px;">أدخل كلمة المرور للتحكم في الأسئلة</p>
             <input type="password" id="admin-pass" placeholder="••••">
             <button onclick="checkAccess()">دخول اللوحة</button>
-            <p id="login-err" style="color: #EF4444; margin-top: 15px; display: none;">كلمة المرور غير صحيحة!</p>
+            <p id="login-err" style="color: #ef4444; margin-top: 15px; display: none;">كلمة المرور خاطئة!</p>
         </div>
     </div>
 
-    <div class="admin-container">
-        <header class="admin-header">
-            <div class="admin-title">
-                <span style="color: var(--secondary);">AWF</span>
-                <span>إدارة الأسئلة</span>
-                <span id="stats" class="stats-badge">0 سؤال</span>
-            </div>
+    <main class="admin-main">
+        <section class="hero-title-section">
+            <h1 class="admin-title">إدارة قاعدة البيانات</h1>
+            <p style="opacity: 0.8;">تحكم، عدل، أضف، وحدث المحتوى بكل سهولة.</p>
+        </section>
+
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" onkeyup="filterQuestions()" placeholder="ابحث عن سؤال أو كلمة معينة...">
+        </div>
+
+        <div class="controls-bar">
+            <div class="stats-badge" id="stats">0 سؤال</div>
             <div class="actions-group">
-                <button onclick="openModal()" class="btn btn-secondary">إضافة سؤال +</button>
-                <button onclick="downloadQuestions()" class="btn btn-success">تصدير للملف (Download)</button>
-                <button onclick="resetToDefault()" class="btn btn-outline">إعادة ضبط ↺</button>
+                <button onclick="openModal()" class="btn btn-primary">إضافة سؤال +</button>
+                <button onclick="downloadQuestions()" class="btn btn-outline" style="border-color: var(--secondary); color: var(--secondary)">تصدير (Download)</button>
+                <button onclick="resetToDefault()" class="btn btn-danger">إعادة ضبط ↺</button>
             </div>
-        </header>
-
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="ابحث عن سؤال أو معلومة..." onkeyup="filterQuestions()">
         </div>
 
-        <div id="questions-container" class="questions-grid">
-            <!-- Questions load here -->
+        <div class="questions-list" id="questions-container">
+            <!-- Questions will be loaded here via renderQuestions() -->
         </div>
-    </div>
+    </main>
 
-    <div class="fab" onclick="openModal()">+</div>
-
-    <!-- Edit/Add Modal -->
-    <div id="qModal" class="modal">
+    <div class="modal" id="qModal">
         <div class="modal-content">
-            <h2 id="modalTitle" style="margin: 0; font-size: 28px;">إضافة سؤال</h2>
-            <input type="hidden" id="edit-index">
+            <h2 class="modal-title" id="modalTitle">إضافة سؤال</h2>
             
             <div class="form-group">
                 <label>نص السؤال</label>
-                <textarea id="qText" rows="3"></textarea>
+                <textarea id="qText" rows="3" placeholder="اكتب السؤال هنا..."></textarea>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="form-row">
                 <div class="form-group">
-                    <label>رابط ميديا السؤال</label>
-                    <input type="text" id="qMedia">
+                    <label>رابط ميديا السؤال (صورة/فيديو)</label>
+                    <input type="text" id="qMedia" placeholder="https://...">
                 </div>
                 <div class="form-group">
-                    <label>رابط ميديا الجواب</label>
-                    <input type="text" id="qAMedia">
+                    <label>رابط ميديا الإجابة</label>
+                    <input type="text" id="qAMedia" placeholder="https://...">
                 </div>
             </div>
 
             <div class="form-group">
-                <label>نص الإجابة</label>
-                <input type="text" id="qAnswer">
+                <label>الإجابة الصحيحة</label>
+                <input type="text" id="qAnswer" placeholder="الجواب هو...">
             </div>
 
-            <div style="display: flex; gap: 15px; margin-top: 20px;">
-                <button onclick="saveQuestion()" class="btn btn-primary" style="flex: 2; height: 55px;">حفظ التغييرات</button>
-                <button onclick="closeModal()" class="btn btn-outline" style="flex: 1; height: 55px; border-color: #ef4444; color: #ef4444;">إلغاء</button>
+            <input type="hidden" id="edit-index">
+
+            <div class="card-footer" style="border: none; padding-top: 10px;">
+                <button onclick="saveQuestion()" class="btn btn-primary" style="flex: 2; height: 50px; justify-content: center;">حفــــظ التغييرات</button>
+                <button onclick="closeModal()" class="btn btn-outline" style="flex: 1; height: 50px; justify-content: center;">إلغاء</button>
             </div>
+        </div>
+    </div>
+
+    <button class="fab" onclick="openModal()">+</button>
         </div>
     </div>
 
     <script src="questions.js"></script>
+    <script>
+        // ─── Auto-Sync Database logic ───
+        (function autoSyncDB() {
+            try {
+                const storedMeta = JSON.parse(localStorage.getItem('questionsDB_sync_Meta') || '{}');
+                const fileMeta = (typeof questionsDB_Meta !== 'undefined') ? questionsDB_Meta : { version: "0" };
+                const needsUpdate = !localStorage.getItem('questionsDB_sync') || (fileMeta.version !== storedMeta.version);
+
+                if (needsUpdate && typeof questionsDB !== 'undefined') {
+                    localStorage.setItem('questionsDB_sync', JSON.stringify(questionsDB));
+                    localStorage.setItem('questionsDB_sync_Meta', JSON.stringify(fileMeta));
+                }
+            } catch(e) { console.error("Sync error:", e); }
+        })();
+    </script>
     <script>
         let localDB = [];
 
@@ -408,42 +496,72 @@
         function initDB() {
             const saved = localStorage.getItem('questionsDB_sync');
             if (saved) {
-                try { localDB = JSON.parse(saved); } catch(e) { localDB = [...questionsDB]; }
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && parsed.length > 0) {
+                        localDB = parsed;
+                    } else {
+                        localDB = [...questionsDB];
+                        saveToLocal();
+                    }
+                } catch(e) {
+                    localDB = [...questionsDB];
+                    saveToLocal();
+                }
             } else {
+                // First time - load from file and persist
                 localDB = [...questionsDB];
+                saveToLocal();
             }
             renderQuestions();
         }
 
+        function saveToLocal() {
+            localStorage.setItem('questionsDB_sync', JSON.stringify(localDB));
+            // Notify other tabs (game.html) via dispatchEvent
+            // Note: storage events only fire in OTHER tabs, not the current one
+            // This manually triggers for any same-page listeners
+            try {
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'questionsDB_sync',
+                    newValue: JSON.stringify(localDB)
+                }));
+            } catch(e) {}
+        }
+
         function renderQuestions() {
             const container = document.getElementById('questions-container');
-            document.getElementById('stats').innerText = `${localDB.length} سؤال`;
+            const total = localDB.length;
+            document.getElementById('stats').innerText = `${total} سؤال`;
+            document.getElementById('stats-header').innerText = `${total} سؤال في القاعدة`;
             container.innerHTML = '';
 
             localDB.forEach((q, i) => {
                 const card = document.createElement('div');
                 card.className = 'question-card';
                 card.innerHTML = `
-                    <div class="card-top">
-                        <span class="q-id">#${i + 1}</span>
-                        <div style="display: flex; gap: 8px;">
-                            <button onclick="editQuestion(${i})" class="btn" style="padding: 6px 15px; font-size: 13px; background: rgba(59, 130, 246, 0.2); color: #60a5fa;">تعديل</button>
-                            <button onclick="deleteQuestion(${i})" class="btn" style="padding: 6px 15px; font-size: 13px; background: rgba(239, 68, 68, 0.2); color: #f87171;">حذف</button>
+                    <div class="card-header">
+                        <span class="q-number">سؤال رقم #${i + 1}</span>
+                    </div>
+                    <div class="q-title">${q.questionText}</div>
+                    
+                    <div class="ans-block">
+                        <span class="ans-label">الإجابة النموذجية</span>
+                        <div class="ans-text">${q.answer || 'لا توجد إجابة محددة'}</div>
+                    </div>
+
+                    <div class="media-previews">
+                        <div class="media-box">
+                            ${q.media ? `<img src="${extractUrl(q.media)}">` : '<span class="media-empty">لا توجد ميديا للسؤال</span>'}
+                        </div>
+                        <div class="media-box">
+                            ${q.answerMedia ? `<img src="${extractUrl(q.answerMedia)}">` : '<span class="media-empty">لا توجد ميديا للجواب</span>'}
                         </div>
                     </div>
-                    <div class="q-text">${q.questionText}</div>
-                    <div class="q-info">
-                        <div class="info-block">
-                            <span class="info-label">الإجابة:</span>
-                            <div class="info-content" style="color: var(--secondary);">${q.answer || 'لا يوجد'}</div>
-                        </div>
-                        <div class="info-block">
-                            <span class="info-label">الميديا (سؤل/جواب):</span>
-                            <div style="display: flex; gap: 10px;">
-                                ${q.media ? `<img src="${extractUrl(q.media)}" class="media-preview-mini">` : '<div class="media-preview-mini" style="display:flex;align-items:center;justify-content:center;color:#334155;">-</div>'}
-                                ${q.answerMedia ? `<img src="${extractUrl(q.answerMedia)}" class="media-preview-mini">` : '<div class="media-preview-mini" style="display:flex;align-items:center;justify-content:center;color:#334155;">-</div>'}
-                            </div>
-                        </div>
+
+                    <div class="card-footer">
+                        <button onclick="editQuestion(${i})" class="btn btn-outline" style="flex: 1; justify-content: center; background: #F8FAFC;">تعديل</button>
+                        <button onclick="deleteQuestion(${i})" class="btn btn-danger" style="flex: 1; justify-content: center;">حذف</button>
                     </div>
                 `;
                 container.appendChild(card);
@@ -503,7 +621,7 @@
             if (idx > -1) localDB[idx] = data;
             else localDB.push(data);
 
-            localStorage.setItem('questionsDB_sync', JSON.stringify(localDB));
+            saveToLocal();
             closeModal();
             renderQuestions();
         }
@@ -511,15 +629,16 @@
         function deleteQuestion(i) {
             if (confirm('حذف هذا السؤال نهائياً؟')) {
                 localDB.splice(i, 1);
-                localStorage.setItem('questionsDB_sync', JSON.stringify(localDB));
+                saveToLocal();
                 renderQuestions();
             }
         }
 
         function resetToDefault() {
             if (confirm('هل تود إلغاء كافة التغييرات والعودة للبيانات الأصلية في ملف questions.js؟')) {
-                localStorage.removeItem('questionsDB_sync');
-                location.reload();
+                localDB = [...questionsDB];
+                saveToLocal();
+                renderQuestions();
             }
         }
 
@@ -534,6 +653,12 @@
             URL.revokeObjectURL(url);
             alert('تم تجهيز الملف المحدث! قم باستبدال ملف questions.js الحالي بالملف الذي تم تحميله الآن.');
         }
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'questionsDB_sync') {
+                initDB();
+            }
+        });
     </script>
 </body>
 </html>

@@ -90,7 +90,7 @@
             </nav>
 
             <div class="nav-left">
-                <button class="btn-play-now" onclick="location.href='setup.html'">العب الآن</button>
+                <button class="btn-play-now" onclick="location.href='setup.html'" style="margin-left: 10px;">العب الآن</button>
             </div>
         </div>
     </header>
@@ -342,7 +342,23 @@
         <img class="zoom-img" id="zoom-img" src="" alt="Enlarged image">
     </div>
 
+    <!-- ربط ملف قاعدة بيانات الأسئلة -->
+    <script src="questions.js"></script>
     <script>
+        // ─── Auto-Sync Database logic ───
+        (function autoSyncDB() {
+            try {
+                const storedMeta = JSON.parse(localStorage.getItem('questionsDB_sync_Meta') || '{}');
+                const fileMeta = (typeof questionsDB_Meta !== 'undefined') ? questionsDB_Meta : { version: "0" };
+                const needsUpdate = !localStorage.getItem('questionsDB_sync') || (fileMeta.version !== storedMeta.version);
+
+                if (needsUpdate && typeof questionsDB !== 'undefined') {
+                    localStorage.setItem('questionsDB_sync', JSON.stringify(questionsDB));
+                    localStorage.setItem('questionsDB_sync_Meta', JSON.stringify(fileMeta));
+                }
+            } catch(e) { console.error("Sync error:", e); }
+        })();
+
         document.addEventListener('DOMContentLoaded', () => {
             const zoomOverlay = document.getElementById('zoom-overlay');
             const zoomImg = document.getElementById('zoom-img');

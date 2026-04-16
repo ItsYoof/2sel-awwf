@@ -54,6 +54,81 @@
             font-size: 16px;
             opacity: 0.7;
         }
+
+        /* ─── Disable Wala Kelma Toggle ─── */
+        .wk-toggle-box {
+            background: #FFFFFF;
+            border: 3px solid rgba(10, 92, 74, 0.12);
+            border-radius: 20px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .wk-toggle-box:hover {
+            border-color: rgba(10, 92, 74, 0.35);
+            box-shadow: 0 4px 20px rgba(10, 92, 74, 0.1);
+            transform: translateY(-2px);
+        }
+        .wk-toggle-box.active {
+            border-color: #0A5C4A;
+            background: linear-gradient(135deg, #f0fdf9 0%, #ffffff 100%);
+            box-shadow: 0 6px 24px rgba(10, 92, 74, 0.15);
+        }
+        .wk-toggle-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+        .wk-toggle-label {
+            flex-grow: 1;
+        }
+        .wk-toggle-label strong {
+            display: block;
+            font-size: 18px;
+            font-weight: 800;
+            color: #1F3E5B;
+            margin-bottom: 4px;
+        }
+        .wk-toggle-label span {
+            font-size: 14px;
+            color: #64748B;
+            font-weight: 400;
+        }
+        /* the pill switch */
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+        .toggle-track {
+            position: absolute;
+            inset: 0;
+            border-radius: 30px;
+            background: #CBD5E1;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+        .toggle-track::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .toggle-switch input:checked + .toggle-track { background: #0A5C4A; }
+        .toggle-switch input:checked + .toggle-track::before { transform: translateX(26px); }
     </style>
 </head>
 
@@ -102,15 +177,21 @@
                 </div>
             </section>
 
-            <!-- Game Settings Section -->
             <section class="setup-section">
                 <div class="section-header">
                     <div class="header-icon"></div>
                     <h2>إعدادات اللعبة</h2>
                 </div>
-                <div style="background: #FFFFFF; border: 3px solid rgba(10, 92, 74, 0.1); border-radius: 16px; padding: 15px 20px; display: flex; align-items: center; gap: 15px; margin-top: 15px;">
-                    <input type="checkbox" id="disableWalaKelma" style="width: 24px; height: 24px; accent-color: #0A5C4A; cursor: pointer;">
-                    <label for="disableWalaKelma" style="font-weight: 600; font-size: 18px; color: #1F3E5B; cursor: pointer; flex-grow: 1; user-select: none;">إلغاء أسئلة "ولا كلمة" (لا يظهر سؤال من هذا النوع)</label>
+                <div class="wk-toggle-box" id="wk-box" onclick="toggleWK()">
+                    <div class="wk-toggle-icon" id="wk-icon">🎭</div>
+                    <div class="wk-toggle-label">
+                        <strong>إلغاء أسئلة "ولا كلمة"</strong>
+                        <span id="wk-desc">الأسئلة الإيمائية (باركود) ستُعرض في اللعبة</span>
+                    </div>
+                    <label class="toggle-switch" onclick="event.stopPropagation()">
+                        <input type="checkbox" id="disableWalaKelma" onchange="syncWKState()">
+                        <span class="toggle-track"></span>
+                    </label>
                 </div>
             </section>
 
@@ -238,8 +319,53 @@
             <p class="copyright">© 2030 يوسف احمد. جميع الحقوق محفوظة. | صنع بالاحساء</p>
         </div>
     </footer>
+    <!-- ربط ملف قاعدة بيانات الأسئلة -->
+    <script src="questions.js"></script>
     <script>
+        // ─── Auto-Sync Database logic ───
+        (function autoSyncDB() {
+            try {
+                const storedMeta = JSON.parse(localStorage.getItem('questionsDB_sync_Meta') || '{}');
+                const fileMeta = (typeof questionsDB_Meta !== 'undefined') ? questionsDB_Meta : { version: "0" };
+                const needsUpdate = !localStorage.getItem('questionsDB_sync') || (fileMeta.version !== storedMeta.version);
+
+                if (needsUpdate && typeof questionsDB !== 'undefined') {
+                    localStorage.setItem('questionsDB_sync', JSON.stringify(questionsDB));
+                    localStorage.setItem('questionsDB_sync_Meta', JSON.stringify(fileMeta));
+                }
+            } catch(e) { console.error("Sync error:", e); }
+        })();
+
+        // ─── Wala Kelma toggle helpers (called from HTML onclick) ───
+        function toggleWK() {
+            const cb = document.getElementById('disableWalaKelma');
+            cb.checked = !cb.checked;
+            syncWKState();
+        }
+        function syncWKState() {
+            const cb = document.getElementById('disableWalaKelma');
+            const box = document.getElementById('wk-box');
+            const icon = document.getElementById('wk-icon');
+            const desc = document.getElementById('wk-desc');
+            if (cb.checked) {
+                box.classList.add('active');
+                icon.textContent = '❌';
+                desc.textContent = 'سيتم حذف جميع أسئلة "ولا كلمة" من الجلسة';
+            } else {
+                box.classList.remove('active');
+                icon.textContent = '🎭';
+                desc.textContent = 'الأسئلة الإيمائية (باركود) ستُعرض في اللعبة';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            // --- Load Saved Settings ---
+            const savedWK = localStorage.getItem('disableWalaKelma');
+            if (savedWK === 'true') {
+                document.getElementById('disableWalaKelma').checked = true;
+                syncWKState();
+            }
+
             const team1Checkboxes = document.querySelectorAll('.setup-section:nth-of-type(3) .powerup-checkbox');
             const team2Checkboxes = document.querySelectorAll('.setup-section:nth-of-type(4) .powerup-checkbox');
             const startBtn = document.querySelector('.final-start-btn');
@@ -323,6 +449,9 @@
                 localStorage.setItem('team1Powers', JSON.stringify(team1Powers));
                 localStorage.setItem('team2Powers', JSON.stringify(team2Powers));
                 localStorage.setItem('disableWalaKelma', disableWalaKelma);
+                
+                // Clear old session to start fresh
+                localStorage.removeItem('game_active_session');
                 
                 // Navigate to game page
                 window.location.href = 'game.html';

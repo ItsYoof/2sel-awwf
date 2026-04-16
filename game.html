@@ -1614,7 +1614,21 @@
 
     <!-- ربط ملف الأسئلة بقاعدة اللعبة -->
     <script src="questions.js"></script>
+    <script>
+        // ─── Auto-Sync Database logic ───
+        (function autoSyncDB() {
+            try {
+                const storedMeta = JSON.parse(localStorage.getItem('questionsDB_sync_Meta') || '{}');
+                const fileMeta = (typeof questionsDB_Meta !== 'undefined') ? questionsDB_Meta : { version: "0" };
+                const needsUpdate = !localStorage.getItem('questionsDB_sync') || (fileMeta.version !== storedMeta.version);
 
+                if (needsUpdate && typeof questionsDB !== 'undefined') {
+                    localStorage.setItem('questionsDB_sync', JSON.stringify(questionsDB));
+                    localStorage.setItem('questionsDB_sync_Meta', JSON.stringify(fileMeta));
+                }
+            } catch(e) { console.error("Sync error:", e); }
+        })();
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -1649,6 +1663,12 @@
             let doubleAnswerTeams = []; // Track which teams used Two Answers for current question
             let skipUsedThisQuestion = false; // NEW: Track if 'Skip' (خلوها) is used for current question
 
+            // Synchronized Persistent State
+            let availableQuestionsIndices = []; // Stores original indices from sourceDB
+            let boardTakenState = {}; // { cellNum: 'blue' | 'red' }
+            let team1PowersUsed = []; // Names of used powers
+            let team2PowersUsed = [];
+
             // Q-Page Elements
             const qPage = document.getElementById('q-page');
             const qNum = document.getElementById('q-num');
@@ -1674,6 +1694,7 @@
             const btnTimerReset = document.getElementById('btn-timer-reset');
 
             // --- Initialization ---
+            // --- Initialization ---
             nameT1.textContent = localStorage.getItem('team1Name') || 'الفريق 1 (الأزرق)';
             nameT2.textContent = localStorage.getItem('team2Name') || 'الفريق 2 (الأحمر)';
 
@@ -1681,52 +1702,181 @@
             btnWinRed.textContent = nameT2.textContent;
 
             // Prepare Random Questions Array Without Repetition
-            let availableQuestions = [];
             let sourceDB = [];
 
-            // Check for synced data from Admin Panel first
-            const syncedData = localStorage.getItem('questionsDB_sync');
-            if (syncedData) {
+            function loadSourceDB() {
+                const syncedData = localStorage.getItem('questionsDB_sync');
+                if (syncedData) {
+                    try {
+                        const parsed = JSON.parse(syncedData);
+                        if (parsed && parsed.length > 0) {
+                            sourceDB = parsed;
+                            return;
+                        }
+                    } catch (e) {}
+                }
+                // Fallback: load directly from file and save
+                if (typeof questionsDB !== 'undefined' && questionsDB.length > 0) {
+                    sourceDB = [...questionsDB];
+                    localStorage.setItem('questionsDB_sync', JSON.stringify(sourceDB));
+                }
+            }
+
+            function saveSession() {
+                const session = {
+                    indices: availableQuestionsIndices,
+                    board: boardTakenState,
+                    turn: currentTurn,
+                    p1Used: team1PowersUsed,
+                    p2Used: team2PowersUsed,
+                    extraIdx: nextExtraQuestionIndex,
+                    activeCell: activeCellNum,
+                    phase: phase,
+                    timer: timerSeconds,
+                    timerIsRunning: timerIsRunning,
+                    timerLastSync: Date.now(),
+                    qPageVisible: qPage.classList.contains('show'),
+                    trap: trapActive,
+                    trapPending: trapPendingQuestion,
+                    doubleActive: doubleAnswerActive,
+                    doubleTeams: doubleAnswerTeams,
+                    skipUsed: skipUsedThisQuestion,
+                    barcodeRevealed: isBarcodeRevealed()
+                };
+                localStorage.setItem('game_active_session', JSON.stringify(session));
+            }
+
+            function isBarcodeRevealed() {
+                const btn = document.getElementById('btn-toggle-barcode');
+                if (!btn || btn.style.display === 'none') return false;
+                const mediaChild = qMediaElement1.firstElementChild;
+                return mediaChild && mediaChild.classList.contains('revealed');
+            }
+
+            function loadSession() {
+                loadSourceDB();
+                const data = localStorage.getItem('game_active_session');
+                if (!data) {
+                    initFreshSession();
+                    return;
+                }
+
                 try {
-                    sourceDB = JSON.parse(syncedData);
-                } catch (e) {
-                    console.error("Error loading synced questions:", e);
-                }
-            }
-
-            // Fallback to questions.js if not synced or error
-            if (sourceDB.length === 0 && typeof questionsDB !== 'undefined') {
-                sourceDB = Object.values(questionsDB);
-            }
-
-            if (sourceDB.length > 0) {
-                // VERY HIGH RANDOMIZATION AND NO REPETITION LOGIC
-                let usedQTexts = [];
-                try { usedQTexts = JSON.parse(localStorage.getItem('usedQuestionsHistory') || '[]'); } catch(e){}
-
-                let freshQuestions = sourceDB.filter(q => (q.questionText && !usedQTexts.includes(q.questionText)));
-
-                const disableWalaKelma = localStorage.getItem('disableWalaKelma') === 'true';
-                if (disableWalaKelma) {
-                    freshQuestions = freshQuestions.filter(q => !(q.questionText && q.questionText.includes('ولا كلمة')));
-                }
-
-                // If not enough questions for the board, reset the history
-                if (freshQuestions.length < 30) {
-                    usedQTexts = [];
-                    localStorage.removeItem('usedQuestionsHistory');
-                    freshQuestions = [...sourceDB];
-                }
-
-                // Shuffle the fresh questions heavily
-                for (let i = 0; i < 3; i++) { // Shuffle multiple times for extra randomness
-                    for (let j = freshQuestions.length - 1; j > 0; j--) {
-                        const k = Math.floor(Math.random() * (j + 1));
-                        [freshQuestions[j], freshQuestions[k]] = [freshQuestions[k], freshQuestions[j]];
+                    const session = JSON.parse(data);
+                    availableQuestionsIndices = session.indices || [];
+                    boardTakenState = session.board || {};
+                    currentTurn = session.turn || 'team1';
+                    team1PowersUsed = session.p1Used || [];
+                    team2PowersUsed = session.p2Used || [];
+                    nextExtraQuestionIndex = session.extraIdx || 25;
+                    activeCellNum = session.activeCell || -1;
+                    phase = session.phase || 'beforeQuestion';
+                    
+                    // Timer Sync Logic
+                    const wasRunning = session.timerIsRunning || false;
+                    let syncedSeconds = session.timer || 0;
+                    if (wasRunning && session.timerLastSync) {
+                        const elapsedSinceSync = Math.floor((Date.now() - session.timerLastSync) / 1000);
+                        syncedSeconds += elapsedSinceSync;
                     }
-                }
+                    timerSeconds = syncedSeconds;
 
-                availableQuestions = freshQuestions;
+                    trapActive = session.trap || false;
+                    trapPendingQuestion = session.trapPending || false;
+                    doubleAnswerActive = session.doubleActive || false;
+                    doubleAnswerTeams = session.doubleTeams || [];
+                    skipUsedThisQuestion = session.skipUsed || false;
+
+                    // Apply UI states
+                    if (session.qPageVisible) {
+                        qPage.classList.add('show');
+                        updateQPageUI();
+                        // Apply barcode sync
+                        if (session.barcodeRevealed) {
+                            const mediaChild = qMediaElement1.firstElementChild;
+                            const btn = document.getElementById('btn-toggle-barcode');
+                            if (mediaChild && btn) {
+                                mediaChild.classList.add('revealed');
+                                btn.textContent = 'إخفاء الباركود';
+                            }
+                        }
+                    } else {
+                        qPage.classList.remove('show');
+                    }
+                    
+                    applyBoardState();
+                    setTurn(currentTurn);
+                    updateTimerDisplay();
+                    refreshPowersUI();
+                    setTimeout(verifyWinningCondition, 100);
+
+                    // Ensure timer state matches
+                    if (wasRunning && !timerIsRunning) startTimer();
+                    else if (!wasRunning && timerIsRunning) pauseTimer();
+
+                } catch (e) {
+                    console.error("Session load failed:", e);
+                    initFreshSession();
+                }
+            }
+
+            function initFreshSession() {
+                loadSourceDB();
+                availableQuestionsIndices = [];
+                boardTakenState = {};
+                team1PowersUsed = [];
+                team2PowersUsed = [];
+                nextExtraQuestionIndex = 25;
+                
+                if (sourceDB.length > 0) {
+                    let usedQTexts = [];
+                    try { usedQTexts = JSON.parse(localStorage.getItem('usedQuestionsHistory') || '[]'); } catch(e){}
+
+                    let filtered = sourceDB.map((q, idx) => ({ q, idx }))
+                        .filter(item => (item.q.questionText && !usedQTexts.includes(item.q.questionText)));
+
+                    const disableWalaKelma = localStorage.getItem('disableWalaKelma') === 'true';
+                    if (disableWalaKelma) {
+                        filtered = filtered.filter(item => !(item.q.questionText && item.q.questionText.includes('ولا كلمة')));
+                    }
+
+                    if (filtered.length < 35) {
+                        filtered = sourceDB.map((q, idx) => ({ q, idx }));
+                    }
+
+                    // Shuffle
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = filtered.length - 1; j > 0; j--) {
+                            const k = Math.floor(Math.random() * (j + 1));
+                            [filtered[j], filtered[k]] = [filtered[k], filtered[j]];
+                        }
+                    }
+                    availableQuestionsIndices = filtered.map(item => item.idx);
+                }
+                saveSession();
+                applyBoardState();
+                refreshPowersUI();
+            }
+
+            function applyBoardState() {
+                const wrappers = document.querySelectorAll('.hex-wrapper');
+                wrappers.forEach((w, i) => {
+                    const num = i + 1;
+                    w.classList.remove('taken-blue', 'taken-red');
+                    if (boardTakenState[num] === 'blue') w.classList.add('taken-blue');
+                    if (boardTakenState[num] === 'red') w.classList.add('taken-red');
+                });
+            }
+
+            function refreshPowersUI() {
+                document.querySelectorAll('.powerup-sidebar .power-item').forEach(el => {
+                    const name = el.querySelector('span').textContent.trim();
+                    const isTeam1 = el.closest('#sidebar-team1');
+                    const usedList = isTeam1 ? team1PowersUsed : team2PowersUsed;
+                    if (usedList.includes(name)) el.classList.add('used');
+                    else el.classList.remove('used');
+                });
+                if (window.refreshOverlayPowers) window.refreshOverlayPowers();
             }
 
             // --- Power-up Functions ---
@@ -1827,6 +1977,9 @@
 
                         showToast(`🟢 تم تفعيل وسيلة: ${p.name} لـ ${tName}`);
                         el.classList.add('used');
+                        if (teamId === 'team1') team1PowersUsed.push(pName);
+                        else team2PowersUsed.push(pName);
+                        saveSession();
                         if (window.refreshOverlayPowers) window.refreshOverlayPowers();
                     });
 
@@ -1860,14 +2013,18 @@
                             if (wrapper.classList.contains('taken-blue')) {
                                 wrapper.classList.remove('taken-blue');
                                 wrapper.classList.add('taken-red');
+                                boardTakenState[num] = 'red';
                                 showToast("🔧 تم التغيير لـ أحمر");
                             } else if (wrapper.classList.contains('taken-red')) {
                                 wrapper.classList.remove('taken-red');
+                                delete boardTakenState[num];
                                 showToast("🔧 الخلية الآن فارغة");
                             } else {
                                 wrapper.classList.add('taken-blue');
+                                boardTakenState[num] = 'blue';
                                 showToast("🔧 تم التغيير لـ أزرق");
                             }
+                            saveSession();
                             verifyWinningCondition();
                             return;
                         }
@@ -1877,9 +2034,11 @@
                             const oppClass = currentTurn === 'team1' ? 'taken-red' : 'taken-blue';
                             if (wrapper.classList.contains(oppClass)) {
                                 wrapper.classList.remove(oppClass);
+                                delete boardTakenState[num];
                                 showToast(`💥 بوم! تم حذف خلية الخصم. انتهى دور ${currentTurn === 'team1' ? nameT1.textContent : nameT2.textContent}`);
                                 phase = 'beforeQuestion';
                                 toggleTurn();
+                                saveSession();
                                 verifyWinningCondition();
                             } else {
                                 showToast("⚠️ يجب اختيار خلية يملكها الخصم لحذفها!");
@@ -1900,108 +2059,120 @@
                         activeCellWrapper = wrapper;
                         activeCellNum = num; // Track which cell was clicked
                         phase = 'answering';
-                        const headerBox = document.getElementById('q-header-full');
-                        if (headerBox) {
-                            headerBox.innerHTML = `خلية رقم <span id="q-num">${num}</span> - <span id="header-timer">00:00</span>`;
-                        }
-
-                        let qData = availableQuestions[num - 1] || null;
-                        if (qData) {
-                            qTextElement.textContent = qData.questionText || "لم يكتب سؤال لهذه الخلية بعد.";
-                            qAnswerTextElement.textContent = qData.answer || "الإجابة غير محددة.";
-                            // Register to history to avoid future repetition
-                            if (qData.questionText) {
-                                let usedQTexts = [];
-                                try { usedQTexts = JSON.parse(localStorage.getItem('usedQuestionsHistory') || '[]'); } catch(e){}
-                                if (!usedQTexts.includes(qData.questionText)) {
-                                    usedQTexts.push(qData.questionText);
-                                    localStorage.setItem('usedQuestionsHistory', JSON.stringify(usedQTexts));
-                                }
-                            }
-
-                            // --- Media Logic ---
-                            // Question Phase Media
-                            if (qData.media && qData.media.trim() !== "") {
-                                qMediaElement1.style.display = 'flex';
-                                // Detect if media field is an HTML snippet (e.g. for QR codes)
-                                if (qData.media.trim().startsWith('<')) {
-                                    qMediaElement1.innerHTML = qData.media;
-                                } else {
-                                    qMediaElement1.innerHTML = `<img src="${qData.media}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة السؤال">`;
-                                }
-
-                                const btnToggleBarcode = document.getElementById('btn-toggle-barcode');
-                                // --- Blur Logic for Wala Kelma ---
-                                const isWalaKelma = qData.questionText && qData.questionText.includes('ولا كلمة');
-                                if (isWalaKelma) {
-                                    const mediaChild = qMediaElement1.firstElementChild;
-                                    if (mediaChild && btnToggleBarcode) {
-                                        mediaChild.classList.add('blurred-media');
-                                        mediaChild.classList.remove('revealed');
-                                        
-                                        btnToggleBarcode.style.display = 'block';
-                                        btnToggleBarcode.textContent = 'إظهار الباركود';
-                                        
-                                        // Remove old overlay if exists
-                                        const oldOverlay = qMediaElement1.querySelector('.reveal-text-overlay');
-                                        if(oldOverlay) oldOverlay.remove();
-                                        
-                                        // Re-assign onClick to the button
-                                        btnToggleBarcode.onclick = function(e) {
-                                            e.stopPropagation();
-                                            if (mediaChild.classList.contains('revealed')) {
-                                                mediaChild.classList.remove('revealed');
-                                                btnToggleBarcode.textContent = 'إظهار الباركود';
-                                            } else {
-                                                mediaChild.classList.add('revealed');
-                                                btnToggleBarcode.textContent = 'إخفاء الباركود';
-                                            }
-                                        };
-                                    }
-                                } else {
-                                    if (btnToggleBarcode) btnToggleBarcode.style.display = 'none';
-                                    const oldOverlay = qMediaElement1.querySelector('.reveal-text-overlay');
-                                    if(oldOverlay) oldOverlay.remove();
-                                }
-                            } else {
-                                qMediaElement1.style.display = 'none';
-                            }
-
-                            // Answer Phase Media
-                            let effectiveAnswerMedia = (qData.answerMedia && qData.answerMedia.trim() !== "") ? qData.answerMedia : "";
-                            if (effectiveAnswerMedia && effectiveAnswerMedia.trim() !== "") {
-                                qMediaElement2.style.display = 'flex';
-                                // Detect if media field is an HTML snippet
-                                if (effectiveAnswerMedia.trim().startsWith('<')) {
-                                    qMediaElement2.innerHTML = effectiveAnswerMedia;
-                                } else {
-                                    qMediaElement2.innerHTML = `<img src="${effectiveAnswerMedia}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة الجواب">`;
-                                }
-                            } else {
-                                qMediaElement2.style.display = 'none';
-                            }
-                        } else {
-                            qTextElement.textContent = `هذا هو نص السؤال المرتبط بالخلية رقم ${num}. (يجب إضافته في ملف questions.js)`;
-                            qAnswerTextElement.textContent = `الإجابة للخلية ${num} ستظهر هنا.`;
-                            qMediaElement1.style.display = 'none';
-                            qMediaElement2.style.display = 'none';
-                        }
-
-                        window.refreshOverlayPowers();
-                        const qControls = document.getElementById('q-header-timer-controls');
-                        if (qControls) qControls.style.display = 'flex';
-
-                        qState1.classList.add('active');
-                        qState2.classList.remove('active');
-                        qState3.classList.remove('active');
-                        resetTimer();
-                        startTimer();
-                        qPage.classList.add('show');
+                        
+                        updateQPageUI();
+                        saveSession();
                     });
 
                     row.appendChild(wrapper);
                 }
                 grid.appendChild(row);
+            }
+
+            function updateQPageUI() {
+                if (activeCellNum === -1) return;
+                const num = activeCellNum;
+
+                const headerBox = document.getElementById('q-header-full');
+                if (headerBox) {
+                    const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+                    const s = (timerSeconds % 60).toString().padStart(2, '0');
+                    headerBox.innerHTML = `خلية رقم <span id="q-num">${num}</span> - <span id="header-timer">${m}:${s}</span>`;
+                }
+
+                const originalIdx = availableQuestionsIndices[num - 1];
+                let qData = sourceDB[originalIdx] || null;
+
+                if (qData) {
+                    qTextElement.textContent = qData.questionText || "لم يكتب سؤال لهذه الخلية بعد.";
+                    qAnswerTextElement.textContent = qData.answer || "الإجابة غير محددة.";
+                    
+                    // Register to history
+                    if (qData.questionText) {
+                        let usedQTexts = [];
+                        try { usedQTexts = JSON.parse(localStorage.getItem('usedQuestionsHistory') || '[]'); } catch(e){}
+                        if (!usedQTexts.includes(qData.questionText)) {
+                            usedQTexts.push(qData.questionText);
+                            localStorage.setItem('usedQuestionsHistory', JSON.stringify(usedQTexts));
+                        }
+                    }
+
+                    // Media logic
+                    if (qData.media && qData.media.trim() !== "") {
+                        qMediaElement1.style.display = 'flex';
+                        if (qData.media.trim().startsWith('<')) qMediaElement1.innerHTML = qData.media;
+                        else qMediaElement1.innerHTML = `<img src="${qData.media}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة السؤال">`;
+
+                        const btnToggleBarcode = document.getElementById('btn-toggle-barcode');
+                        const isWalaKelma = qData.questionText && qData.questionText.includes('ولا كلمة');
+                        if (isWalaKelma) {
+                            const mediaChild = qMediaElement1.firstElementChild;
+                            if (mediaChild && btnToggleBarcode) {
+                                mediaChild.classList.add('blurred-media');
+                                btnToggleBarcode.style.display = 'block';
+                                btnToggleBarcode.textContent = mediaChild.classList.contains('revealed') ? 'إخفاء الباركود' : 'إظهار الباركود';
+                                btnToggleBarcode.onclick = function(e) {
+                                    e.stopPropagation();
+                                    mediaChild.classList.toggle('revealed');
+                                    btnToggleBarcode.textContent = mediaChild.classList.contains('revealed') ? 'إخفاء الباركود' : 'إظهار الباركود';
+                                    saveSession();
+                                };
+                            }
+                        } else {
+                            if (btnToggleBarcode) btnToggleBarcode.style.display = 'none';
+                        }
+                    } else {
+                        qMediaElement1.style.display = 'none';
+                    }
+
+                    // Answer Media
+                    if (qData.answerMedia && qData.answerMedia.trim() !== "") {
+                        qMediaElement2.style.display = 'flex';
+                        if (qData.answerMedia.trim().startsWith('<')) qMediaElement2.innerHTML = qData.answerMedia;
+                        else qMediaElement2.innerHTML = `<img src="${qData.answerMedia}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة الجواب">`;
+                    } else {
+                        qMediaElement2.style.display = 'none';
+                    }
+                }
+
+                // Badge display
+                const badge = document.getElementById('q-status-badge');
+                if (badge) {
+                    if (skipUsedThisQuestion || doubleAnswerActive) {
+                        badge.style.display = 'block';
+                        if (skipUsedThisQuestion) {
+                            badge.textContent = `🔥 طلب 'خلوها'! سحب حق الإجابة!`;
+                            badge.style.background = '#FEE2E2';
+                            badge.style.color = '#70191A';
+                        } else {
+                            badge.textContent = `🌟 نظام الإجابتين مفعّل لـ: ${doubleAnswerTeams.join(' و ')}`;
+                            badge.style.background = 'var(--clr-accent)';
+                            badge.style.color = '#000';
+                        }
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+
+                window.refreshOverlayPowers();
+                const qControls = document.getElementById('q-header-timer-controls');
+                if (qControls) qControls.style.display = (phase === 'beforeQuestion' ? 'none' : 'flex');
+
+                if (phase === 'answering') {
+                    qState1.classList.add('active');
+                    qState2.classList.remove('active');
+                    qState3.classList.remove('active');
+                } else if (phase === 'afterAnswer') {
+                    qState1.classList.remove('active');
+                    qState2.classList.add('active');
+                    qState3.classList.remove('active');
+                } else if (phase === 'judging') {
+                    qState1.classList.remove('active');
+                    qState2.classList.remove('active');
+                    qState3.classList.add('active');
+                }
+
+                qPage.classList.toggle('show', activeCellNum !== -1 && phase !== 'beforeQuestion' && phase !== 'trapSelection');
             }
 
             // --- Timer Logic ---
@@ -2022,6 +2193,7 @@
                 timerInterval = setInterval(() => {
                     timerSeconds++;
                     updateTimerDisplay();
+                    if (timerSeconds % 5 === 0) saveSession(); // Periodic save
                 }, 1000);
             }
             function pauseTimer() {
@@ -2057,54 +2229,42 @@
 
             // --- Flow ---
             btnShowAns.addEventListener('click', () => {
-                const headerBox = document.getElementById('q-header-full');
-                if (headerBox) {
-                    const num = document.getElementById('q-num').textContent;
-                    const timeStr = document.getElementById('header-timer').textContent;
-                    headerBox.innerHTML = `جواب خلية رقم <span id="q-num">${num}</span> - <span id="header-timer">${timeStr}</span>`;
-                }
-                qState1.classList.remove('active');
-                qState2.classList.add('active');
+                phase = 'afterAnswer';
+                updateQPageUI();
+                saveSession();
                 pauseTimer();
             });
 
             btnAskWho.addEventListener('click', () => {
-                const headerBox = document.getElementById('q-header-full');
-                if (headerBox) headerBox.textContent = "مين جابها صحح بينكم؟";
-                qState2.classList.remove('active');
-                qState3.classList.add('active');
-                const qControls = document.getElementById('q-header-timer-controls');
-                if (qControls) qControls.style.display = 'none';
+                phase = 'judging';
+                updateQPageUI();
+                saveSession();
             });
 
             function closeQPage() {
                 qPage.classList.remove('show');
                 phase = 'beforeQuestion';
+                activeCellNum = -1;
                 pauseTimer();
                 doubleAnswerActive = false;
                 doubleAnswerTeams = [];
                 const badge = document.getElementById('q-status-badge');
-                if (badge) {
-                    badge.style.display = 'none';
-                    badge.style.background = 'var(--clr-accent)';
-                    badge.style.color = '#000';
-                }
-                document.querySelectorAll('.active-power').forEach(a => {
-                    if (a.textContent.includes('حفرة')) a.classList.remove('active-power');
-                    if (a.textContent.includes('إجابتين')) a.classList.remove('active-power');
-                });
-                // Note: Don't set trapActive=false here if we are entering trapSelection
+                if (badge) badge.style.display = 'none';
+                
+                document.querySelectorAll('.active-power').forEach(a => a.classList.remove('active-power'));
+                
                 if (phase !== 'trapSelection') {
                     trapActive = false;
                     trapPendingQuestion = false;
                 }
-                skipUsedThisQuestion = false; // Reset skip usage for next question
+                skipUsedThisQuestion = false;
+                saveSession();
                 setTimeout(verifyWinningCondition, 100);
             }
 
             btnWinBlue.addEventListener('click', () => {
                 const wasTrap = trapPendingQuestion && currentTurn === 'team1';
-                activeCellWrapper.classList.add('taken-blue');
+                boardTakenState[activeCellNum] = 'blue';
 
                 if (wasTrap) {
                     showToast(`🔥 كفو! جاوبت صح والحفرة مفعّلة.. الآن اختر خلية للخصم لحذفها!`, 6000);
@@ -2114,7 +2274,6 @@
                     closeQPage();
                 } else {
                     showToast(`استحوذ ${nameT1.textContent} على الخلية!`);
-                    // Team 1 (Blue) got it right, so they keep/get the turn
                     setTurn('team1');
                     closeQPage();
                 }
@@ -2122,7 +2281,7 @@
 
             btnWinRed.addEventListener('click', () => {
                 const wasTrap = trapPendingQuestion && currentTurn === 'team2';
-                activeCellWrapper.classList.add('taken-red');
+                boardTakenState[activeCellNum] = 'red';
 
                 if (wasTrap) {
                     showToast(`🔥 كفو! جاوبت صح والحفرة مفعّلة.. الآن اختر خلية للخصم لحذفها!`, 6000);
@@ -2132,24 +2291,21 @@
                     closeQPage();
                 } else {
                     showToast(`استحوذ ${nameT2.textContent} على الخلية!`);
-                    // Team 2 (Red) got it right, so they keep/get the turn
                     setTurn('team2');
                     closeQPage();
                 }
             });
 
             btnWinNone.addEventListener('click', () => {
-                // If there are extra questions available in the DB, rotate the current cell's question
-                if (activeCellNum > 0 && nextExtraQuestionIndex < availableQuestions.length) {
-                    const currentIdx = activeCellNum - 1;
-                    const nextQ = availableQuestions[nextExtraQuestionIndex];
+                if (activeCellNum > 0 && nextExtraQuestionIndex < availableQuestionsIndices.length) {
+                    const currentPos = activeCellNum - 1;
+                    const nextQIdx = availableQuestionsIndices[nextExtraQuestionIndex];
+                    const failedQIdx = availableQuestionsIndices[currentPos];
 
-                    // Swap current failed question with an extra one
-                    const failedQ = availableQuestions[currentIdx];
-                    availableQuestions[currentIdx] = nextQ;
-                    availableQuestions[nextExtraQuestionIndex] = failedQ;
+                    availableQuestionsIndices[currentPos] = nextQIdx;
+                    availableQuestionsIndices[nextExtraQuestionIndex] = failedQIdx;
 
-                    nextExtraQuestionIndex++; // Move pointer forward for next rotation
+                    nextExtraQuestionIndex++;
                     showToast("لم يجاوب أحد.. تم تغيير السؤال لهذه الخلية!");
                 } else {
                     showToast("لم يجاوب أحد.. الخلية متاحة للعب مرة أخرى!");
@@ -2157,8 +2313,6 @@
 
                 trapActive = false;
                 trapPendingQuestion = false;
-
-                // No one got it, move turn to the OTHER team
                 toggleTurn();
                 closeQPage();
             });
@@ -2178,7 +2332,8 @@
                     blockT2.classList.add('active');
                     sideT2.classList.add('active-side');
                 }
-                phase = 'beforeQuestion';
+                if (phase !== 'answering' && phase !== 'afterAnswer' && phase !== 'judging') phase = 'beforeQuestion';
+                saveSession();
             }
 
             function toggleTurn() {
@@ -2315,6 +2470,19 @@
             }
 
 
+            // --- Sync Across Tabs ---
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'game_active_session') {
+                    loadSession();
+                }
+                if (e.key === 'questionsDB_sync') {
+                    loadSourceDB();
+                    updateQPageUI();
+                }
+            });
+
+            // --- Start! ---
+            loadSession();
             setTimeout(() => showToast('🌟 بدأت اللعبة - بالتوفيق للفريقين!'), 500);
         });
     </script>
