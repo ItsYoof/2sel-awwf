@@ -29,6 +29,16 @@
             box-sizing: border-box;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            scrollbar-width: thin;
+            scrollbar-color: var(--clr-accent) transparent;
+        }
+
+        *::-webkit-scrollbar {
+            width: 6px;
+        }
+        *::-webkit-scrollbar-thumb {
+            background: var(--clr-accent);
+            border-radius: 10px;
         }
 
         body {
@@ -162,12 +172,12 @@
         }
 
         .team-name {
-            font-size: clamp(16px, 2.5vh, 28px); /* Slightly smaller for better fit */
+            font-size: clamp(16px, 2.8vh, 32px);
             font-weight: 900;
             color: var(--clr-white);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             transition: var(--transition-smooth);
-            max-width: 250px;
+            max-width: 300px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -594,7 +604,29 @@
             color: #FFFFFF;
         }
 
-        /* Ambient Glass Effects */
+        .q-state-container {
+            position: absolute;
+            top: 20%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transform: translateY(20px);
+        }
+
+        .q-state-container.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
         .q-modern-container::before {
             content: '';
             position: absolute;
@@ -706,6 +738,12 @@
             gap: 10px;
             animation: fadeInDown 0.8s ease;
             width: 100%;
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            z-index: 100;
         }
 
         .q-header-content-wrapper {
@@ -742,40 +780,55 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            gap: 30px;
+            gap: 20px; /* Reduced gap for better vertical layout */
+            padding: 20px 0;
+            overflow-y: auto;
         }
 
         .q-main-text-display {
-            font-size: clamp(28px, 4.5vw, 54px);
-            font-weight: 800;
+            font-size: clamp(24px, 4vw, 56px);
+            font-weight: 900;
             line-height: 1.35;
-            max-width: 950px;
+            max-width: 1100px;
             animation: fadeInUpPremium 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-            padding: 0 20px;
-        }
-
-        @keyframes fadeInUpPremium {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.98);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            padding: 0 40px;
+            margin-bottom: 10px;
         }
 
         .q-media-frame {
-            max-width: 600px;
-            max-height: 300px;
-            border-radius: 24px;
+            width: 100%;
+            max-width: 900px;
+            flex-shrink: 0;
+            margin-top: 10px;
+            border-radius: 30px;
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Responsive Media Container */
+        .q-media-inner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .q-media-inner img, 
+        .q-media-inner video {
+            max-width: 100%;
+            max-height: 50vh; /* dynamic height based on screen */
+            object-fit: contain;
+            display: block;
         }
 
         .q-footer-controls {
@@ -1332,28 +1385,133 @@
         }
         /* Blur functionality */
         .blurred-media {
-            filter: blur(20px);
+            filter: blur(15px); 
             cursor: pointer !important;
-            transition: filter 0.4s;
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            background: #f8fafc;
         }
         .blurred-media.revealed {
-            filter: blur(0);
+            filter: blur(0) !important;
+            transform: scale(1.02);
+            border-color: var(--clr-accent) !important;
         }
-        .reveal-text-overlay {
+
+        /* Custom Video Controls Overlay */
+        .video-controls-hint {
             position: absolute;
-            color: #FFF;
-            font-size: 24px;
-            font-weight: 900;
-            pointer-events: none;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px 30px;
-            border-radius: 15px;
-            z-index: 10;
-            transition: opacity 0.3s;
-        }
-        .revealed + .reveal-text-overlay {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
             opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            display: flex;
+            gap: 15px;
+            white-space: nowrap;
         }
+        .q-media-frame:hover .video-controls-hint { opacity: 1; }
+
+        .media-zoom-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(201, 162, 39, 0.9);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.2s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .media-zoom-btn:hover { transform: scale(1.1); background: #FFF; }
+
+        /* Full Support Zoom Overlay */
+        .zoom-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(20px);
+        }
+        .zoom-overlay.show { opacity: 1; pointer-events: auto; }
+
+        .zoom-content-wrapper {
+            position: relative;
+            max-width: 95vw;
+            max-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .zoom-media-item {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+        }
+
+        .zoom-close {
+            position: absolute;
+            top: -60px;
+            right: 0;
+            background: var(--clr-red);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .zoom-ctrl-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .zoom-ctrl-btn:hover { background: var(--clr-accent); color: #000; }
 
 
     </style>
@@ -1520,9 +1678,13 @@
                 <div id="q-state-1" class="q-state-container active">
                     <div class="q-central-body">
                         <div class="q-main-text-display" id="q-text">نص السؤال يظهر هنا...</div>
-                        <div class="q-media-frame" id="q-media-area-1"></div>
+                        <div class="q-media-frame" id="q-media-area-1">
+                            <div class="q-media-inner" id="q-media-inner-1">
+                                <!-- JS Injects Media Here -->
+                            </div>
+                        </div>
                     </div>
-                    <footer class="q-footer-controls">
+                    <footer class="q-footer-controls" style="padding-bottom: 40px;">
                         <div style="display: flex; gap: 15px;">
                             <button class="q-btn-action q-btn-rect-black" id="btn-toggle-barcode" style="display: none;">إظهار الباركود</button>
                             <button class="q-btn-action q-btn-rect-gold" id="btn-show-ans">إظهار الجواب</button>
@@ -1535,9 +1697,13 @@
                     <div class="q-central-body">
                         <div style="font-size: 20px; opacity: 0.6; margin-bottom: -15px;">الإجابة الصحيحة هي:</div>
                         <div class="q-main-text-display" id="q-answer-text" style="color: var(--clr-accent);">...</div>
-                        <div class="q-media-frame" id="q-media-area-2"></div>
+                        <div class="q-media-frame" id="q-media-area-2">
+                            <div class="q-media-inner" id="q-media-inner-2">
+                                <!-- JS Injects Media Here -->
+                            </div>
+                        </div>
                     </div>
-                    <footer class="q-footer-controls">
+                    <footer class="q-footer-controls" style="padding-bottom: 40px;">
                         <button class="q-btn-action q-btn-rect-black" id="btn-ask-who">أي فريق جابها؟</button>
                     </footer>
                 </div>
@@ -1601,15 +1767,27 @@
         </div>
     </div>
 
-    <!-- IMAGE ZOOM OVERLAY -->
+    <!-- ENHANCED MEDIA ZOOM OVERLAY -->
     <div class="zoom-overlay" id="zoom-overlay">
-        <div class="zoom-close">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+        <div class="zoom-content-wrapper">
+            <div class="zoom-close" onclick="closeZoom()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
+            <div id="zoom-media-container" style="display:contents;">
+                <!-- JS Injects Image or Video here -->
+            </div>
+            <div id="zoom-video-controls" class="zoom-controls" style="display: none;">
+                <button class="zoom-ctrl-btn" onclick="seekZoomVideo(-5)">
+                    <span>-5 ثواني</span>
+                </button>
+                <button class="zoom-ctrl-btn" onclick="seekZoomVideo(5)">
+                    <span>+5 ثواني</span>
+                </button>
+            </div>
         </div>
-        <img class="zoom-img" id="zoom-img" src="" alt="Enlarged image">
     </div>
 
     <!-- ربط ملف الأسئلة بقاعدة اللعبة -->
@@ -2097,42 +2275,122 @@
                         }
                     }
 
-                    // Media logic
-                    if (qData.media && qData.media.trim() !== "") {
-                        qMediaElement1.style.display = 'flex';
-                        if (qData.media.trim().startsWith('<')) qMediaElement1.innerHTML = qData.media;
-                        else qMediaElement1.innerHTML = `<img src="${qData.media}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة السؤال">`;
+                    // Function to generate the HTML for a QR image with fallbacks
+                    const getQrHtml = (text) => {
+                        const encoded = encodeURIComponent(text);
+                        const url1 = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encoded}`;
+                        const url2 = `https://quickchart.io/qr?text=${encoded}&size=300`;
+                        return `<img src="${url1}" onerror="this.onerror=null; this.src='${url2}'" alt="QR Code">`;
+                    };
 
-                        const btnToggleBarcode = document.getElementById('btn-toggle-barcode');
-                        const isWalaKelma = qData.questionText && qData.questionText.includes('ولا كلمة');
-                        if (isWalaKelma) {
-                            const mediaChild = qMediaElement1.firstElementChild;
-                            if (mediaChild && btnToggleBarcode) {
-                                mediaChild.classList.add('blurred-media');
-                                btnToggleBarcode.style.display = 'block';
-                                btnToggleBarcode.textContent = mediaChild.classList.contains('revealed') ? 'إخفاء الباركود' : 'إظهار الباركود';
-                                btnToggleBarcode.onclick = function(e) {
-                                    e.stopPropagation();
-                                    mediaChild.classList.toggle('revealed');
-                                    btnToggleBarcode.textContent = mediaChild.classList.contains('revealed') ? 'إخفاء الباركود' : 'إظهار الباركود';
-                                    saveSession();
-                                };
-                            }
-                        } else {
-                            if (btnToggleBarcode) btnToggleBarcode.style.display = 'none';
+                    const isWalaKelma = qData.questionText && qData.questionText.includes('ولا كلمة');
+                    if (isWalaKelma && (!qData.media || qData.media.trim() === "" || !qData.media.includes('<img'))) {
+                        qData.media = getQrHtml(qData.answer || '');
+                    }
+
+                    // Media Rendering Helper
+                    const renderMediaInto = (mediaHtml, container, isWalaKelma = false) => {
+                        container.innerHTML = '';
+                        if (!mediaHtml || mediaHtml.trim() === "") {
+                            container.closest('.q-media-frame').style.display = 'none';
+                            return;
                         }
+
+                        container.closest('.q-media-frame').style.display = 'flex';
+                        
+                        let mediaElement;
+                        if (mediaHtml.trim().startsWith('<')) {
+                            const temp = document.createElement('div');
+                            temp.innerHTML = mediaHtml;
+                            mediaElement = temp.firstElementChild;
+                        } else {
+                            mediaElement = document.createElement('img');
+                            mediaElement.src = mediaHtml;
+                        }
+
+                        if (!mediaElement) return;
+
+                        // Identify type
+                        const isVideo = mediaElement.tagName === 'VIDEO';
+                        
+                        // Apply Styling
+                        mediaElement.style.maxWidth = '100%';
+                        mediaElement.style.maxHeight = '100%';
+                        mediaElement.style.objectFit = 'contain';
+                        mediaElement.classList.add('premium-media-item');
+
+                        if (isVideo) {
+                            mediaElement.controls = true;
+                            mediaElement.setAttribute('playsinline', '');
+                            mediaElement.setAttribute('controlsList', 'nodownload');
+                        }
+
+                        if (isWalaKelma && !isVideo) {
+                            mediaElement.classList.add('blurred-media');
+                        }
+
+                        container.appendChild(mediaElement);
+
+                        // Add Control Hint if Video
+                        if (isVideo) {
+                            const hint = document.createElement('div');
+                            hint.className = 'video-controls-hint';
+                            hint.innerHTML = `
+                                <span>للتقديم/التأخير: اسحب المسار</span>
+                                <span>|</span>
+                                <span>اضغط للتكبير 🔍</span>
+                            `;
+                            container.appendChild(hint);
+                        }
+
+                        // Add Zoom Button
+                        const zoomBtn = document.createElement('div');
+                        zoomBtn.className = 'media-zoom-btn';
+                        zoomBtn.innerHTML = `
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path>
+                            </svg>
+                        `;
+                        zoomBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            openZoom(mediaElement);
+                        };
+                        container.appendChild(zoomBtn);
+
+                        // Click to Reveal for Barcode
+                        if (isWalaKelma && !isVideo) {
+                            mediaElement.onclick = () => {
+                                mediaElement.classList.toggle('revealed');
+                                if (btnToggleBarcode) {
+                                    btnToggleBarcode.textContent = mediaElement.classList.contains('revealed') ? 'إخفاء الباركود' : 'إظهار الباركود';
+                                }
+                                saveSession();
+                            };
+                        }
+                    };
+
+                    const qMediaInner1 = document.getElementById('q-media-inner-1');
+                    const qMediaInner2 = document.getElementById('q-media-inner-2');
+
+                    // Process Question Media
+                    renderMediaInto(qData.media, qMediaInner1, isWalaKelma);
+
+                    // Handle Barcode Toggle Button visibility
+                    if (isWalaKelma && qMediaInner1.querySelector('img')) {
+                        const mediaImg = qMediaInner1.querySelector('img');
+                        btnToggleBarcode.style.display = 'block';
+                        btnToggleBarcode.onclick = function(e) {
+                            e.stopPropagation();
+                            mediaImg.classList.toggle('revealed');
+                            btnToggleBarcode.textContent = mediaImg.classList.contains('revealed') ? 'إخفاء الباركود' : 'إظهار الباركود';
+                            saveSession();
+                        };
                     } else {
-                        qMediaElement1.style.display = 'none';
+                        btnToggleBarcode.style.display = 'none';
                     }
 
-                    // Answer Media
-                    if (qData.answerMedia && qData.answerMedia.trim() !== "") {
-                        qMediaElement2.style.display = 'flex';
-                        if (qData.answerMedia.trim().startsWith('<')) qMediaElement2.innerHTML = qData.answerMedia;
-                        else qMediaElement2.innerHTML = `<img src="${qData.answerMedia}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;" alt="صورة الجواب">`;
-                    } else {
-                        qMediaElement2.style.display = 'none';
-                    }
+                    // Process Answer Media
+                    renderMediaInto(qData.answerMedia, qMediaInner2);
                 }
 
                 // Badge display
@@ -2440,34 +2698,74 @@
                 else showToast("✅ تم إيقاف وضع التعديل.");
             });
 
-            // --- Image Zoom Logic ---
+            // --- Enhanced Media Zoom Logic ---
             const zoomOverlay = document.getElementById('zoom-overlay');
-            const zoomImg = document.getElementById('zoom-img');
+            const zoomContainer = document.getElementById('zoom-media-container');
 
-            function openZoom(src) {
-                zoomImg.src = src;
+            function openZoom(originalMedia) {
+                if (!zoomOverlay || !zoomContainer) return;
+
+                zoomContainer.innerHTML = '';
+                const clone = originalMedia.cloneNode(true);
+                
+                // Styling the clone
+                clone.className = 'zoom-media-item';
+                clone.style.width = 'auto';
+                clone.style.height = 'auto';
+                clone.style.maxWidth = '95vw';
+                clone.style.maxHeight = '90vh';
+                
+                const vidControls = document.getElementById('zoom-video-controls');
+                
+                // Special handling for video
+                if (clone.tagName === 'VIDEO') {
+                    clone.controls = true;
+                    clone.autoplay = true;
+                    clone.currentTime = originalMedia.currentTime;
+                    // Sync original if paused
+                    if (!originalMedia.paused) originalMedia.pause();
+                    if (vidControls) vidControls.style.display = 'flex';
+                } else {
+                    if (vidControls) vidControls.style.display = 'none';
+                }
+
+                zoomContainer.appendChild(clone);
                 zoomOverlay.classList.add('show');
             }
 
-            function closeZoom() {
-                zoomOverlay.classList.remove('show');
-            }
+            window.seekZoomVideo = (amount) => {
+                const video = zoomContainer.querySelector('video');
+                if (video) video.currentTime += amount;
+            };
+
+            window.closeZoom = function() {
+                if (zoomOverlay) zoomOverlay.classList.remove('show');
+                // Stop any playing video in zoom
+                const video = zoomContainer.querySelector('video');
+                if (video) video.pause();
+            };
 
             if (zoomOverlay) {
-                zoomOverlay.addEventListener('click', closeZoom);
-            }
-
-            if (qMediaElement1) {
-                qMediaElement1.addEventListener('click', (e) => {
-                    if (e.target.tagName === 'IMG') openZoom(e.target.src);
+                zoomOverlay.addEventListener('click', (e) => {
+                    if (e.target === zoomOverlay || e.target.classList.contains('zoom-content-wrapper')) {
+                        closeZoom();
+                    }
                 });
             }
 
-            if (qMediaElement2) {
-                qMediaElement2.addEventListener('click', (e) => {
-                    if (e.target.tagName === 'IMG') openZoom(e.target.src);
-                });
-            }
+            // Also allow clicking media frames directly to zoom (if not interaction like play)
+            [qMediaInner1, qMediaInner2].forEach(inner => {
+                if (inner) {
+                    inner.addEventListener('click', (e) => {
+                        const target = e.target;
+                        if ((target.tagName === 'IMG' || target.tagName === 'VIDEO') && !target.classList.contains('blurred-media')) {
+                            // Only zoom if not video controls
+                            if (target.tagName === 'VIDEO' && e.offsetY > target.clientHeight - 50) return; 
+                            openZoom(target);
+                        }
+                    });
+                }
+            });
 
 
             // --- Sync Across Tabs ---

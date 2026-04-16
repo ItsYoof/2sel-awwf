@@ -371,9 +371,235 @@
             z-index: 5000;
         }
 
+        /* Selection & Bulk Actions */
+        .selection-bar {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150px);
+            background: #FFFFFF;
+            padding: 20px 40px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            z-index: 6000;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--text-main);
+            border: 2px solid var(--primary);
+        }
+        .selection-bar.active { transform: translateX(-50%) translateY(0); }
+        
+        .selection-count {
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--primary);
+            padding-left: 20px;
+            border-left: 2px solid #E2E8F0;
+        }
+
+        .checkbox-wrapper {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            z-index: 10;
+        }
+        .q-checkbox {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            border-radius: 6px;
+        }
+
+        #search-results-info {
+            text-align: center;
+            color: white;
+            margin-top: -20px;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            display: none;
+            padding: 5px 20px;
+            border-radius: 99px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Preview Simulation Styles */
+        .preview-body {
+            background: radial-gradient(circle at center, #0A5C4A 0%, #06261F 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            padding: 40px;
+            gap: 30px;
+            position: relative;
+        }
+        .preview-q-text {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.3;
+            max-width: 800px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            color: white;
+        }
+        .preview-media {
+            max-width: 100%;
+            max-height: 350px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 4px solid rgba(255,255,255,0.1);
+        }
+        .preview-ans-box {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 25px;
+            border: 2px solid var(--accent);
+            margin-top: 20px;
+            display: none;
+            width: 100%;
+            max-width: 600px;
+        }
+        .preview-ans-box.show { display: block; animation: zoomIn 0.4s ease; }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .preview-nav {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 40px;
+        }
+
+        /* Blur functionality */
+        .blurred-media {
+            filter: blur(20px);
+            cursor: pointer !important;
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            background: #f8fafc;
+        }
+        .blurred-media.revealed {
+            filter: blur(0) !important;
+            transform: scale(1.02);
+            border-color: var(--secondary) !important;
+        }
+
+        /* Responsive Preview Media */
+        .preview-media-frame {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 25px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            margin: 20px 0;
+        }
+
+        .preview-media-inner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .preview-media-inner img, 
+        .preview-media-inner video {
+            max-width: 100%;
+            max-height: 40vh;
+            object-fit: contain;
+        }
+
+        .media-zoom-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background: var(--secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Admin Zoom Overlay */
+        .zoom-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 30000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(20px);
+        }
+        .zoom-overlay.show { display: flex; }
+        .zoom-content-wrapper { position: relative; max-width: 95vw; max-height: 90vh; }
+        .zoom-media-item { max-width: 100%; max-height: 90vh; object-fit: contain; box-shadow: 0 50px 100px rgba(0,0,0,0.8); }
+        .zoom-close {
+            position: absolute;
+            top: -60px;
+            right: 0;
+            background: #EF4444;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .zoom-ctrl-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 800;
+        }
+        .zoom-ctrl-btn:hover { background: var(--secondary); color: #000; }
+
         @media (max-width: 768px) {
             .admin-header { flex-direction: column; text-align: center; gap: 20px; }
             .actions-group { flex-wrap: wrap; justify-content: center; }
+            .selection-bar { width: 90%; flex-direction: column; padding: 15px; text-align: center; bottom: 10px; }
+            .selection-count { border: none; padding: 0; margin-bottom: 10px; }
         }
 
     </style>
@@ -408,10 +634,16 @@
 
         <div class="search-wrapper">
             <input type="text" id="searchInput" onkeyup="filterQuestions()" placeholder="ابحث عن سؤال أو كلمة معينة...">
+            <div style="text-align: center;">
+                <span id="search-results-info"></span>
+            </div>
         </div>
 
         <div class="controls-bar">
-            <div class="stats-badge" id="stats">0 سؤال</div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <input type="checkbox" id="select-all" class="q-checkbox" onclick="toggleSelectAll()">
+                <div class="stats-badge" id="stats">0 سؤال</div>
+            </div>
             <div class="actions-group">
                 <button onclick="openModal()" class="btn btn-primary">إضافة سؤال +</button>
                 <button onclick="downloadQuestions()" class="btn btn-outline" style="border-color: var(--secondary); color: var(--secondary)">تصدير (Download)</button>
@@ -458,9 +690,59 @@
         </div>
     </div>
 
-    <button class="fab" onclick="openModal()">+</button>
+    <div class="selection-bar" id="selection-bar">
+        <div class="selection-count" id="selection-count">0 عناصر مختارة</div>
+        <button onclick="bulkPreview()" class="btn btn-primary">معاينة جماعية 👁️</button>
+        <button onclick="bulkDelete()" class="btn btn-danger">حذف جماعي 🗑️</button>
+        <button onclick="clearSelection()" class="btn btn-outline">إلغاء</button>
+    </div>
+
+    <!-- Preview Modal (Simulation) -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content" style="width: 1000px; height: 90vh; padding: 0; overflow: hidden; position: relative; background: #06261F;">
+            <button onclick="closePreview()" class="btn btn-danger" style="position: absolute; top: 20px; right: 20px; z-index: 100; border-radius: 50%; width: 50px; height: 50px; padding: 0; justify-content: center;">✕</button>
+            <div class="preview-body">
+                <div class="q-top-brand">محاكاة صفحة اللعب</div>
+                <div id="preview-q-text" class="preview-q-text">السؤال سيظهر هنا</div>
+                
+                <div class="preview-media-frame">
+                    <div id="preview-media-container" class="preview-media-inner"></div>
+                </div>
+                
+                <div style="display: flex; gap: 15px;">
+                    <button id="show-barcode-btn" style="display: none;" class="btn btn-outline" style="background: rgba(0,0,0,0.5); color: white; border-color: white;">إظهار الباركود</button>
+                    <button id="show-answer-btn" onclick="togglePreviewAnswer()" class="btn btn-primary" style="padding: 20px 60px; font-size: 24px; border-radius: 20px;">كشف الإجابة</button>
+                </div>
+                
+                <div id="preview-ans-box" class="preview-ans-box">
+                    <span style="display: block; color: var(--accent); font-weight: 800; margin-bottom: 10px;">الإجابة الصحيحة:</span>
+                    <div id="preview-ans-text" style="font-size: 32px; font-weight: 900;">الجواب</div>
+                    <div class="preview-media-frame" style="margin-top: 15px; border-color: var(--accent);">
+                        <div id="preview-ans-media-container" class="preview-media-inner"></div>
+                    </div>
+                </div>
+
+                <div class="preview-nav" id="preview-nav">
+                    <button id="prev-btn" onclick="navigatePreview(-1)" class="btn btn-outline" style="background: rgba(255,255,255,0.1); color: white; border: none; padding: 15px 40px;">السابق</button>
+                    <span id="preview-index" style="align-self: center; font-weight: 800;">1 / 1</span>
+                    <button id="next-btn" onclick="navigatePreview(1)" class="btn btn-outline" style="background: rgba(255,255,255,0.1); color: white; border: none; padding: 15px 40px;">التالي</button>
+                </div>
+            </div>
         </div>
     </div>
+    <!-- ZOOM MODAL -->
+    <div class="zoom-overlay" id="zoom-overlay">
+        <div class="zoom-content-wrapper">
+            <div class="zoom-close" onclick="closeZoom()">✕</div>
+            <div id="zoom-media-container" style="display:contents;"></div>
+            <div id="zoom-video-controls" class="zoom-controls" style="display: none;">
+                <button class="zoom-ctrl-btn" onclick="seekZoomVideo(-5)">-5s</button>
+                <button class="zoom-ctrl-btn" onclick="seekZoomVideo(5)">+5s</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="fab" onclick="openModal()">+</button>
 
     <script src="questions.js"></script>
     <script>
@@ -483,7 +765,7 @@
 
         // Protection check
         function checkAccess() {
-            if (document.getElementById('admin-pass').value === '1') {
+            if (document.getElementById('admin-pass').value === '512') {
                 document.getElementById('login-overlay').style.display = 'none';
                 initDB();
             } else {
@@ -529,6 +811,10 @@
             } catch(e) {}
         }
 
+        let selectedIndices = new Set();
+        let currentPreviewIndices = [];
+        let previewCursor = 0;
+
         function renderQuestions() {
             const container = document.getElementById('questions-container');
             const total = localDB.length;
@@ -540,6 +826,9 @@
                 const card = document.createElement('div');
                 card.className = 'question-card';
                 card.innerHTML = `
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" class="q-checkbox item-checkbox" data-index="${i}" ${selectedIndices.has(i) ? 'checked' : ''} onclick="toggleItemSelect(${i})">
+                    </div>
                     <div class="card-header">
                         <span class="q-number">سؤال رقم #${i + 1}</span>
                     </div>
@@ -561,29 +850,252 @@
 
                     <div class="card-footer">
                         <button onclick="editQuestion(${i})" class="btn btn-outline" style="flex: 1; justify-content: center; background: #F8FAFC;">تعديل</button>
+                        <button onclick="openPreviewSingle(${i})" class="btn btn-outline" style="flex: 1; justify-content: center; background: #F8FAFC; border-color: var(--primary); color: var(--primary);">معاينة 👁️</button>
                         <button onclick="deleteQuestion(${i})" class="btn btn-danger" style="flex: 1; justify-content: center;">حذف</button>
                     </div>
                 `;
                 container.appendChild(card);
             });
+            updateSelectionUI();
         }
 
         function extractUrl(str) {
-            if (str.includes('<img')) {
-                const match = str.match(/src="([^"]+)"/);
+            if (!str) return '';
+            const trimmed = str.trim();
+            if (trimmed.startsWith('<')) {
+                const match = trimmed.match(/src="([^"]+)"/i);
                 return match ? match[1] : '';
             }
-            return str;
+            return trimmed;
         }
 
         function filterQuestions() {
             const term = document.getElementById('searchInput').value.toLowerCase();
             const cards = document.querySelectorAll('.question-card');
+            let count = 0;
             cards.forEach((card, i) => {
                 const q = localDB[i];
                 const content = (q.questionText + ' ' + (q.answer || '')).toLowerCase();
-                card.style.display = content.includes(term) ? 'block' : 'none';
+                const match = content.includes(term);
+                card.style.display = match ? 'block' : 'none';
+                if (match) count++;
             });
+
+            const info = document.getElementById('search-results-info');
+            if (term.length > 0) {
+                info.innerText = `نتائج البحث: تم العثور على ${count} سؤال`;
+                info.style.display = 'inline-block';
+            } else {
+                info.style.display = 'none';
+            }
+        }
+
+        // Selection Logic
+        function toggleItemSelect(idx) {
+            if (selectedIndices.has(idx)) selectedIndices.delete(idx);
+            else selectedIndices.add(idx);
+            updateSelectionUI();
+        }
+
+        function toggleSelectAll() {
+            const master = document.getElementById('select-all');
+            if (master.checked) {
+                localDB.forEach((_, i) => selectedIndices.add(i));
+            } else {
+                selectedIndices.clear();
+            }
+            renderQuestions();
+        }
+
+        function updateSelectionUI() {
+            const bar = document.getElementById('selection-bar');
+            const countLabel = document.getElementById('selection-count');
+            const count = selectedIndices.size;
+            
+            if (count > 0) {
+                bar.classList.add('active');
+                countLabel.innerText = `${count} عناصر مختارة`;
+            } else {
+                bar.classList.remove('active');
+            }
+            
+            document.getElementById('select-all').checked = (count === localDB.length && count > 0);
+        }
+
+        function clearSelection() {
+            selectedIndices.clear();
+            renderQuestions();
+        }
+
+        function bulkDelete() {
+            if (selectedIndices.size === 0) return;
+            if (confirm(`هل أنت متأكد من حذف ${selectedIndices.size} سؤال؟`)) {
+                // Remove from highest index to lowest to avoid index shifting
+                const sorted = Array.from(selectedIndices).sort((a, b) => b - a);
+                sorted.forEach(idx => {
+                    localDB.splice(idx, 1);
+                });
+                selectedIndices.clear();
+                saveToLocal();
+                renderQuestions();
+            }
+        }
+
+        // Preview Logic
+        function openPreviewSingle(i) {
+            currentPreviewIndices = [i];
+            previewCursor = 0;
+            showPreviewModal();
+        }
+
+        function bulkPreview() {
+            if (selectedIndices.size === 0) return;
+            currentPreviewIndices = Array.from(selectedIndices).sort((a, b) => a - b);
+            previewCursor = 0;
+            showPreviewModal();
+        }
+
+        function showPreviewModal() {
+            document.getElementById('previewModal').style.display = 'flex';
+            updatePreviewContent();
+        }
+
+        function closePreview() {
+            document.getElementById('previewModal').style.display = 'none';
+        }
+
+        function updatePreviewContent() {
+            const idx = currentPreviewIndices[previewCursor];
+            const q = {...localDB[idx]};
+            
+            const isWalaKelma = q.questionText && q.questionText.includes('ولا كلمة');
+            const showBarcodeBtn = document.getElementById('show-barcode-btn');
+            
+            const getQrHtml = (text) => {
+                const encoded = encodeURIComponent(text);
+                const url1 = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encoded}`;
+                const url2 = `https://quickchart.io/qr?text=${encoded}&size=300`;
+                return `<img src="${url1}" onerror="this.onerror=null; this.src='${url2}'" alt="QR Code">`;
+            };
+
+            if (isWalaKelma && (!q.media || q.media.trim() === "" || !q.media.includes('<img'))) {
+                q.media = getQrHtml(q.answer || '');
+            }
+
+            document.getElementById('preview-q-text').innerText = q.questionText;
+            document.getElementById('preview-ans-text').innerText = q.answer || 'لا توجد إجابة';
+            
+            // Reusable Render Function
+            const renderMedia = (mediaHtml, container, isWala) => {
+                container.innerHTML = '';
+                if (!mediaHtml || mediaHtml.trim() === "") {
+                    container.closest('.preview-media-frame').style.display = 'none';
+                    return;
+                }
+                container.closest('.preview-media-frame').style.display = 'flex';
+
+                let element;
+                if (mediaHtml.trim().startsWith('<')) {
+                    const temp = document.createElement('div');
+                    temp.innerHTML = mediaHtml;
+                    element = temp.firstElementChild;
+                } else {
+                    element = document.createElement('img');
+                    element.src = mediaHtml;
+                }
+
+                if (!element) return;
+                
+                element.style.maxWidth = '100%';
+                element.style.maxHeight = '100%';
+                if (element.tagName === 'VIDEO') {
+                    element.controls = true;
+                }
+                if (isWala && element.tagName === 'IMG') {
+                    element.classList.add('blurred-media');
+                }
+                container.appendChild(element);
+
+                // Add Zoom Btn
+                const zb = document.createElement('div');
+                zb.className = 'media-zoom-btn';
+                zb.innerHTML = '🔍';
+                zb.onclick = () => openZoom(element);
+                container.appendChild(zb);
+
+                return element;
+            };
+
+            const media1 = renderMedia(q.media, document.getElementById('preview-media-container'), isWalaKelma);
+            const media2 = renderMedia(q.answerMedia, document.getElementById('preview-ans-media-container'), false);
+
+            if (isWalaKelma && media1 && media1.tagName === 'IMG') {
+                showBarcodeBtn.style.display = 'block';
+                showBarcodeBtn.innerText = 'إظهار الباركود';
+                showBarcodeBtn.onclick = () => {
+                    media1.classList.toggle('revealed');
+                    showBarcodeBtn.innerText = media1.classList.contains('revealed') ? 'إخفاء الباركود' : 'إظهار الباركود';
+                };
+            } else {
+                showBarcodeBtn.style.display = 'none';
+            }
+
+            // Reset Answer display
+            document.getElementById('preview-ans-box').classList.remove('show');
+            document.getElementById('show-answer-btn').style.display = 'block';
+
+            // Nav
+            document.getElementById('preview-index').innerText = `${previewCursor + 1} / ${currentPreviewIndices.length}`;
+            document.getElementById('preview-nav').style.display = currentPreviewIndices.length > 1 ? 'flex' : 'none';
+        }
+
+        // --- Zoom Script for Admin ---
+        const zoomOverlay = document.getElementById('zoom-overlay');
+        const zoomContainer = document.getElementById('zoom-media-container');
+
+        function openZoom(el) {
+            zoomContainer.innerHTML = '';
+            const clone = el.cloneNode(true);
+            clone.className = 'zoom-media-item';
+            const vidControls = document.getElementById('zoom-video-controls');
+            if (clone.tagName === 'VIDEO') {
+                clone.controls = true;
+                clone.currentTime = el.currentTime;
+                if (vidControls) vidControls.style.display = 'flex';
+            } else {
+                if (vidControls) vidControls.style.display = 'none';
+            }
+            zoomContainer.appendChild(clone);
+            zoomOverlay.classList.add('show');
+        }
+
+        window.seekZoomVideo = (amt) => {
+            const v = zoomContainer.querySelector('video');
+            if(v) v.currentTime += amt;
+        };
+
+        function closeZoom() {
+            zoomOverlay.classList.remove('show');
+            const v = zoomContainer.querySelector('video');
+            if(v) v.pause();
+        }
+
+        if (zoomOverlay) {
+            zoomOverlay.addEventListener('click', (e) => {
+                if (e.target === zoomOverlay) closeZoom();
+            });
+        }
+
+        function togglePreviewAnswer() {
+            document.getElementById('preview-ans-box').classList.add('show');
+            document.getElementById('show-answer-btn').style.display = 'none';
+        }
+
+        function navigatePreview(dir) {
+            previewCursor += dir;
+            if (previewCursor < 0) previewCursor = currentPreviewIndices.length - 1;
+            if (previewCursor >= currentPreviewIndices.length) previewCursor = 0;
+            updatePreviewContent();
         }
 
         function openModal(index = -1) {

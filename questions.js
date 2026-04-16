@@ -2,7 +2,7 @@
   Question Database - AWF Game
   Version: 2026-04-16
 */
-const questionsDB_Meta = { version: "2026.04.16.03", timestamp: Date.now() };
+const questionsDB_Meta = { version: "2026.04.16.05", timestamp: Date.now() };
 const questionsDB = [
     {
         "questionText": "ما هو المعدن السائل الوحيد في درجة الحرارة العادية؟",
@@ -606,109 +606,185 @@ const questionsDB = [
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%BA%D9%86%D9%8A%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AD%D9%85%D8%A7%D9%85\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يغني في الحمام\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يغني في الحمام"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%AF%D9%83%D8%AA%D9%88%D8%B1%20%D8%A3%D8%B3%D9%86%D8%A7%D9%86%20%D9%85%D8%AA%D9%88%D8%AA%D8%B1\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=دكتور أسنان متوتر\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "دكتور أسنان متوتر"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%B5%D9%8A%D8%AF%20%D8%A7%D9%84%D8%B3%D9%85%D9%83%20%D8%A8%D8%A7%D9%84%D8%B3%D9%86%D8%A7%D8%B1%D8%A9\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=صيد السمك بالسنارة\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "صيد السمك بالسنارة"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%AD%D8%A7%D9%88%D9%84%20%D9%8A%D9%81%D8%AA%D8%AD%20%D9%87%D8%AF%D9%8A%D8%A9\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يحاول يفتح هدية\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يحاول يفتح هدية"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%B1%D9%88%D8%A8%D9%88%D8%AA%20%D8%AE%D8%B1%D8%A8%D8%A7%D9%86\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=روبوت خربان\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "روبوت خربان"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%B7%D8%A8%D8%A7%D8%AE%20%D9%85%D8%A7%D9%87%D8%B1\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=طباخ ماهر\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "طباخ ماهر"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%BA%D8%B1%D9%8A%D9%82%20%D9%8A%D8%AD%D8%A7%D9%88%D9%84%20%D8%A7%D9%84%D8%B3%D8%A8%D8%A7%D8%AD%D8%A9\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=غريق يحاول السباحة\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "غريق يحاول السباحة"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%AD%D8%B1%D8%A7%D9%85%D9%8A%20%D8%A8%D9%86%D9%83%20%D9%8A%D8%AA%D8%B3%D9%84%D9%84\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=حرامي بنك يتسلل\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "حرامي بنك يتسلل"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%B7%D9%8A%D8%B1%20%D8%B7%D9%8A%D8%A7%D8%B1%D8%A9%20%D9%88%D8%B1%D9%82%D9%8A%D8%A9\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يطير طيارة ورقية\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يطير طيارة ورقية"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%B4%D8%A7%D9%87%D8%AF%20%D9%81%D9%8A%D9%84%D9%85%20%D8%B1%D8%B9%D8%A8\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يشاهد فيلم رعب\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يشاهد فيلم رعب"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%B4%D8%B1%D8%A8%20%D8%B4%D8%A7%D9%8A%20%D8%AD%D8%A7%D8%B1%20%D8%AC%D8%AF%D8%A7%D9%8B\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يشرب شاي حار جداً\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يشرب شاي حار جداً"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%B3%D9%88%D9%82%20%D8%B3%D9%8A%D8%A7%D8%B1%D8%A9%20%D9%81%D9%8A%20%D8%B2%D8%AD%D9%85%D8%A9\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يسوق سيارة في زحمة\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يسوق سيارة في زحمة"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%B9%D8%B2%D9%81%20%D8%AC%D9%8A%D8%AA%D8%A7%D8%B1%20%D9%85%D9%86%D9%81%D8%B9%D9%84\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يعزف جيتار منفعل\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يعزف جيتار منفعل"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%B2%D9%88%D9%85%D8%A8%D9%8A%20%D9%8A%D8%B9%D8%B7%D8%B3\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=زومبي يعطس\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "زومبي يعطس"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%A8%D9%83%D9%8A%20%D9%88%D9%87%D9%88%20%D9%8A%D9%82%D8%B7%D8%B9%20%D8%A7%D9%84%D8%A8%D8%B5%D9%84\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يبكي وهو يقطع البصل\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يبكي وهو يقطع البصل"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%82%D8%B1%D8%AF%20%D9%85%D8%B3%D8%AA%D8%AD%D9%8A\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=قرد مستحي\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "قرد مستحي"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D9%85%D8%AB%D9%84%20%D8%A5%D9%86%D9%87%20%D9%86%D8%A7%D9%8A%D9%85%20%D9%84%D9%83%D9%86%20%D8%B5%D8%A7%D8%AD%D9%8A\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يمثل إنه نايم لكن صاحي\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يمثل إنه نايم لكن صاحي"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%B3%D8%A8%D8%A7%D8%AD%D8%A9%20%D9%84%D8%A3%D9%88%D9%84%20%D9%85%D8%B1%D8%A9\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يتعلم السباحة لأول مرة\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "يتعلم السباحة لأول مرة"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=لاعب كرة سلة يسدد\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "لاعب كرة سلة يسدد"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=سبايدرمان يتسلق\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "سبايدرمان يتسلق"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يحلق ذقنه بموس\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "يحلق ذقنه بموس"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يلعب بلايستيشن ويخسر\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "يلعب بلايستيشن ويخسر"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يطرد ذبابة مزعجة\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "يطرد ذبابة مزعجة"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يقرأ كتاب مرعب\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "يقرأ كتاب مرعب"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=الجوكر يضحك\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "الجوكر يضحك"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=سوبرمان يطير\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "سوبرمان يطير"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=مارد المصباح السحري\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "مارد المصباح السحري"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يدور نظارته وهي فوق راسه\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "يدور نظارته وهي فوق راسه"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يتلمس طريقه في الظلام\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "يتلمس طريقه في الظلام"
+    },
+    {
+        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يلتقط صورة سيلفي\" alt=\"شرح الباركود\" />",
+        "answerMedia": "",
+        "answer": "يلتقط صورة سيلفي"
+    },
+om/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%B3%D8%A8%D8%A7%D8%AD%D8%A9%20%D9%84%D8%A3%D9%88%D9%84%20%D9%85%D8%B1%D8%A9\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يتعلم السباحة لأول مرة"
     },
@@ -2841,5 +2917,38 @@ const questionsDB = [
         "media": "",
         "answerMedia": "",
         "answer": "يبتلع الأكل أو الشيء بسرعة دون مضغ"
+    },
+    {
+        "questionText": "تمثيل: ولا كلمة (باركود)",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=بخور\" alt=\"شرح الباركود\">",
+        "answerMedia": "",
+        "answer": "بخور"
+    },
+    {
+        "questionText": "تمثيل: ولا كلمة (باركود)",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=مشلح\" alt=\"شرح الباركود\">",
+        "answerMedia": "",
+        "answer": "مشلح"
+    },
+    {
+        "questionText": "تمثيل: ولا كلمة (باركود)",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=دلة\" alt=\"شرح الباركود\">",
+        "answerMedia": "",
+        "answer": "دلة"
+    },
+    {
+        "questionText": "تمثيل: ولا كلمة (باركود)",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=صقر\" alt=\"شرح الباركود\">",
+        "answerMedia": "",
+        "answer": "صقر"
+    },
+    {
+        "questionText": "تمثيل: ولا كلمة (باركود)",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=خيمة\" alt=\"شرح الباركود\">",
+        "answerMedia": "",
+        "answer": "خيمة"
     }
 ];
+
+
+
