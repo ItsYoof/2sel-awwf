@@ -1,8 +1,3 @@
-/* 
-  Question Database - AWF Game
-  Version: 2026-04-16
-*/
-const questionsDB_Meta = { version: "2026.04.16.05", timestamp: Date.now() };
 const questionsDB = [
     {
         "questionText": "ما هو المعدن السائل الوحيد في درجة الحرارة العادية؟",
@@ -606,185 +601,109 @@ const questionsDB = [
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يغني في الحمام\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%BA%D9%86%D9%8A%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AD%D9%85%D8%A7%D9%85\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يغني في الحمام"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=دكتور أسنان متوتر\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%AF%D9%83%D8%AA%D9%88%D8%B1%20%D8%A3%D8%B3%D9%86%D8%A7%D9%86%20%D9%85%D8%AA%D9%88%D8%AA%D8%B1\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "دكتور أسنان متوتر"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=صيد السمك بالسنارة\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%B5%D9%8A%D8%AF%20%D8%A7%D9%84%D8%B3%D9%85%D9%83%20%D8%A8%D8%A7%D9%84%D8%B3%D9%86%D8%A7%D8%B1%D8%A9\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "صيد السمك بالسنارة"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يحاول يفتح هدية\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%AD%D8%A7%D9%88%D9%84%20%D9%8A%D9%81%D8%AA%D8%AD%20%D9%87%D8%AF%D9%8A%D8%A9\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يحاول يفتح هدية"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=روبوت خربان\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%B1%D9%88%D8%A8%D9%88%D8%AA%20%D8%AE%D8%B1%D8%A8%D8%A7%D9%86\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "روبوت خربان"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=طباخ ماهر\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%B7%D8%A8%D8%A7%D8%AE%20%D9%85%D8%A7%D9%87%D8%B1\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "طباخ ماهر"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=غريق يحاول السباحة\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%BA%D8%B1%D9%8A%D9%82%20%D9%8A%D8%AD%D8%A7%D9%88%D9%84%20%D8%A7%D9%84%D8%B3%D8%A8%D8%A7%D8%AD%D8%A9\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "غريق يحاول السباحة"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=حرامي بنك يتسلل\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%AD%D8%B1%D8%A7%D9%85%D9%8A%20%D8%A8%D9%86%D9%83%20%D9%8A%D8%AA%D8%B3%D9%84%D9%84\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "حرامي بنك يتسلل"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يطير طيارة ورقية\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%B7%D9%8A%D8%B1%20%D8%B7%D9%8A%D8%A7%D8%B1%D8%A9%20%D9%88%D8%B1%D9%82%D9%8A%D8%A9\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يطير طيارة ورقية"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يشاهد فيلم رعب\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%B4%D8%A7%D9%87%D8%AF%20%D9%81%D9%8A%D9%84%D9%85%20%D8%B1%D8%B9%D8%A8\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يشاهد فيلم رعب"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يشرب شاي حار جداً\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%B4%D8%B1%D8%A8%20%D8%B4%D8%A7%D9%8A%20%D8%AD%D8%A7%D8%B1%20%D8%AC%D8%AF%D8%A7%D9%8B\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يشرب شاي حار جداً"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يسوق سيارة في زحمة\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%B3%D9%88%D9%82%20%D8%B3%D9%8A%D8%A7%D8%B1%D8%A9%20%D9%81%D9%8A%20%D8%B2%D8%AD%D9%85%D8%A9\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يسوق سيارة في زحمة"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يعزف جيتار منفعل\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%B9%D8%B2%D9%81%20%D8%AC%D9%8A%D8%AA%D8%A7%D8%B1%20%D9%85%D9%86%D9%81%D8%B9%D9%84\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يعزف جيتار منفعل"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=زومبي يعطس\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D8%B2%D9%88%D9%85%D8%A8%D9%8A%20%D9%8A%D8%B9%D8%B7%D8%B3\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "زومبي يعطس"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يبكي وهو يقطع البصل\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%A8%D9%83%D9%8A%20%D9%88%D9%87%D9%88%20%D9%8A%D9%82%D8%B7%D8%B9%20%D8%A7%D9%84%D8%A8%D8%B5%D9%84\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يبكي وهو يقطع البصل"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=قرد مستحي\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%82%D8%B1%D8%AF%20%D9%85%D8%B3%D8%AA%D8%AD%D9%8A\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "قرد مستحي"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يمثل إنه نايم لكن صاحي\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D9%85%D8%AB%D9%84%20%D8%A5%D9%86%D9%87%20%D9%86%D8%A7%D9%8A%D9%85%20%D9%84%D9%83%D9%86%20%D8%B5%D8%A7%D8%AD%D9%8A\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يمثل إنه نايم لكن صاحي"
     },
     {
         "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يتعلم السباحة لأول مرة\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "يتعلم السباحة لأول مرة"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=لاعب كرة سلة يسدد\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "لاعب كرة سلة يسدد"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=سبايدرمان يتسلق\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "سبايدرمان يتسلق"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يحلق ذقنه بموس\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "يحلق ذقنه بموس"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يلعب بلايستيشن ويخسر\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "يلعب بلايستيشن ويخسر"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يطرد ذبابة مزعجة\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "يطرد ذبابة مزعجة"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يقرأ كتاب مرعب\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "يقرأ كتاب مرعب"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=الجوكر يضحك\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "الجوكر يضحك"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=سوبرمان يطير\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "سوبرمان يطير"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=مارد المصباح السحري\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "مارد المصباح السحري"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يدور نظارته وهي فوق راسه\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "يدور نظارته وهي فوق راسه"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يتلمس طريقه في الظلام\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "يتلمس طريقه في الظلام"
-    },
-    {
-        "questionText": "ولا كلمة (امسح الباركود واشرح للخصم في دقيقة بدون كلام):",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=يلتقط صورة سيلفي\" alt=\"شرح الباركود\" />",
-        "answerMedia": "",
-        "answer": "يلتقط صورة سيلفي"
-    },
-om/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%B3%D8%A8%D8%A7%D8%AD%D8%A9%20%D9%84%D8%A3%D9%88%D9%84%20%D9%85%D8%B1%D8%A9\" alt=\"شرح الباركود\" />",
+        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%B3%D8%A8%D8%A7%D8%AD%D8%A9%20%D9%84%D8%A3%D9%88%D9%84%20%D9%85%D8%B1%D8%A9\" alt=\"شرح الباركود\" />",
         "answerMedia": "",
         "answer": "يتعلم السباحة لأول مرة"
     },
@@ -2919,36 +2838,576 @@ om/v1/create-qr-code/?size=250x250&data=%D9%8A%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%
         "answer": "يبتلع الأكل أو الشيء بسرعة دون مضغ"
     },
     {
-        "questionText": "تمثيل: ولا كلمة (باركود)",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=بخور\" alt=\"شرح الباركود\">",
+        "questionText": "اين اقيمت كأس العالم الأولى عام 1930 م",
+        "media": "",
         "answerMedia": "",
-        "answer": "بخور"
+        "answer": "الاوروغواي "
     },
     {
-        "questionText": "تمثيل: ولا كلمة (باركود)",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=مشلح\" alt=\"شرح الباركود\">",
+        "questionText": "من هو المنتخب الفائز بكأس العالم عام 1998م",
+        "media": "",
         "answerMedia": "",
-        "answer": "مشلح"
+        "answer": "فرنسا"
     },
     {
-        "questionText": "تمثيل: ولا كلمة (باركود)",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=دلة\" alt=\"شرح الباركود\">",
+        "questionText": "كم دولة تطل على الخليج العربي ?",
+        "media": "",
         "answerMedia": "",
-        "answer": "دلة"
+        "answer": "8 دول"
     },
     {
-        "questionText": "تمثيل: ولا كلمة (باركود)",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=صقر\" alt=\"شرح الباركود\">",
+        "questionText": "ما هي السورة القرآنية التي تسمى ب (فسطاط القرآن)؟",
+        "media": "",
         "answerMedia": "",
-        "answer": "صقر"
+        "answer": "سورة البقرة"
     },
     {
-        "questionText": "تمثيل: ولا كلمة (باركود)",
-        "media": "<img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=خيمة\" alt=\"شرح الباركود\">",
+        "questionText": "من هو الإمام الأول من الأئمة الاثنا عشر؟",
+        "media": "",
         "answerMedia": "",
-        "answer": "خيمة"
+        "answer": "الإمام علي بن أبي طالب (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام الثاني من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام الحسن بن علي المجتبى (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام الثالث من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام الحسين بن علي سيد الشهداء (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام الرابع من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام علي بن الحسين زين العابدين (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام الخامس من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام محمد بن علي الباقر (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام السادس من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام جعفر بن محمد الصادق (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام السابع من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام موسى بن جعفر الكاظم (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام الثامن من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام علي بن موسى الرضا (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام التاسع من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام محمد بن علي الجواد (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام العاشر من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام علي بن محمد الهادي (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام الحادي عشر من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام الحسن بن علي العسكري (عليه السلام)"
+    },
+    {
+        "questionText": "من هو الإمام الثاني عشر من الأئمة الاثنا عشر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الإمام محمد بن الحسن المهدي (عجل الله فرجه)"
+    },
+    {
+        "questionText": "تحدي الـ 10 ثواني: اذكر الـ 14 معصوم؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "النبي محمد (ص)، السيدة فاطمة الزهراء (ع)، والأئمة الاثنا عشر (ع)"
+    },
+    {
+        "questionText": "من أول من وضع قواعد النحو؛ صيانةً لسلامة النطق، وضبطًا للقرآن الكريم بأمر من عليّ -رضي الله عنه-؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "أبو الأسود الدؤلي"
+    },
+    {
+        "questionText": "ما معنى \"أهشُ بها\" في الآية الكريمة؟",
+        "media": "<img src=\"https://surahquran.com/img/Ayat-green/verse-18-surah-20.png\" alt=\"آية قرآنية\" />",
+        "answerMedia": "",
+        "answer": "ضربُ بالعصا أغصانَ الشجر ليسقط ورقُها فتأكلَهُ غنمي"
+    },
+    {
+        "questionText": "ما هي عاصمة المملكة العربية السعودية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الرياض"
+    },
+    {
+        "questionText": "ما هي عاصمة دولة الكويت؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الكويت"
+    },
+    {
+        "questionText": "ما هي عاصمة دولة الإمارات العربية المتحدة؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "أبو ظبي"
+    },
+    {
+        "questionText": "ما هي عاصمة دولة قطر؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الدوحة"
+    },
+    {
+        "questionText": "ما هي عاصمة مملكة البحرين؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "المنامة"
+    },
+    {
+        "questionText": "ما هي عاصمة سلطنة عمان؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "مسقط"
+    },
+    {
+        "questionText": "ما هي عاصمة جمهورية مصر العربية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "القاهرة"
+    },
+    {
+        "questionText": "ما هي عاصمة الجمهورية العراقية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "بغداد"
+    },
+    {
+        "questionText": "ما هي عاصمة دولة اليابان؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "طوكيو"
+    },
+    {
+        "questionText": "ما هي عاصمة دولة الصين؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "بكين"
+    },
+    {
+        "questionText": "ما هي عاصمة دولة جمهورية كوريا (كوريا الجنوبية)؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "سيؤول"
+    },
+    {
+        "questionText": "ما هي عاصمة جمهورية روسيا الاتحادية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "موسكو"
+    },
+    {
+        "questionText": "ما هي عاصمة جمهورية ألمانيا الاتحادية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "برلين"
+    },
+    {
+        "questionText": "ما هي عاصمة الجمهورية الفرنسية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "باريس"
+    },
+    {
+        "questionText": "ما هي عاصمة الجمهورية الإيطالية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "روما"
+    },
+    {
+        "questionText": "ما هي عاصمة تركيا؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "أنقرة"
+    },
+    {
+        "questionText": "ما هي عاصمة الولايات المتحدة الأمريكية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "واشنطن دي سي"
+    },
+    {
+        "questionText": "ما هي عاصمة المملكة الأردنية الهاشمية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "عمان"
+    },
+    {
+        "questionText": "ما هي عاصمة الجمهورية اللبنانية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "بيروت"
+    },
+    {
+        "questionText": "ما هي عاصمة المملكة المغربية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الرباط"
+    },
+    {
+        "questionText": "ما هي عاصمة دولة فلسطين؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "القدس الشريف"
+    },
+    {
+        "questionText": "من هو المنتخب الفائز بكأس العالم 2022؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الأرجنتين"
+    },
+    {
+        "questionText": "من هو اللاعب الأكثر فوزاً بالكرة الذهبية (Ballon d'Or)؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "ليونيل ميسي"
+    },
+    {
+        "questionText": "أي نادٍ حقق أكبر عدد من بطولات دوري أبطال أوروبا؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "ريال مدريد"
+    },
+    {
+        "questionText": "في أي عام أقيمت أول بطولة لكأس العالم لكرة القدم؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "1930"
+    },
+    {
+        "questionText": "من هو المنتخب الذي حقق لقب كأس العالم 5 مرات؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "البرازيل"
+    },
+    {
+        "questionText": "من هو الهداف التاريخي للمنتخبات الوطنية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "كريستيانو رونالدو"
+    },
+    {
+        "questionText": "ما هو الملعب الملقب بـ \"مسرح الأحلام\"؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "ملعب أولد ترافورد (مانشستر يونايتد)"
+    },
+    {
+        "questionText": "أي لاعب يلقب بـ \"الملك\" (O Rei) في تاريخ الكرة؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "بيليه"
+    },
+    {
+        "questionText": "أي دولة استضافت كأس العالم عام 1994؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الولايات المتحدة الأمريكية"
+    },
+    {
+        "questionText": "ما هو الدوري المعروف باسم \"لا ليغا\" (La Liga)؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الدوري الإسباني"
+    },
+    {
+        "questionText": "من هو أول منتخب فاز بلقب كأس العالم في التاريخ؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "أوروغواي"
+    },
+    {
+        "questionText": "أي نادٍ إنجليزي حقق الرقم القياسي في الفوز بالدوري الإنجليزي (الدرجة الأولى والممتاز)؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "مانشستر يونايتد (20 لقب)"
+    },
+    {
+        "questionText": "من هو المدرب الذي قاد نادي أرسنال لمدة 22 عاماً (من 1996 إلى 2018)؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "أرسين فينغر"
+    },
+    {
+        "questionText": "من هو اللاعب الذي سجل هدف \"يد الله\" الشهير ضد إنجلترا؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "دييغو مارادونا"
+    },
+    {
+        "questionText": "ما هو الحد الأقصى لعدد اللاعبين في كل فريق داخل الملعب في المباراة الرسمية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "11 لاعباً"
+    },
+    {
+        "questionText": "أي مدينة إيطالية تضم ناديي إيه سي ميلان وإنتر ميلان؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "ميلانو"
+    },
+    {
+        "questionText": "من هو المنتخب الفائز بلقب كأس أمم أوروبا (يورو 2020)؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "إيطاليا"
+    },
+    {
+        "questionText": "من هو اللاعب الإفريقي الوحيد الذي فاز بالكرة الذهبية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "جورج وياه (1995)"
+    },
+    {
+        "questionText": "كم تبلغ المدة الزمنية للشوط الواحد في مباراة كرة القدم (دون احتساب الوقت بدل الضائع)؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "45 دقيقة"
+    },
+    {
+        "questionText": "ما هو اللقب الشهير لنادي تشيلسي الإنجليزي؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "البلوز (The Blues)"
+    },
+    {
+        "questionText": "من هو أصغر لاعب يسجل هدفاً في نهائي كأس العالم؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "بيليه"
+    },
+    {
+        "questionText": "من هو الهداف التاريخي لبطولة دوري أبطال أوروبا؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "كريستيانو رونالدو"
+    },
+    {
+        "questionText": "أي دولة ستستضيف كأس العالم 2026 بالاشتراك مع كندا والمكسيك؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الولايات المتحدة الأمريكية"
+    },
+    {
+        "questionText": "من هو الحارس الوحيد في التاريخ الذي فاز بجائزة الكرة الذهبية؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "ليف ياشين"
+    },
+    {
+        "questionText": "من هو المدرب الذي حقق 3 ألقاب متتالية في دوري أبطال أوروبا مع ريال مدريد؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "زين الدين زيدان"
+    },
+    {
+        "questionText": "ما هو اللقب الذي يطلق على المنتخب الإيطالي؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الأتزوري (Azzurri)"
+    },
+    {
+        "questionText": "من هو الهداف التاريخي لبطولات كأس العالم؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "ميروسلاف كلوزه (16 هدفاً)"
+    },
+    {
+        "questionText": "أي نادٍ إنجليزي يلقب بـ \"الريدز\" (The Reds)؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "ليفربول"
+    },
+    {
+        "questionText": "في أي مدينة يقع ملعب \"كامب نو\" الشهير؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "برشلونة"
+    },
+    {
+        "questionText": "ما هو اللقب الشهير للاعب زين الدين زيدان؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "زيزو"
+    },
+    {
+        "questionText": "من هو المنتخب الفائز بكأس العالم 2010 التي أقيمت في جنوب أفريقيا؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "إسبانيا"
+    },
+    {
+        "questionText": "ما هو اللون الذي يشهره الحكم لطرد اللاعب من المباراة؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "اللون الأحمر"
+    },
+    {
+        "questionText": "أي نادٍ يلقب بـ \"السيدة العجوز\" (La Vecchia Signora)؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "يوفنتوس"
+    },
+    {
+        "questionText": "من هو اللاعب الذي حصل على الحذاء الذهبي كأفضل هداف في مونديال 2022؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "كيليان مبابي"
+    },
+    {
+        "questionText": "ما هو الاختصار الشهير لنادي بوروسيا دورتموند الألماني؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "BVB"
+    },
+    {
+        "questionText": "أي نادٍ كان يلعب فيه نيمار قبل انتقاله إلى باريس سان جيرمان؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "برشلونة"
+    },
+    {
+        "questionText": "من هو مدرب مانشستر سيتي الذي اشتهر بأسلوب \"التيكي تاكا\"؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "بيب غوارديولا"
+    },
+    {
+        "questionText": "أين أقيمت أول نسخة من بطولة كأس آسيا لكرة القدم؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "هونغ كونغ (1956)"
+    },
+    {
+        "questionText": "ما هو اللقب الذي يطلق على منتخب مصر الوطني؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "الفراعنة"
+    },
+    {
+        "questionText": "أي نادٍ أمريكي لعب له ديفيد بيكهام وساهم في شهرة الدوري هناك؟",
+        "media": "",
+        "answerMedia": "",
+        "answer": "لوس أنجلوس جالاكسي"
+    },
+
+    // ─── أسئلة المزاد ───
+    // الإجابة توضح نماذج فقط للحكم — الفريق الأكثر إجابة يكسب
+    {
+        "questionText": "🏆 مزاد | سمّوا أندية كرة قدم سعودية — الفريق الأكثر إجابة يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: الهلال، النصر، الأهلي، الاتحاد، الشباب... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا دولاً عربية — الفريق الأكثر إجابة يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: السعودية، مصر، العراق، الكويت، الإمارات... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا حيوانات تعيش في الصحراء — الفريق الأكثر إجابة يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: الجمل، الضب، الصقر، الثعلب، العقرب... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا أنواعاً من الأكل السعودي — الفريق الأكثر يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: الكبسة، المندي، الجريش، المطبق، القهوة العربية... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا مدناً سعودية — الفريق الأكثر إجابة يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: الرياض، جدة، مكة، المدينة المنورة، الدمام... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا رياضات أولمبية — الفريق الأكثر إجابة يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: كرة القدم، السباحة، ألعاب القوى، الجودو، الملاكمة... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا أنواعاً من الفواكه — الفريق الأكثر يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: التفاح، البرتقال، العنب، المانجو، الموز، الرمان... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا حلويات شعبية سعودية وخليجية — الأكثر يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: اللقيمات، الحلوى العمانية، العسيدة، المنفوش، الكنافة... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا كلمات بالعامية السعودية معناها 'ممتاز' أو 'شكراً' — الأكثر يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: زين، كفو، عاشت، مشكور، يعطيك العافية... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا مشاهير سعوديين في أي مجال — الفريق الأكثر يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: محمد عبده، طلال مداح، الوليد بن طلال، عبدالمجيد عبدالله... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا أسماء إسلامية شائعة للأولاد — الفريق الأكثر يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: محمد، أحمد، علي، حسن، عبدالله، يوسف... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا أشياء تجدها في المجلس السعودي — الأكثر يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: البخور، القهوة، التمر، المباخر، السجاد، الكراسي... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا برامج أو مسلسلات خليجية مشهورة — الأكثر يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: طاش ما طاش، يوميات الأكاديمية، سيلفي، زد رصيدك، واي فاي... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا أدوات في المطبخ السعودي التقليدي — الأكثر يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: الدلة، الهاون، الطاسة، المجمر، الخُوان... وغيرها"
+    },
+    {
+        "questionText": "🏆 مزاد | سمّوا ألقاباً تُعطى للاعبين في كرة القدم — الأكثر يكسب!",
+        "media": "",
+        "answerMedia": "",
+        "answer": "نماذج: الظاهرة (رونالدو)، البرغوث (ميسي)، الملك (بيليه)، O Fen (مبابي)... وغيرها"
     }
 ];
-
-
-

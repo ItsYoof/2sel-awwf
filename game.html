@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أسئل أووف - العب الآن</title>
+    <title>ساحة اللعب - أسئل أووف</title>
+    <meta name="description" content="تحدي الآن في ساحة أسئل أووف. هل تستطيع حسم اللوحة؟">
+    <link rel="icon" href="شعار أوف.svg" type="image/svg+xml">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,9 +20,11 @@
             --clr-blue-glow: rgba(31, 62, 91, 0.6);
             --clr-red: #70191A;
             --clr-red-glow: rgba(112, 25, 26, 0.6);
-            --clr-bg-dark: #06261F;
-            --clr-bg-light: #0A5C4A;
+            --clr-bg-dark: #0A5C4A;
+            --clr-bg-light: #208871;
+            --clr-secondary-header: #136E5A;
             --clr-accent: #C9A227;
+            --clr-cell-bg: #EDE2E2;
             --clr-white: #FFFFFF;
             --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -31,6 +35,7 @@
             -webkit-tap-highlight-color: transparent;
             scrollbar-width: thin;
             scrollbar-color: var(--clr-accent) transparent;
+            touch-action: manipulation;
         }
 
         *::-webkit-scrollbar {
@@ -44,64 +49,31 @@
         body {
             margin: 0;
             padding: 0;
-            min-height: 100vh;
-            background: radial-gradient(circle at center, var(--clr-bg-light) 0%, var(--clr-bg-dark) 100%);
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(180deg, #208871 0%, #0A5C4A 100%);
             font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
             overflow: hidden;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: stretch;
+            justify-content: stretch;
         }
 
-        /* Ambient Animations */
-        @keyframes floatOrb {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.3;
-            }
+        .ambient-orb { display: none; }
 
-            100% {
-                transform: translate(10vw, 5vh) scale(1.2);
-                opacity: 0.6;
-            }
-        }
-
-        .ambient-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-            animation: floatOrb 10s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
-
-        .orb-1 {
-            width: 40vw;
-            height: 40vw;
-            background: rgba(32, 136, 113, 0.2);
-            top: -10%;
-            left: -10%;
-        }
-
-        .orb-2 {
-            width: 50vw;
-            height: 50vw;
-            background: rgba(201, 162, 39, 0.1);
-            bottom: -20%;
-            right: -10%;
-            animation-delay: -5s;
-        }
-
-        /* Main Game Layout */
+        /* Main Game Layout — true full-screen */
         .game-layout {
             position: relative;
-            width: 96vw;
-            height: 94vh;
-            max-width: 1600px;
+            width: 100vw;
+            height: 100vh;
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
             display: flex;
             flex-direction: column;
-            gap: 2vh;
-            animation: fadeIn 1s ease-out;
+            gap: 0;
+            padding: 0;
+            animation: fadeIn 0.8s ease-out;
         }
 
         @keyframes fadeIn {
@@ -135,157 +107,227 @@
             margin-bottom: 5px;
         }
 
-        .q-top-brand {
+        /* q-top-brand INSIDE overlay — overrides the global .q-top-brand rule */
+        .q-modern-main .q-top-brand {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 72px;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            gap: 12px;
+            font-family: 'Noto Sans Arabic', sans-serif;
+            font-weight: 200;
+            font-size: 32px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* q-footer-controls: sticky bottom strip inside overlay */
+        .q-footer-controls {
+            width: 100%;
+            padding: 20px 0 28px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.12);
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         /* ---------------- HEADER ---------------- */
         .glass-header {
             width: 100%;
-            height: 12vh;
-            min-height: 80px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 28px;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            border-radius: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 4vw;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 0 32px;
             position: relative;
             z-index: 100;
+            flex-shrink: 0;
+        }
+
+        .game-title-main {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: -60px;
+            font-family: 'Noto Sans Arabic', sans-serif;
+            font-weight: 200;
+            font-size: 48px;
+            line-height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #1D826C;
+            text-shadow: 2px 1px 0px #C9A227;
+            pointer-events: none;
         }
 
         .team-block {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 14px;
+            background: rgba(255,255,255,0.08);
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: none;
             transition: var(--transition-smooth);
         }
 
         .team-block.active {
-            transform: scale(1.05);
+            background: rgba(255,255,255,0.18);
+            border-color: rgba(255,255,255,0.4);
+            transform: scale(1.04);
         }
 
         .team-name {
-            font-size: clamp(16px, 2.8vh, 32px);
-            font-weight: 900;
-            color: var(--clr-white);
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            transition: var(--transition-smooth);
-            max-width: 300px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            font-size: 22px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.85);
         }
 
         .team-block.active .team-name {
-            color: var(--clr-accent);
-            text-shadow: 0 0 15px rgba(201, 162, 39, 0.5);
+            color: #FFFFFF;
+            font-size: 24px;
         }
 
         .team-badge {
-            width: clamp(50px, 7vh, 80px);
-            height: clamp(50px, 7vh, 80px);
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transition: var(--transition-smooth);
+            border: 2px solid rgba(255,255,255,0.5);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            transition: all 0.4s ease;
         }
 
         .team-block.active .team-badge {
-            border-color: var(--clr-white);
-            box-shadow: 0 0 30px var(--glow-color);
-            transform: rotate(360deg);
+            border-color: #FFFFFF;
+            transform: scale(1.12);
         }
 
-        .badge-red {
-            background: linear-gradient(135deg, #a62a2c 0%, var(--clr-red) 100%);
-            --glow-color: var(--clr-red-glow);
+        .badge-red  { background: linear-gradient(135deg,#c73639,#70191A); }
+        .badge-blue { background: linear-gradient(135deg,#4b89c7,#1F3E5B); }
+
+        /* Cell count badge next to team name */
+        .cell-count-badge {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 900;
+            padding: 4px 12px;
+            border-radius: 50px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            transition: all 0.4s ease;
+        }
+        .cell-count-red {
+            background: rgba(199,54,57,0.25);
+            color: #FCA5A5;
+            border: 1px solid rgba(199,54,57,0.4);
+        }
+        .cell-count-blue {
+            background: rgba(75,137,199,0.25);
+            color: #93C5FD;
+            border: 1px solid rgba(75,137,199,0.4);
         }
 
-        .badge-blue {
-            background: linear-gradient(135deg, #3a6894 0%, var(--clr-blue) 100%);
-            --glow-color: var(--clr-blue-glow);
-        }
-
+        /* Turn indicator sits directly inside the header, centred absolutely */
         .turn-center {
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: clamp(60px, 8vh, 90px);
-            height: clamp(60px, 8vh, 90px);
+            width: 60px;
+            height: 60px;
             background: #FFFFFF;
             border-radius: 50%;
             display: flex;
-            align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            align-items: center;
             z-index: 110;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
 
         .turn-arrow {
-            width: 50%;
-            height: 50%;
-            fill: var(--clr-bg-dark);
+            width: 40px;
+            height: 40px;
+            fill: #0A5C4A;
             transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         /* ---------------- MAIN ARENA ---------------- */
         .arena {
-            flex-grow: 1;
+            flex: 1;
             display: flex;
             justify-content: space-between;
             align-items: stretch;
-            gap: 2vw;
-            padding: 1vh 0;
+            gap: 0;
+            padding: 0;
             overflow: hidden;
         }
 
         .powerup-sidebar {
-            width: 170px;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
+            width: 160px;
+            flex-shrink: 0;
+            height: 100%;
+            background: rgba(0,0,0,0.15);
+            border: none;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 10px;
-            gap: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: var(--transition-smooth);
+            padding: 24px 12px;
+            gap: 8px;
             z-index: 50;
+            transition: var(--transition-smooth);
+        }
+
+        .powerup-sidebar.team-red-side  { border-left: none; border-right: 1px solid rgba(255,255,255,0.1); }
+        .powerup-sidebar.team-blue-side { border-right: none; border-left: 1px solid rgba(255,255,255,0.1); }
+
+        .sidebar-title {
+            width: 100%;
+            font-family: 'Noto Sans Arabic', sans-serif;
+            font-weight: 900;
+            font-size: 18px;
+            line-height: 1.4;
+            text-align: center;
+            color: #FFFFFF;
+            opacity: 0.9;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-divider {
+            width: 80%;
+            height: 1px;
+            background: rgba(255,255,255,0.3);
+            border: none;
+            margin-bottom: 8px;
         }
 
         .powerup-sidebar.active-side {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            background: rgba(255,255,255,0.12);
         }
 
-        .sidebar-title {
-            color: #FFFFFF;
-            font-weight: 900;
-            font-size: 20px;
-            text-align: center;
-            opacity: 0.9;
-        }
 
         .powerup-list {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             width: 100%;
             align-items: center;
             overflow-y: auto;
             scrollbar-width: none;
+            flex: 1;
         }
 
         .powerup-list::-webkit-scrollbar {
@@ -321,10 +363,12 @@
         }
 
         .power-item span {
-            font-size: 14px;
-            color: #FFFFFF;
-            margin-top: 5px;
+            font-size: 16px;
+            font-family: 'Noto Sans Arabic', sans-serif;
+            color: rgba(255,255,255,0.9);
+            margin-top: 4px;
             font-weight: 600;
+            text-align: center;
         }
 
         .power-item.used {
@@ -335,24 +379,36 @@
 
         /* ---------------- BOARD ---------------- */
         .board-wrapper {
-            flex-grow: 1;
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            overflow: hidden;
+        }
+
+        /* subtle central glow */
+        .board-wrapper::after {
+            content: '';
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .board-scaler {
             position: relative;
-            width: 650px;
-            height: 650px;
+            width: min(650px, 70vmin);
+            height: min(650px, 70vmin);
             display: flex;
             justify-content: center;
             align-items: center;
             transition: transform 0.5s ease;
         }
 
-        /* Path Indicators */
         .path-label {
             position: absolute;
             font-size: 24px;
@@ -365,38 +421,40 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
-            opacity: 0.8;
-            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+            opacity: 0.9;
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
         }
 
         .path-blue-label {
-            color: #3a6894;
+            color: #8bb9e5;
+            text-shadow: 0 0 15px rgba(139, 185, 229, 0.8);
         }
 
         .path-red-label {
-            color: #a62a2c;
+            color: #e57373;
+            text-shadow: 0 0 15px rgba(229, 115, 115, 0.8);
         }
 
         .path-right {
-            right: 5px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
         }
 
         .path-left {
-            left: 5px;
+            left: 15px;
             top: 50%;
             transform: translateY(-50%);
         }
 
         .path-top {
-            top: 5px;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
         }
 
         .path-bottom {
-            bottom: 5px;
+            bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
         }
@@ -406,7 +464,7 @@
             font-weight: 1000;
             line-height: 1;
             animation: pulseBlue 2s infinite;
-            filter: drop-shadow(0 0 15px var(--clr-blue));
+            filter: drop-shadow(0 0 20px rgba(75, 137, 199, 0.8));
         }
 
         .path-arrow-red {
@@ -414,7 +472,7 @@
             font-weight: 1000;
             line-height: 1;
             animation: pulseRed 2s infinite;
-            filter: drop-shadow(0 0 15px var(--clr-red));
+            filter: drop-shadow(0 0 20px rgba(199, 54, 57, 0.8));
         }
 
         @keyframes pulseBlue {
@@ -503,276 +561,315 @@
 
         .hex-wrapper {
             position: relative;
-            transition: var(--transition-smooth);
+            transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
             cursor: pointer;
+            filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.25));
         }
 
         .hex-wrapper:hover {
-            transform: scale(1.2);
+            transform: scale(1.15) translateY(-5px);
             z-index: 20;
-            filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.5));
+            filter: drop-shadow(0 25px 40px rgba(0, 0, 0, 0.6));
         }
 
         .hex-cell {
-            width: 88px;
-            height: 102px;
-            background: #FFFFFF;
+            width: 90px;
+            height: 104px;
+            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 32px;
+            font-size: 34px;
             font-weight: 900;
-            color: var(--clr-bg-dark);
-            transition: var(--transition-smooth);
+            color: #136E5A;
+            transition: all 0.5s ease;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
         }
 
         .hex-wrapper.taken-blue .hex-cell {
-            background: var(--clr-blue);
-            color: #FFF;
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #3A6894 0%, #1F3E5B 100%);
+            color: #FFFFFF;
+            font-weight: 1000;
         }
 
         .hex-wrapper.taken-red .hex-cell {
-            background: var(--clr-red);
-            color: #FFF;
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #C73639 0%, #70191A 100%);
+            color: #FFFFFF;
+            font-weight: 1000;
         }
+
 
         /* ---------------- TOAST ---------------- */
         .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--clr-bg-dark);
-            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #FFFFFF;
+            padding: 18px 50px;
             border-radius: 50px;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
             opacity: 0;
-            transition: var(--transition-smooth);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 6000;
         }
 
         .toast.show {
             opacity: 1;
-            transform: translateX(-50%) translateY(0);
+            transform: translateX(-50%) translateY(0) scale(1.05);
         }
 
-        /* ---------------- MODERN & PREMIUM QUESTION OVERLAY ---------------- */
+        /* ===== QUESTION / ANSWER / WINNER OVERLAY ===== */
         .q-page-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(6, 38, 31, 1);
+            inset: 0;
+            background: linear-gradient(180deg, #208871 0%, #0A5C4A 100%);
             z-index: 3000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: none;
+            align-items: stretch;
+            justify-content: stretch;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
             font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
-            padding: 20px;
         }
 
         .q-page-overlay.show {
+            display: flex;
             opacity: 1;
             pointer-events: auto;
+            visibility: visible;
         }
 
+        /* Outer card — fills the overlay */
         .q-modern-container {
-            width: 95%;
-            height: 95%;
-            max-width: 1300px;
-            max-height: 850px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border-radius: 40px;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            border-radius: 0;
             display: flex;
+            flex-direction: row;
             position: relative;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
             overflow: hidden;
             color: #FFFFFF;
         }
 
+        /* state containers stack inside the main column */
         .q-state-container {
-            position: absolute;
-            top: 20%;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
+            position: relative;
+            display: none;   /* hidden by default */
             flex-direction: column;
-            align-items: center;
+            width: 100%;
+            flex: 1;
+            overflow: hidden;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            transform: translateY(20px);
+            transition: opacity 0.4s ease;
         }
 
         .q-state-container.active {
+            display: flex;  /* shown when active */
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: translateY(0);
         }
 
+        /* subtle inner glow */
         .q-modern-container::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(32, 136, 113, 0.1) 0%, transparent 60%);
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.07) 0%, transparent 65%);
             pointer-events: none;
             z-index: 0;
         }
 
+        /* ─── Sidebar (power-ups inside overlay) ─── */
         .q-modern-sidebar {
-            width: 180px;
+            width: 160px;
+            flex-shrink: 0;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 10px;
-            background: rgba(0, 0, 0, 0.25);
+            padding: 28px 10px;
+            background: rgba(0,0,0,0.18);
             z-index: 10;
             overflow-y: auto;
             scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+            scrollbar-color: rgba(255,255,255,0.2) transparent;
+            border: none;
         }
 
-        .q-modern-sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
+        .q-modern-sidebar::-webkit-scrollbar { width: 3px; }
+        .q-modern-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-        .q-modern-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-        }
-
-        .side-red {
-            border-right: 2px solid rgba(112, 25, 26, 0.3);
-        }
-
-        .side-blue {
-            border-left: 2px solid rgba(31, 62, 91, 0.3);
-        }
+        /* red/blue side accent line */
+        .side-red  { border-right: 2px solid rgba(199,54,57,0.35); }
+        .side-blue { border-left:  2px solid rgba(75,137,199,0.35); }
 
         .sidebar-team-label {
             font-weight: 900;
-            font-size: 16px;
-            margin-bottom: 20px;
-            opacity: 0.6;
+            font-size: 14px;
+            margin-bottom: 16px;
+            opacity: 0.55;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .q-power-item-overlay {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 6px;
+            margin-bottom: 20px;
             cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.3s ease;
         }
 
-        .q-power-item-overlay:hover {
-            transform: scale(1.1);
-            filter: brightness(1.2);
-        }
+        .q-power-item-overlay:hover   { transform: scale(1.1); filter: brightness(1.2); }
+        .q-power-item-overlay.used    { opacity: 0.15; filter: grayscale(1); pointer-events: none; }
+        .q-power-item-overlay img     { width: 80px; height: 80px; object-fit: contain; }
+        .q-power-item-overlay span    { font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.9); }
 
-        .q-power-item-overlay.used {
-            opacity: 0.15;
-            filter: grayscale(1);
-            pointer-events: none;
-            cursor: default;
-        }
-
-        .q-power-item-overlay img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-        }
-
-        .q-power-item-overlay span {
-            font-size: 20px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
+        /* ─── Main content column — proper flex layout ─── */
         .q-modern-main {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            padding: 40px 40px;
+            justify-content: flex-start;
+            padding: 0;
             z-index: 5;
             text-align: center;
-            overflow-y: auto;
+            overflow: hidden;
+            position: relative;
+            min-width: 0;
         }
 
+        /* ─── Brand bar inside overlay (top strip) ─── */
         .q-top-brand {
-            font-size: 18px;
-            font-weight: 200;
-            letter-spacing: 8px;
-            color: var(--clr-accent);
-            opacity: 0.8;
-            margin-bottom: 5px;
-        }
-
-        .q-header-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            animation: fadeInDown 0.8s ease;
             width: 100%;
-            position: sticky;
-            top: 0;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            z-index: 100;
-        }
-
-        .q-header-content-wrapper {
+            height: 72px;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.12);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 25px;
+            gap: 12px;
+            font-family: 'Noto Sans Arabic', sans-serif;
+            font-weight: 200;
+            font-size: 36px;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* ─── Cell # + timer row ─── */
+        .q-header-box {
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
         }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .q-header-top-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
         }
 
-        #q-header-full {
+        .q-cell-badge, .q-timer-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 22px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .q-cell-badge .label { font-size: 14px; opacity: 0.8; }
+
+        .q-cell-badge .value, .q-timer-badge .value {
+            font-size: 24px;
+            font-weight: 900;
+            color: #FACC15;
+        }
+
+        .q-timer-badge .value {
+            font-family: 'Inter', sans-serif;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .timer-icon-small { width: 20px; height: 20px; color: #FACC15; }
+
+        /* ─── Timer row (inside the q-header-box) ─── */
+        .q-timer-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .q-timer-display {
+            font-family: 'Inter', monospace;
             font-size: 38px;
             font-weight: 900;
-            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            color: #FFFFFF;
+            color: #FACC15;
+            letter-spacing: 2px;
+            min-width: 90px;
+            text-align: center;
+            text-shadow: 0 4px 16px rgba(250,204,21,0.5);
+            transition: color 0.3s ease;
         }
 
+        .q-timer-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: #FFFFFF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+        .q-timer-btn:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.6);
+            transform: scale(1.1);
+        }
+        .q-timer-btn:active { transform: scale(0.95); }
+
+        .q-timer-btn-reset {
+            background: rgba(239,68,68,0.15);
+            border-color: rgba(239,68,68,0.4);
+            color: #FCA5A5;
+        }
+        .q-timer-btn-reset:hover {
+            background: rgba(239,68,68,0.3);
+            border-color: rgba(239,68,68,0.7);
+        }
+
+        /* ─── Central body (question text + media) ─── */
         .q-central-body {
             flex: 1;
             display: flex;
@@ -780,179 +877,172 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            gap: 20px; /* Reduced gap for better vertical layout */
-            padding: 20px 0;
-            overflow-y: auto;
+            gap: 24px;
+            padding: 24px 60px;
+            overflow-y: auto;  /* allows scrolling if content is tall */
         }
 
+        /* ─── Question text ─── */
         .q-main-text-display {
-            font-size: clamp(24px, 4vw, 56px);
+            font-size: clamp(30px, 5vw, 70px);
             font-weight: 900;
-            line-height: 1.35;
-            max-width: 1100px;
-            animation: fadeInUpPremium 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-            padding: 0 40px;
-            margin-bottom: 10px;
+            line-height: 1.45;
+            max-width: 900px;
+            animation: fadeInUp 0.6s ease both;
+            color: #FFFFFF;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.35);
         }
 
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── Media frame ─── */
         .q-media-frame {
             width: 100%;
-            max-width: 900px;
+            max-width: 720px;
             flex-shrink: 0;
-            margin-top: 10px;
-            border-radius: 30px;
+            border-radius: 20px;
             overflow: hidden;
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.15);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
             position: relative;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
-        /* Responsive Media Container */
         .q-media-inner {
             width: 100%;
-            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
         }
 
-        .q-media-inner img, 
+        .q-media-inner img,
         .q-media-inner video {
             max-width: 100%;
-            max-height: 50vh; /* dynamic height based on screen */
+            max-height: 42vh;
             object-fit: contain;
             display: block;
         }
 
-        .q-footer-controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 25px;
-            width: 100%;
-        }
-
-        .q-timer-controls {
-            display: flex;
-            gap: 12px;
-        }
-
-        .q-timer-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #FFF;
-            width: 50px;
-            height: 50px;
-            border-radius: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .q-timer-btn:hover {
-            background: var(--clr-accent);
-            color: #000;
-            transform: translateY(-3px) scale(1.1);
-            box-shadow: 0 5px 15px rgba(201, 162, 39, 0.4);
-        }
-
-        .q-timer-btn:active {
-            transform: translateY(0) scale(0.95);
-        }
-
-        .timer-icon {
-            width: 22px;
-            height: 22px;
-        }
-
-        .q-btn-action {
-            padding: 22px 65px;
-            font-size: 28px;
+        /* ─── Labels ─── */
+        .q-label-premium {
+            font-size: 14px;
             font-weight: 900;
+            color: rgba(255,255,255,0.45);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .q-label-premium.accent { color: #FACC15; opacity: 1; }
+
+        /* ─── Answer reveal ─── */
+        .q-answer-reveal {
+            color: #FACC15;
+            text-shadow: 0 6px 30px rgba(250,204,21,0.5);
+            animation: answerFadeIn 0.7s ease both;
+            font-size: clamp(36px, 6vw, 74px);
+            font-weight: 900;
+            background: rgba(0,0,0,0.18);
+            padding: 18px 56px;
             border-radius: 24px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(250,204,21,0.25);
+        }
+
+        @keyframes answerFadeIn {
+            from { opacity: 0; transform: scale(0.85) translateY(16px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* ─── Action buttons row ─── */
+        .q-action-btns-row {
             display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .q-btn-rect-gold {
-            background: linear-gradient(135deg, #FACC15 0%, #C9A227 100%);
-            color: #06261F;
-            box-shadow: 0 15px 35px rgba(201, 162, 39, 0.4);
-        }
-
-        .q-btn-rect-black {
-            background: #000;
-            color: #FFF;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-        }
-
-        .q-btn-action:hover {
-            transform: translateY(-8px) scale(1.03);
-        }
-
-        .q-state-container {
-            display: none;
-            width: 100%;
-            height: 100%;
-            flex-direction: column;
-            align-items: center;
+            gap: 16px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
-        .q-state-container.active {
-            display: flex;
-        }
-
-        .q-winner-buttons-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            width: 100%;
-            max-width: 900px;
-        }
-
-        .q-winner-btn-card {
-            height: 110px;
-            border-radius: 24px;
-            border: none;
+        /* ─── Primary CTA button (show answer / next) ─── */
+        .q-btn-action {
+            padding: 16px 40px;
             font-size: 22px;
             font-weight: 900;
-            color: #FFF;
+            border-radius: 50px;
+            border: none;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .q-winner-btn-card.blue {
-            background: linear-gradient(180deg, #3B82F6 0%, #1F3E5B 100%);
+        .q-btn-primary {
+            background: #0A5C4A;
+            color: #FFFFFF;
+            font-size: 26px;
+            padding: 16px 48px;
+            border-radius: 50px;
+            box-shadow: 0px 8px 0px #063B30;
+            border: none;
+        }
+        .q-btn-primary:hover  { transform: translateY(2px); box-shadow: 0px 6px 0px #063B30; }
+        .q-btn-primary:active { transform: translateY(8px); box-shadow: 0px 0px 0px #063B30; }
+
+        .q-btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #FFF;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .q-btn-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
+
+        /* ─── Stage 3: Who got it? ─── */
+        .q-winner-selection-grid {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px;
+            padding: 20px 40px;
+            flex-wrap: wrap;
         }
 
-        .q-winner-btn-card.red {
-            background: linear-gradient(180deg, #EF4444 0%, #70191A 100%);
+        .q-winner-card {
+            flex: 1;
+            min-width: 220px;
+            max-width: 320px;
+            height: 120px;
+            border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #FFFFFF;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .q-winner-card.blue { background: linear-gradient(135deg,#3A6894,#1F3E5B); }
+        .q-winner-card.red  { background: linear-gradient(135deg,#C73639,#70191A); }
+        .q-winner-card.none { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.3); }
+
+        .q-winner-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            filter: brightness(1.15);
+            box-shadow: 0 20px 44px rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.6);
         }
 
-        .q-winner-btn-card.black {
-            background: #111111;
-        }
-
-        .q-winner-btn-card:hover {
-            transform: translateY(-10px);
-            filter: brightness(1.2);
+        .team-name-label {
+            font-size: 48px;
+            font-weight: 900;
+            color: #FFFFFF;
+            text-align: center;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            padding: 0 12px;
         }
 
         .q-overlay-logo-fixed {
@@ -1002,32 +1092,29 @@
             }
         }
 
-        /* ---------------- WIN OVERLAY ---------------- */
-        /* ---------------- WIN OVERLAY (PREMIUM REDESIGN) ---------------- */
+        /* ===== WIN SCREEN ===== */
         .win-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at center, rgba(6, 38, 31, 1) 0%, rgba(2, 6, 23, 1) 100%);
+            inset: 0;
+            background: linear-gradient(180deg, #208871 0%, #0A5C4A 100%);
             z-index: 8000;
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             opacity: 0;
             pointer-events: none;
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            visibility: hidden;
+            transition: opacity 0.8s ease;
             font-family: 'Noto Sans Arabic', sans-serif;
             text-align: center;
         }
 
         .win-overlay.show {
+            display: flex;
             opacity: 1;
             pointer-events: auto;
+            visibility: visible;
         }
 
         .win-content {
@@ -1035,14 +1122,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            animation: winPopIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            padding: 40px;
-            border-radius: 40px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
-            max-width: 600px;
+            gap: 16px;
+            animation: winPopIn 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 50px 60px;
+            border-radius: 32px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+            max-width: 560px;
             width: 90%;
         }
 
@@ -1114,17 +1201,19 @@
         }
 
         .win-btn-primary {
-            background: linear-gradient(135deg, #FACC15 0%, #C9A227 100%);
-            color: #06261F;
-            box-shadow: 0 10px 30px rgba(201, 162, 39, 0.4);
+            background: #0A5C4A;
+            color: #FFFFFF;
+            box-shadow: 0px 8px 0px #063B30;
         }
+        .win-btn-primary:hover  { transform: translateY(2px); box-shadow: 0px 6px 0px #063B30; }
+        .win-btn-primary:active { transform: translateY(8px); box-shadow: none; }
 
         .win-btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             color: #FFF;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
         }
+        .win-btn-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
         .win-btn:hover {
             transform: translateY(-8px) scale(1.05);
@@ -1207,17 +1296,17 @@
             .turn-center {
                 width: 50px;
                 height: 50px;
+                top: 75px; 
             }
 
             .powerup-sidebar {
-                width: 110px;
+                width: 100px;
                 padding: 10px 5px;
-                gap: 10px;
-                border-radius: 20px;
+                gap: 8px;
             }
 
             .sidebar-title {
-                font-size: 14px;
+                font-size: 13px;
             }
 
             .power-item img {
@@ -1230,12 +1319,24 @@
             }
 
             .powerup-list {
-                gap: 8px;
+                gap: 6px;
             }
         }
 
-        /* Portrait Mobile */
+        /* Portrait Mobile — stack sidebars inline */
         @media (max-width: 600px) and (orientation: portrait) {
+            .glass-header {
+                height: auto;
+                min-height: 60px;
+                padding: 10px 16px;
+                flex-direction: row;
+                gap: 8px;
+            }
+
+            .team-name { font-size: 14px; }
+            .team-badge { width: 38px; height: 38px; }
+            .turn-center { width: 44px; height: 44px; }
+
             .arena {
                 flex-direction: column;
                 height: auto;
@@ -1244,9 +1345,11 @@
 
             .powerup-sidebar {
                 width: 100% !important;
+                height: auto !important;
                 flex-direction: row;
                 flex-wrap: wrap;
                 justify-content: center;
+                padding: 10px;
             }
 
             .powerup-list {
@@ -1255,12 +1358,11 @@
                 justify-content: center;
             }
 
-            .power-item {
-                width: auto;
-            }
+            .power-item { width: auto; }
 
             .board-wrapper {
-                height: 400px;
+                height: 350px;
+                width: 100%;
             }
         }
 
@@ -1278,6 +1380,7 @@
             justify-content: center;
             opacity: 0;
             pointer-events: none;
+            visibility: hidden;
             transition: all 0.4s ease;
             backdrop-filter: blur(10px);
             cursor: zoom-out;
@@ -1286,6 +1389,7 @@
         .zoom-overlay.show {
             opacity: 1;
             pointer-events: auto;
+            visibility: visible;
         }
 
         .zoom-img {
@@ -1337,52 +1441,7 @@
             transform: scale(1.02);
         }
 
-        /* MOBILE BLOCKER OVERLAY */
-        .mobile-blocker {
-            display: none !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: linear-gradient(135deg, #0A5C4A 0%, #06261F 100%) !important;
-            z-index: 1000000 !important; /* Extremely high z-index */
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 30px;
-            color: #FFFFFF !important;
-            overscroll-behavior: none;
-        }
-        @media screen and (max-width: 767px) {
-            .mobile-blocker {
-                display: flex !important;
-            }
-        }
-        .mobile-blocker-icon {
-            width: 120px;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 40px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .mobile-blocker-message {
-            font-size: 28px;
-            font-weight: 800;
-            line-height: 1.4;
-            margin-bottom: 24px;
-        }
-        .mobile-blocker-sub {
-            font-size: 16px;
-            opacity: 0.7;
-        }
+
         /* Blur functionality */
         .blurred-media {
             filter: blur(15px); 
@@ -1444,15 +1503,21 @@
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.95);
             z-index: 9999;
-            display: flex;
+            display: none; /* Changed to none */
             align-items: center;
             justify-content: center;
             opacity: 0;
             pointer-events: none;
+            visibility: hidden;
             transition: all 0.4s ease;
             backdrop-filter: blur(20px);
         }
-        .zoom-overlay.show { opacity: 1; pointer-events: auto; }
+        .zoom-overlay.show { 
+            display: flex; /* Changed to flex */
+            opacity: 1; 
+            pointer-events: auto; 
+            visibility: visible; 
+        }
 
         .zoom-content-wrapper {
             position: relative;
@@ -1521,15 +1586,7 @@
 
 
 <body class="game-body">
-    <div id="mobile-blocker" class="mobile-blocker" style="display: none;">
-        <div class="mobile-blocker-content">
-            <div class="mobile-blocker-icon">
-                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-            </div>
-            <h1 class="mobile-blocker-message">الصفحة غير متوافقة حالياً مع أجهزة الهاتف المحمول.</h1>
-            <p class="mobile-blocker-sub">يرجى استخدام جهاز كمبيوتر للاستمتاع بالتجربة الكاملة.</p>
-        </div>
-    </div>
+
 
 
     <div class="ambient-orb orb-1"></div>
@@ -1543,6 +1600,7 @@
             <div class="team-block" id="block-team2">
                 <div class="team-badge badge-red"></div>
                 <div class="team-name" id="name-team2">الفريق 2</div>
+                <div class="cell-count-badge cell-count-red" id="cell-count-team2">0 خلية</div>
             </div>
 
             <div class="header-center-area">
@@ -1559,6 +1617,7 @@
 
             <!-- Team 1 (Visual Right, Blue) -->
             <div class="team-block active" id="block-team1">
+                <div class="cell-count-badge cell-count-blue" id="cell-count-team1">0 خلية</div>
                 <div class="team-name" id="name-team1">الفريق 1</div>
                 <div class="team-badge badge-blue"></div>
             </div>
@@ -1627,7 +1686,7 @@
     <div class="toast" id="toast-msg">رسالة مؤقتة</div>
 
     <!-- QUESTION FULL SCREEN PAGE (REDESIGNED FOR PREMIUM LOOK) -->
-    <div class="q-page-overlay" id="q-page">
+    <div class="q-page-overlay" id="q-page" style="visibility: hidden; pointer-events: none;">
         <div class="q-modern-container">
 
             <!-- Sidebar Red -->
@@ -1644,39 +1703,45 @@
                 </div>
 
                 <header class="q-header-box">
-                    <div class="q-header-content-wrapper">
-                        <div id="q-header-full">تحميل...</div>
-                        <div class="q-timer-controls" id="q-header-timer-controls">
-                            <button class="q-timer-btn" id="btn-timer-pause" title="إيقاف/تشغيل">
-                                <svg class="timer-icon pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="6" y="4" width="4" height="16"></rect>
-                                    <rect x="14" y="4" width="4" height="16"></rect>
-                                </svg>
-                                <svg class="timer-icon play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-                                    style="display: none;">
-                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                                </svg>
-                            </button>
-                            <button class="q-timer-btn" id="btn-timer-reset" title="إعادة ضبط">
-                                <svg class="timer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M23 4v6h-6"></path>
-                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-                                </svg>
-                            </button>
+                    <div class="q-header-top-info">
+                        <!-- Cell number -->
+                        <div class="q-cell-badge" style="background:transparent; border:none; box-shadow:none;">
+                            <span class="value" id="q-header-stage-title" style="font-size:28px; color:rgba(255,255,255,0.75);">خلية رقم 1</span>
+                        </div>
 
+                        <!-- Separator -->
+                        <div style="width:1px; height:32px; background:rgba(255,255,255,0.2);"></div>
+
+                        <!-- ⏱ Timer display + controls -->
+                        <div class="q-timer-row" id="q-timer-row">
+                            <span class="q-timer-display" id="q-timer-val">00:00</span>
+                            <button class="q-timer-btn" id="btn-timer-pause" title="إيقاف / تشغيل">
+                                <!-- Pause icon -->
+                                <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                    <rect x="6" y="4" width="4" height="16" rx="1"/>
+                                    <rect x="14" y="4" width="4" height="16" rx="1"/>
+                                </svg>
+                                <!-- Play icon (hidden by default) -->
+                                <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+                                    <polygon points="5,3 19,12 5,21"/>
+                                </svg>
+                            </button>
+                            <button class="q-timer-btn q-timer-btn-reset" id="btn-timer-reset" title="إعادة تعيين">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                                    <path d="M3 3v5h5"/>
+                                </svg>
+                            </button>
                         </div>
                     </div>
-                    <div id="q-status-badge"
-                        style="display: none; background: var(--clr-accent); color: #000; padding: 4px 15px; border-radius: 20px; font-weight: 800; font-size: 14px; align-self: center; margin-top: 5px; box-shadow: 0 0 15px rgba(201, 162, 39, 0.4);">
-                    </div>
                 </header>
+                <div id="q-status-badge"
+                    style="display: none; background: var(--clr-accent); color: #000; padding: 4px 15px; border-radius: 20px; font-weight: 800; font-size: 14px; align-self: center; margin-top: 5px;"></div>
 
                 <!-- Stage 1: Question -->
                 <div id="q-state-1" class="q-state-container active">
                     <div class="q-central-body">
+                        <div class="q-label-premium">ســـــؤال</div>
                         <div class="q-main-text-display" id="q-text">نص السؤال يظهر هنا...</div>
                         <div class="q-media-frame" id="q-media-area-1">
                             <div class="q-media-inner" id="q-media-inner-1">
@@ -1684,10 +1749,21 @@
                             </div>
                         </div>
                     </div>
-                    <footer class="q-footer-controls" style="padding-bottom: 40px;">
-                        <div style="display: flex; gap: 15px;">
-                            <button class="q-btn-action q-btn-rect-black" id="btn-toggle-barcode" style="display: none;">إظهار الباركود</button>
-                            <button class="q-btn-action q-btn-rect-gold" id="btn-show-ans">إظهار الجواب</button>
+                    <footer class="q-footer-controls">
+                        <div class="q-action-btns-row">
+                            <button class="q-btn-action q-btn-secondary" id="btn-toggle-barcode">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01"></path>
+                                </svg>
+                                إظهار الباركود
+                            </button>
+                            <button class="q-btn-action q-btn-primary" id="btn-show-ans">
+                                عرض الإجابة
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
                         </div>
                     </footer>
                 </div>
@@ -1695,27 +1771,40 @@
                 <!-- Stage 2: Answer -->
                 <div id="q-state-2" class="q-state-container">
                     <div class="q-central-body">
-                        <div style="font-size: 20px; opacity: 0.6; margin-bottom: -15px;">الإجابة الصحيحة هي:</div>
-                        <div class="q-main-text-display" id="q-answer-text" style="color: var(--clr-accent);">...</div>
+                        <div class="q-label-premium accent">الإجـابة الصحيحـة</div>
+                        <div class="q-main-text-display q-answer-reveal" id="q-answer-text">...</div>
                         <div class="q-media-frame" id="q-media-area-2">
                             <div class="q-media-inner" id="q-media-inner-2">
                                 <!-- JS Injects Media Here -->
                             </div>
                         </div>
                     </div>
-                    <footer class="q-footer-controls" style="padding-bottom: 40px;">
-                        <button class="q-btn-action q-btn-rect-black" id="btn-ask-who">أي فريق جابها؟</button>
+                    <footer class="q-footer-controls">
+                        <button class="q-btn-action q-btn-primary" id="btn-ask-who">
+                            تحديد المستحق للخلية
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </button>
                     </footer>
                 </div>
 
-                <!-- Stage 3: Winner selection -->
+                <!-- Stage 3: Winner Selection -->
                 <div id="q-state-3" class="q-state-container">
-                    <div class="q-central-body">
-                        <div style="font-size: 32px; font-weight: 900; margin-bottom: 20px;">من يستحق الخلية؟</div>
-                        <div class="q-winner-buttons-grid">
-                            <button class="q-winner-btn-card red" id="btn-win-red">الفريق الأحمر</button>
-                            <button class="q-winner-btn-card black" id="btn-win-none">لم يجاوب أحد</button>
-                            <button class="q-winner-btn-card blue" id="btn-win-blue">الفريق الأزرق</button>
+                    <div class="q-central-body" style="justify-content: center; gap: 32px;">
+                        <div style="font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.65); letter-spacing: 1px;">اختر الفريق الفائز بالخلية</div>
+                        <div class="q-winner-selection-grid">
+                            <button class="q-winner-card red" id="btn-win-red">
+                                <span class="team-name-label">الفريق 2</span>
+                            </button>
+                            
+                            <button class="q-winner-card none" id="btn-win-none">
+                                <span class="team-name-label">محد</span>
+                            </button>
+                            
+                            <button class="q-winner-card blue" id="btn-win-blue">
+                                <span class="team-name-label">الفريق 1</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1732,7 +1821,7 @@
     </div>
 
     <!-- WIN SCREEN (PREMIUM MODERN REDESIGN) -->
-    <div class="win-overlay" id="win-overlay">
+    <div class="win-overlay" id="win-overlay" style="visibility: hidden; pointer-events: none;">
         <div class="win-content">
             <svg class="win-trophy" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.5"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -1768,7 +1857,7 @@
     </div>
 
     <!-- ENHANCED MEDIA ZOOM OVERLAY -->
-    <div class="zoom-overlay" id="zoom-overlay">
+    <div class="zoom-overlay" id="zoom-overlay" style="visibility: hidden; pointer-events: none;">
         <div class="zoom-content-wrapper">
             <div class="zoom-close" onclick="closeZoom()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -1840,6 +1929,7 @@
             let timerIsRunning = false;
             let doubleAnswerTeams = []; // Track which teams used Two Answers for current question
             let skipUsedThisQuestion = false; // NEW: Track if 'Skip' (خلوها) is used for current question
+            let silencedTeam = null; 
 
             // Synchronized Persistent State
             let availableQuestionsIndices = []; // Stores original indices from sourceDB
@@ -1860,6 +1950,8 @@
             const qTextElement = document.getElementById('q-text');
             const qMediaElement1 = document.getElementById('q-media-area-1');
             const qMediaElement2 = document.getElementById('q-media-area-2');
+            const qMediaInner1 = document.getElementById('q-media-inner-1');
+            const qMediaInner2 = document.getElementById('q-media-inner-2');
             const qAnswerTextElement = document.getElementById('q-answer-text');
 
             const btnShowAns = document.getElementById('btn-show-ans');
@@ -1867,6 +1959,7 @@
             const btnWinBlue = document.getElementById('btn-win-blue');
             const btnWinRed = document.getElementById('btn-win-red');
             const btnWinNone = document.getElementById('btn-win-none');
+            const btnToggleBarcode = document.getElementById('btn-toggle-barcode');
 
             const btnTimerPause = document.getElementById('btn-timer-pause');
             const btnTimerReset = document.getElementById('btn-timer-reset');
@@ -1876,8 +1969,8 @@
             nameT1.textContent = localStorage.getItem('team1Name') || 'الفريق 1 (الأزرق)';
             nameT2.textContent = localStorage.getItem('team2Name') || 'الفريق 2 (الأحمر)';
 
-            btnWinBlue.textContent = nameT1.textContent;
-            btnWinRed.textContent = nameT2.textContent;
+            btnWinBlue.querySelector('.team-name-label').textContent = nameT1.textContent;
+            btnWinRed.querySelector('.team-name-label').textContent  = nameT2.textContent;
 
             // Prepare Random Questions Array Without Repetition
             let sourceDB = [];
@@ -1967,6 +2060,9 @@
 
                     // Apply UI states
                     if (session.qPageVisible) {
+                        qPage.style.display = 'flex';
+                        qPage.style.visibility = 'visible';
+                        qPage.style.pointerEvents = 'auto';
                         qPage.classList.add('show');
                         updateQPageUI();
                         // Apply barcode sync
@@ -1980,6 +2076,11 @@
                         }
                     } else {
                         qPage.classList.remove('show');
+                        setTimeout(() => {
+                            qPage.style.visibility = 'hidden';
+                            qPage.style.pointerEvents = 'none';
+                            qPage.style.display = 'none';
+                        }, 600);
                     }
                     
                     applyBoardState();
@@ -2044,6 +2145,18 @@
                     if (boardTakenState[num] === 'blue') w.classList.add('taken-blue');
                     if (boardTakenState[num] === 'red') w.classList.add('taken-red');
                 });
+                updateCellCounts();
+            }
+
+            function updateCellCounts() {
+                const vals = Object.values(boardTakenState);
+                const blueCount = vals.filter(v => v === 'blue').length;
+                const redCount  = vals.filter(v => v === 'red').length;
+
+                const el1 = document.getElementById('cell-count-team1');
+                const el2 = document.getElementById('cell-count-team2');
+                if (el1) el1.textContent = blueCount + ' خلية';
+                if (el2) el2.textContent = redCount  + ' خلية';
             }
 
             function refreshPowersUI() {
@@ -2150,7 +2263,9 @@
                                 badge.textContent = `🌟 نظام الإجابتين مفعّل لـ: ${doubleAnswerTeams.join(' و ')}`;
                             }
                         } else if (pName.includes('أسكت') || pName === 'أسكت') {
+                            silencedTeam = (teamId === 'team1' ? 'team2' : 'team1');
                             showToast(`🤫 فريق ${tName} استخدم 'أسكت' ضد الخصم!`);
+                            updateQPageUI();
                         }
 
                         showToast(`🟢 تم تفعيل وسيلة: ${p.name} لـ ${tName}`);
@@ -2203,6 +2318,7 @@
                                 showToast("🔧 تم التغيير لـ أزرق");
                             }
                             saveSession();
+                            applyBoardState();
                             verifyWinningCondition();
                             return;
                         }
@@ -2217,6 +2333,7 @@
                                 phase = 'beforeQuestion';
                                 toggleTurn();
                                 saveSession();
+                                applyBoardState();
                                 verifyWinningCondition();
                             } else {
                                 showToast("⚠️ يجب اختيار خلية يملكها الخصم لحذفها!");
@@ -2251,11 +2368,17 @@
                 if (activeCellNum === -1) return;
                 const num = activeCellNum;
 
-                const headerBox = document.getElementById('q-header-full');
-                if (headerBox) {
+                const stageTitle = document.getElementById('q-header-stage-title');
+                if (stageTitle) {
                     const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
                     const s = (timerSeconds % 60).toString().padStart(2, '0');
-                    headerBox.innerHTML = `خلية رقم <span id="q-num">${num}</span> - <span id="header-timer">${m}:${s}</span>`;
+                    if (phase === 'answering') {
+                        stageTitle.textContent = `خلية رقم ${num} - ${m}:${s}`;
+                    } else if (phase === 'afterAnswer') {
+                        stageTitle.textContent = `جواب خلية رقم ${num}`;
+                    } else {
+                        stageTitle.textContent = `مين جابها صح بينكم؟`;
+                    }
                 }
 
                 const originalIdx = availableQuestionsIndices[num - 1];
@@ -2369,8 +2492,7 @@
                         }
                     };
 
-                    const qMediaInner1 = document.getElementById('q-media-inner-1');
-                    const qMediaInner2 = document.getElementById('q-media-inner-2');
+                    // Variables declared globally
 
                     // Process Question Media
                     renderMediaInto(qData.media, qMediaInner1, isWalaKelma);
@@ -2396,16 +2518,21 @@
                 // Badge display
                 const badge = document.getElementById('q-status-badge');
                 if (badge) {
-                    if (skipUsedThisQuestion || doubleAnswerActive) {
+                    if (skipUsedThisQuestion || doubleAnswerActive || silencedTeam) {
                         badge.style.display = 'block';
                         if (skipUsedThisQuestion) {
                             badge.textContent = `🔥 طلب 'خلوها'! سحب حق الإجابة!`;
                             badge.style.background = '#FEE2E2';
                             badge.style.color = '#70191A';
-                        } else {
+                        } else if (doubleAnswerActive) {
                             badge.textContent = `🌟 نظام الإجابتين مفعّل لـ: ${doubleAnswerTeams.join(' و ')}`;
                             badge.style.background = 'var(--clr-accent)';
                             badge.style.color = '#000';
+                        } else if (silencedTeam) {
+                            const sName = (silencedTeam === 'team1' ? nameT1.textContent : nameT2.textContent);
+                            badge.textContent = `🔇 ${sName} مسكوت حالياً!`;
+                            badge.style.background = '#64748B';
+                            badge.style.color = '#FFFFFF';
                         }
                     } else {
                         badge.style.display = 'none';
@@ -2413,8 +2540,6 @@
                 }
 
                 window.refreshOverlayPowers();
-                const qControls = document.getElementById('q-header-timer-controls');
-                if (qControls) qControls.style.display = (phase === 'beforeQuestion' ? 'none' : 'flex');
 
                 if (phase === 'answering') {
                     qState1.classList.add('active');
@@ -2430,7 +2555,33 @@
                     qState3.classList.add('active');
                 }
 
-                qPage.classList.toggle('show', activeCellNum !== -1 && phase !== 'beforeQuestion' && phase !== 'trapSelection');
+                const shouldShow = activeCellNum !== -1 && phase !== 'beforeQuestion' && phase !== 'trapSelection';
+                if (shouldShow) {
+                    qPage.style.display = 'flex';
+                    setTimeout(() => {
+                        qPage.style.visibility = 'visible';
+                        qPage.style.pointerEvents = 'auto';
+                        qPage.classList.add('show');
+                    }, 10);
+
+                    // ⏱ Auto-start timer: reset + start after 4s reading buffer (only when question first shows)
+                    if (phase === 'answering') {
+                        resetTimer();
+                        clearTimeout(window._timerAutoStart);
+                        window._timerAutoStart = setTimeout(() => {
+                            if (phase === 'answering') startTimer();
+                        }, 3000);
+                    }
+                } else {
+                    clearTimeout(window._timerAutoStart); // cancel pending auto-start
+                    pauseTimer();
+                    qPage.classList.remove('show');
+                    setTimeout(() => {
+                        qPage.style.visibility = 'hidden';
+                        qPage.style.pointerEvents = 'none';
+                        qPage.style.display = 'none';
+                    }, 600);
+                }
             }
 
             // --- Timer Logic ---
@@ -2438,7 +2589,7 @@
                 const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
                 const s = (timerSeconds % 60).toString().padStart(2, '0');
                 const timeStr = `${m}:${s}`;
-                const hTimer = document.getElementById('header-timer');
+                const hTimer = document.getElementById('q-timer-val');
                 if (hTimer) hTimer.textContent = timeStr;
             }
             function startTimer() {
@@ -2491,6 +2642,14 @@
                 updateQPageUI();
                 saveSession();
                 pauseTimer();
+                
+                // تأخير لمدة 4 ثواني قبل بدء الوقت مرة أخرى عند عرض الإجابة
+                setTimeout(() => {
+                    if (phase === 'afterAnswer') {
+                        resetTimer(); // تصفير الوقت للبدء في حساب وقت "أي فريق جابها"
+                        startTimer();
+                    }
+                }, 4000);
             });
 
             btnAskWho.addEventListener('click', () => {
@@ -2501,7 +2660,18 @@
 
             function closeQPage() {
                 qPage.classList.remove('show');
-                phase = 'beforeQuestion';
+                // Capture if it was a trap before changing phase
+                const currentPhaseWasTrapSelectionPending = (phase === 'trapSelection');
+                
+                setTimeout(() => {
+                    qPage.style.visibility = 'hidden';
+                    qPage.style.pointerEvents = 'none';
+                    qPage.style.display = 'none';
+                }, 600);
+
+                if (phase !== 'trapSelection') {
+                    phase = 'beforeQuestion';
+                }
                 activeCellNum = -1;
                 pauseTimer();
                 doubleAnswerActive = false;
@@ -2516,6 +2686,7 @@
                     trapPendingQuestion = false;
                 }
                 skipUsedThisQuestion = false;
+                silencedTeam = null; // Reset silence for next question
                 saveSession();
                 setTimeout(verifyWinningCondition, 100);
             }
@@ -2523,6 +2694,7 @@
             btnWinBlue.addEventListener('click', () => {
                 const wasTrap = trapPendingQuestion && currentTurn === 'team1';
                 boardTakenState[activeCellNum] = 'blue';
+                applyBoardState();
 
                 if (wasTrap) {
                     showToast(`🔥 كفو! جاوبت صح والحفرة مفعّلة.. الآن اختر خلية للخصم لحذفها!`, 6000);
@@ -2540,6 +2712,7 @@
             btnWinRed.addEventListener('click', () => {
                 const wasTrap = trapPendingQuestion && currentTurn === 'team2';
                 boardTakenState[activeCellNum] = 'red';
+                applyBoardState();
 
                 if (wasTrap) {
                     showToast(`🔥 كفو! جاوبت صح والحفرة مفعّلة.. الآن اختر خلية للخصم لحذفها!`, 6000);
@@ -2608,17 +2781,15 @@
                 for (let i = 0; i < 5; i++) cellsGrid.push(allCells.slice(i * 5, i * 5 + 5));
 
                 const getNeighbors = (r, c) => {
-                    const list = [[r, c - 1], [r, c + 1]];
-                    // Correcting logic for RTL and Shift-Left (translateX negative)
-                    // Row 0 (r=0) is Normal, Row 1 (r=1) is shifted Left, etc.
+                    const neighbors = [[r, c - 1], [r, c + 1]];
                     if (r % 2 === 0) {
-                        // Normal row index (0, 2, 4): connects to (c-1) and (c) in shifted rows
-                        list.push([r - 1, c - 1], [r - 1, c], [r + 1, c - 1], [r + 1, c]);
+                        // Normal row index (0, 2, 4): connects to (c) and (c+1) in shifted rows
+                        neighbors.push([r - 1, c], [r - 1, c + 1], [r + 1, c], [r + 1, c + 1]);
                     } else {
-                        // Shifted row index (1, 3): connects to (c) and (c+1) in normal rows
-                        list.push([r - 1, c], [r - 1, c + 1], [r + 1, c], [r + 1, c + 1]);
+                        // Shifted row index (1, 3): connects to (c-1) and (c) in normal rows
+                        neighbors.push([r - 1, c - 1], [r - 1, c], [r + 1, c - 1], [r + 1, c]);
                     }
-                    return list.filter(([nr, nc]) => nr >= 0 && nr < 5 && nc >= 0 && nc < 5);
+                    return neighbors.filter(([nr, nc]) => nr >= 0 && nr < 5 && nc >= 0 && nc < 5);
                 };
 
                 const checkPath = (teamClass, startCondition, endCondition) => {
@@ -2669,7 +2840,12 @@
                     winOverlay.style.background = 'radial-gradient(circle at center, rgba(112, 25, 26, 0.9) 0%, rgba(2, 6, 23, 1) 100%)';
                 }
 
-                winOverlay.classList.add('show');
+                winOverlay.style.display = 'flex';
+                setTimeout(() => {
+                    winOverlay.style.visibility = 'visible';
+                    winOverlay.style.pointerEvents = 'auto';
+                    winOverlay.classList.add('show');
+                }, 10);
             }
 
             function handleResize() {
@@ -2730,7 +2906,13 @@
                 }
 
                 zoomContainer.appendChild(clone);
-                zoomOverlay.classList.add('show');
+                
+                zoomOverlay.style.display = 'flex';
+                setTimeout(() => {
+                    zoomOverlay.style.visibility = 'visible';
+                    zoomOverlay.style.pointerEvents = 'auto';
+                    zoomOverlay.classList.add('show');
+                }, 10);
             }
 
             window.seekZoomVideo = (amount) => {
@@ -2739,7 +2921,14 @@
             };
 
             window.closeZoom = function() {
-                if (zoomOverlay) zoomOverlay.classList.remove('show');
+                if (zoomOverlay) {
+                    zoomOverlay.classList.remove('show');
+                    setTimeout(() => {
+                        zoomOverlay.style.visibility = 'hidden';
+                        zoomOverlay.style.pointerEvents = 'none';
+                        zoomOverlay.style.display = 'none';
+                    }, 400);
+                }
                 // Stop any playing video in zoom
                 const video = zoomContainer.querySelector('video');
                 if (video) video.pause();
