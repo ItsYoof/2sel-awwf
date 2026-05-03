@@ -51,12 +51,27 @@
             padding: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(180deg, #208871 0%, #0A5C4A 100%);
             font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
             overflow: hidden;
             display: flex;
             align-items: stretch;
             justify-content: stretch;
+            background: #000; /* Fallback */
+        }
+
+        /* X-Shape Background indicating team directions */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-top: 50vh solid var(--clr-red);
+            border-bottom: 50vh solid var(--clr-red);
+            border-left: 50vw solid var(--clr-blue);
+            border-right: 50vw solid var(--clr-blue);
+            z-index: -1;
         }
 
         .ambient-orb { display: none; }
@@ -142,7 +157,7 @@
         .glass-header {
             width: 100%;
             height: 80px;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.5); /* Darkened for readability over white background */
             border-bottom: 1px solid rgba(255,255,255,0.15);
             border-radius: 0;
             display: flex;
@@ -1653,26 +1668,6 @@
             <!-- Game Board Center -->
             <div class="board-wrapper" id="board-container">
                 <div class="board-scaler" id="board-scaler">
-                    <!-- Blue Path Indicators (Right to Left / Points Inward) -->
-                    <div class="path-label path-blue-label path-right">
-                        <span class="path-arrow-blue">◀</span>
-                        <span class="path-arrow-blue">◀</span>
-                    </div>
-                    <div class="path-label path-blue-label path-left">
-                        <span class="path-arrow-blue">▶</span>
-                        <span class="path-arrow-blue">▶</span>
-                    </div>
-
-                    <!-- Red Path Indicators (Top to Bottom / Points Inward) -->
-                    <div class="path-label path-red-label path-top" style="flex-direction: row; gap: 20px;">
-                        <span class="path-arrow-red">▼</span>
-                        <span class="path-arrow-red">▼</span>
-                    </div>
-                    <div class="path-label path-red-label path-bottom" style="flex-direction: row; gap: 20px;">
-                        <span class="path-arrow-red">▲</span>
-                        <span class="path-arrow-red">▲</span>
-                    </div>
-
                     <div class="board-glow"></div>
                     <div class="board-ornament"></div>
 
