@@ -1625,6 +1625,15 @@
 
         <!-- MAIN ARENA -->
         <main class="arena">
+            <!-- Confirm Win Button -->
+            <button class="win-btn win-btn-primary" id="btn-confirm-win" style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 7000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-size: 24px; padding: 15px 40px; border-radius: 50px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                تأكيد الفوز
+            </button>
+
             <!-- Edit Button (Tester Only) -->
             <button class="manual-edit-btn" id="btn-manual-edit">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -1780,12 +1789,21 @@
                         </div>
                     </div>
                     <footer class="q-footer-controls">
-                        <button class="q-btn-action q-btn-primary" id="btn-ask-who">
-                            تحديد المستحق للخلية
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                            </svg>
-                        </button>
+                        <div class="q-action-btns-row">
+                            <button class="q-btn-action q-btn-secondary" id="btn-back-to-q2">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                                    <polyline points="12 19 5 12 12 5"></polyline>
+                                </svg>
+                                رجوع للسؤال
+                            </button>
+                            <button class="q-btn-action q-btn-primary" id="btn-ask-who">
+                                تحديد المستحق للخلية
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                </svg>
+                            </button>
+                        </div>
                     </footer>
                 </div>
 
@@ -1807,6 +1825,15 @@
                             </button>
                         </div>
                     </div>
+                    <footer class="q-footer-controls" style="background: transparent; border: none; padding-top: 0;">
+                        <button class="q-btn-action q-btn-secondary" id="btn-back-to-q3">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            رجوع للسؤال
+                        </button>
+                    </footer>
                 </div>
 
             </main>
@@ -1930,6 +1957,11 @@
             let doubleAnswerTeams = []; // Track which teams used Two Answers for current question
             let skipUsedThisQuestion = false; // NEW: Track if 'Skip' (خلوها) is used for current question
             let silencedTeam = null; 
+            let friendCalledTeam = null; // Track if 'Call a Friend' is used
+
+            // Pending Win State
+            let pendingWinMsg = null;
+            let pendingWinner = null;
 
             // Synchronized Persistent State
             let availableQuestionsIndices = []; // Stores original indices from sourceDB
@@ -1960,6 +1992,9 @@
             const btnWinRed = document.getElementById('btn-win-red');
             const btnWinNone = document.getElementById('btn-win-none');
             const btnToggleBarcode = document.getElementById('btn-toggle-barcode');
+            const btnBackToQ2 = document.getElementById('btn-back-to-q2');
+            const btnBackToQ3 = document.getElementById('btn-back-to-q3');
+            const btnConfirmWin = document.getElementById('btn-confirm-win');
 
             const btnTimerPause = document.getElementById('btn-timer-pause');
             const btnTimerReset = document.getElementById('btn-timer-reset');
@@ -2012,6 +2047,7 @@
                     doubleActive: doubleAnswerActive,
                     doubleTeams: doubleAnswerTeams,
                     skipUsed: skipUsedThisQuestion,
+                    friendCalledTeam: friendCalledTeam,
                     barcodeRevealed: isBarcodeRevealed()
                 };
                 localStorage.setItem('game_active_session', JSON.stringify(session));
@@ -2057,6 +2093,7 @@
                     doubleAnswerActive = session.doubleActive || false;
                     doubleAnswerTeams = session.doubleTeams || [];
                     skipUsedThisQuestion = session.skipUsed || false;
+                    friendCalledTeam = session.friendCalledTeam || null;
 
                     // Apply UI states
                     if (session.qPageVisible) {
@@ -2266,6 +2303,28 @@
                             silencedTeam = (teamId === 'team1' ? 'team2' : 'team1');
                             showToast(`🤫 فريق ${tName} استخدم 'أسكت' ضد الخصم!`);
                             updateQPageUI();
+                        } else if (pName.includes('اتصال') || pName === 'اتصال بصديق') {
+                            if (phase !== 'answering') {
+                                showToast("❌ 'اتصال بصديق': تستخدم فقط أثناء عرض السؤال!");
+                                return;
+                            }
+                            
+                            const num = activeCellNum;
+                            if (num !== -1) {
+                                const originalIdx = availableQuestionsIndices[num - 1];
+                                const qData = sourceDB[originalIdx] || null;
+                                if (qData && qData.questionText) {
+                                    if (qData.questionText.includes('ولا كلمة') || qData.questionText.includes('تحدي 3')) {
+                                        showToast("❌ 'اتصال بصديق': لا يمكن استخدامها في أسئلة ولا كلمة أو تحدي 3!");
+                                        return;
+                                    }
+                                }
+                            }
+                            
+                            el.classList.add('active-power');
+                            pauseTimer(); // Automatically pause timer to let them call
+                            friendCalledTeam = tName;
+                            updateQPageUI();
                         }
 
                         showToast(`🟢 تم تفعيل وسيلة: ${p.name} لـ ${tName}`);
@@ -2372,7 +2431,7 @@
                 if (stageTitle) {
                     const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
                     const s = (timerSeconds % 60).toString().padStart(2, '0');
-                    if (phase === 'answering') {
+                    if (phase === 'answering' || phase === 'reviewingQuestion') {
                         stageTitle.textContent = `خلية رقم ${num} - ${m}:${s}`;
                     } else if (phase === 'afterAnswer') {
                         stageTitle.textContent = `جواب خلية رقم ${num}`;
@@ -2518,7 +2577,7 @@
                 // Badge display
                 const badge = document.getElementById('q-status-badge');
                 if (badge) {
-                    if (skipUsedThisQuestion || doubleAnswerActive || silencedTeam) {
+                    if (skipUsedThisQuestion || doubleAnswerActive || silencedTeam || friendCalledTeam) {
                         badge.style.display = 'block';
                         if (skipUsedThisQuestion) {
                             badge.textContent = `🔥 طلب 'خلوها'! سحب حق الإجابة!`;
@@ -2533,6 +2592,10 @@
                             badge.textContent = `🔇 ${sName} مسكوت حالياً!`;
                             badge.style.background = '#64748B';
                             badge.style.color = '#FFFFFF';
+                        } else if (friendCalledTeam) {
+                            badge.textContent = `📞 ${friendCalledTeam} يستخدم خاصية اتصال بصديق! (تم إيقاف الوقت)`;
+                            badge.style.background = '#4CAF50';
+                            badge.style.color = '#FFF';
                         }
                     } else {
                         badge.style.display = 'none';
@@ -2541,7 +2604,7 @@
 
                 window.refreshOverlayPowers();
 
-                if (phase === 'answering') {
+                if (phase === 'answering' || phase === 'reviewingQuestion') {
                     qState1.classList.add('active');
                     qState2.classList.remove('active');
                     qState3.classList.remove('active');
@@ -2658,6 +2721,22 @@
                 saveSession();
             });
 
+            if (btnBackToQ2) {
+                btnBackToQ2.addEventListener('click', () => {
+                    phase = 'reviewingQuestion';
+                    updateQPageUI();
+                    saveSession();
+                });
+            }
+
+            if (btnBackToQ3) {
+                btnBackToQ3.addEventListener('click', () => {
+                    phase = 'reviewingQuestion';
+                    updateQPageUI();
+                    saveSession();
+                });
+            }
+
             function closeQPage() {
                 qPage.classList.remove('show');
                 // Capture if it was a trap before changing phase
@@ -2687,6 +2766,7 @@
                 }
                 skipUsedThisQuestion = false;
                 silencedTeam = null; // Reset silence for next question
+                friendCalledTeam = null; // Reset friend called
                 saveSession();
                 setTimeout(verifyWinningCondition, 100);
             }
@@ -2783,11 +2863,11 @@
                 const getNeighbors = (r, c) => {
                     const neighbors = [[r, c - 1], [r, c + 1]];
                     if (r % 2 === 0) {
-                        // Normal row index (0, 2, 4): connects to (c) and (c+1) in shifted rows
-                        neighbors.push([r - 1, c], [r - 1, c + 1], [r + 1, c], [r + 1, c + 1]);
-                    } else {
-                        // Shifted row index (1, 3): connects to (c-1) and (c) in normal rows
+                        // Normal row index (0, 2, 4): connects to (c-1) and (c) in shifted rows
                         neighbors.push([r - 1, c - 1], [r - 1, c], [r + 1, c - 1], [r + 1, c]);
+                    } else {
+                        // Shifted row index (1, 3): connects to (c) and (c+1) in normal rows
+                        neighbors.push([r - 1, c], [r - 1, c + 1], [r + 1, c], [r + 1, c + 1]);
                     }
                     return neighbors.filter(([nr, nc]) => nr >= 0 && nr < 5 && nc >= 0 && nc < 5);
                 };
@@ -2815,16 +2895,39 @@
                     return false;
                 };
 
-                if (checkPath('taken-blue', (r, c) => c === 0, (r, c) => c === 4)) { triggerWin(nameT1.textContent + " حسم اللوحة!", "blue"); return; }
-                if (checkPath('taken-red', (r, c) => r === 0, (r, c) => r === 4)) { triggerWin(nameT2.textContent + " حسم اللوحة!", "red"); return; }
+                let winMsg = null;
+                let winner = null;
 
-                let full = allCells.every(c => c.classList.contains('taken-blue') || c.classList.contains('taken-red'));
-                if (full) {
-                    let b = allCells.filter(c => c.classList.contains('taken-blue')).length;
-                    let r = allCells.filter(c => c.classList.contains('taken-red')).length;
-                    if (b > r) triggerWin(nameT1.textContent + " فاز بالأكثرية!", "blue");
-                    else triggerWin(nameT2.textContent + " فاز بالأكثرية!", "red");
+                if (checkPath('taken-blue', (r, c) => c === 0, (r, c) => c === 4)) { winMsg = nameT1.textContent + " حسم اللوحة!"; winner = "blue"; }
+                else if (checkPath('taken-red', (r, c) => r === 0, (r, c) => r === 4)) { winMsg = nameT2.textContent + " حسم اللوحة!"; winner = "red"; }
+                else {
+                    let full = allCells.every(c => c.classList.contains('taken-blue') || c.classList.contains('taken-red'));
+                    if (full) {
+                        let b = allCells.filter(c => c.classList.contains('taken-blue')).length;
+                        let r = allCells.filter(c => c.classList.contains('taken-red')).length;
+                        if (b > r) { winMsg = nameT1.textContent + " فاز بالأكثرية!"; winner = "blue"; }
+                        else { winMsg = nameT2.textContent + " فاز بالأكثرية!"; winner = "red"; }
+                    }
                 }
+
+                if (winMsg && winner) {
+                    pendingWinMsg = winMsg;
+                    pendingWinner = winner;
+                    if (btnConfirmWin) btnConfirmWin.style.display = 'flex';
+                } else {
+                    pendingWinMsg = null;
+                    pendingWinner = null;
+                    if (btnConfirmWin) btnConfirmWin.style.display = 'none';
+                }
+            }
+
+            if (btnConfirmWin) {
+                btnConfirmWin.addEventListener('click', () => {
+                    if (pendingWinMsg && pendingWinner) {
+                        triggerWin(pendingWinMsg, pendingWinner);
+                        btnConfirmWin.style.display = 'none';
+                    }
+                });
             }
 
             function triggerWin(msg, winner) {

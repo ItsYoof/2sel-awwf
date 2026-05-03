@@ -1,4 +1,18 @@
 /* Base Styles */
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('TheYearofHandicrafts-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'LateefFont';
+    src: url('LateefFont-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +20,7 @@
 }
 
 body {
-    font-family: 'Noto Sans Arabic', sans-serif;
+    font-family: 'TheYearofHandicrafts', 'Noto Sans Arabic', sans-serif;
     color: #FFFFFF;
     background: #F6F8F8; /* Base color for sections outside main hero */
     overflow-x: hidden;
@@ -54,10 +68,14 @@ a {
     gap: 15px;
 }
 
+.brand-font {
+    font-family: 'LateefFont', 'Noto Sans Arabic', sans-serif !important;
+}
+
 .logo-text {
-    font-family: 'Noto Sans Arabic', sans-serif;
+    font-family: 'LateefFont', 'Noto Sans Arabic', sans-serif;
     font-weight: 900;
-    font-size: 24px;
+    font-size: 32px;
     color: #0A5C4A;
     letter-spacing: -0.6px;
 }
@@ -141,17 +159,18 @@ a {
     color: #FFFFFF;
     font-size: 24px;
     font-weight: 100;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     text-align: center;
 }
 
 .hero-main-title {
+    font-family: 'LateefFont', 'Noto Sans Arabic', sans-serif;
     font-weight: 100;
-    font-size: 72px;
+    font-size: 96px;
     color: #FFFFFF;
     margin-bottom: 70px;
     text-align: center;
-    line-height: 1;
+    line-height: 1.4;
 }
 
 .hero-feature-row {
@@ -540,50 +559,78 @@ a {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    gap: 50px;
 }
 
 .types-main-heading {
-    font-weight: 700;
-    font-size: 36px;
-    color: #13705B;
-    background: #FFFFFF;
-    padding: 10px 20px;
-    border-radius: 12px;
+    font-weight: 900;
+    font-size: 42px;
+    color: #0A5C4A;
+    background: transparent;
+    padding: 0;
+    position: relative;
 }
 
-.types-list {
+.types-list-modern {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+.type-card-modern {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 40px 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
-    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 8px solid transparent;
 }
 
-.type-item {
+.type-card-modern:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.type-card-modern.blue-card { border-top-color: #3B82F6; }
+.type-card-modern.gold-card { border-top-color: #C9A227; }
+.type-card-modern.red-card { border-top-color: #EF4444; }
+
+.type-icon-box {
+    width: 80px;
+    height: 80px;
+    border-radius: 24px;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 16px;
-    padding-right: 16px; 
-    position: relative;
-    max-width: 1180px;
-    width: 100%;
-    text-align: right;
+    margin-bottom: 24px;
 }
 
-.type-item.blue-type { border-right: 6px solid #3B82F6; }
-.type-item.gold-type { border-right: 6px solid #C9A227; }
-.type-item.red-type { border-right: 6px solid #EF4444; }
+.blue-icon-box { background: #DBEAFE; color: #3B82F6; }
+.gold-icon-box { background: rgba(201, 162, 39, 0.15); color: #C9A227; }
+.red-icon-box { background: #FEE2E2; color: #EF4444; }
 
-.type-item p {
+.type-content-modern h4 {
     font-weight: 700;
-    font-size: 32px;
-    line-height: 46px;
+    font-size: 26px;
+    color: #1F2937;
+    margin-bottom: 16px;
 }
 
-.type-item.blue-type p { color: #3B82F6; }
-.type-item.gold-type p { color: #C9A227; }
-.type-item.red-type p { color: #EF4444; }
+.type-card-modern.blue-card h4 { color: #3B82F6; }
+.type-card-modern.gold-card h4 { color: #C9A227; }
+.type-card-modern.red-card h4 { color: #EF4444; }
+
+.type-content-modern p {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #4B5563;
+}
 
 
 /* Detailed Help Tools Section */

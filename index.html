@@ -47,12 +47,12 @@
     <main>
         <section id="home" class="hero-full">
             <span class="launch-badge">إطلاق تجريبي</span>
-            <h1 class="hero-main-title">أسئل أوووف</h1>
+            <h1 class="hero-main-title brand-font">أسئل أوووف</h1>
             <button class="btn-start-playing" onclick="location.href='setup.html'">يلا نلعب</button>
 
             <div class="hero-feature-row">
                 <div class="hero-feature-right">
-                    <h2 class="hero-enjoy-text">أستمتع مع أسئل أوووف</h2>
+                    <h2 class="hero-enjoy-text">أستمتع مع <span class="brand-font">أسئل أوووف</span></h2>
                     
                     <!-- Compatibility Section inside row -->
                     <div class="compatibility-container">
@@ -112,6 +112,47 @@
 
         <!-- Help Tools Section -->
         <section id="tools" class="help-tools-white">
+            <!-- Types of Questions Section -->
+            <div class="question-types-section" style="margin-top: 0; margin-bottom: 80px;">
+                <h3 class="types-main-heading">أنواع الأسئلة والآلية</h3>
+                <div class="types-list-modern">
+                    
+                    <!-- General -->
+                    <div class="type-card-modern blue-card">
+                        <div class="type-icon-box blue-icon-box">
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        </div>
+                        <div class="type-content-modern">
+                            <h4>أسئلة عامة</h4>
+                            <p>لكل فريق إجابة واحدة فقط.</p>
+                        </div>
+                    </div>
+
+                    <!-- Wala Kelma -->
+                    <div class="type-card-modern gold-card">
+                        <div class="type-icon-box gold-icon-box">
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-9 5 18 3-9h5"></path></svg>
+                        </div>
+                        <div class="type-content-modern">
+                            <h4>ولا كلمة</h4>
+                            <p>شرح لمدة دقيقة؛ المجيب هو صاحب الدور فقط، وفي حال انتهاء الوقت يحق للخصم جواب واحد.</p>
+                        </div>
+                    </div>
+
+                    <!-- Challenge 30 -->
+                    <div class="type-card-modern red-card">
+                        <div class="type-icon-box red-icon-box">
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        </div>
+                        <div class="type-content-modern">
+                            <h4>تحدي الـ 30 (نظام المزاد)</h4>
+                            <p>يبدأ المزاد بين الفريقين اللي يثبت عليه المزاد يعدد الإجابات في 30 ثانية، وإذا ما قدر يفوز الخصم.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
             <div class="tools-top-row">
                 <div class="tools-title-stack">
                     <h2 class="tools-main-heading">وسائل المساعدة العب بذكاء واهزمهم!</h2>
@@ -157,21 +198,14 @@
                     <h4 class="tool-name">أسكت</h4>
                     <p class="tool-description">تسكت لاعب من الخصم</p>
                 </div>
-            </div>
 
-            <!-- Types of Questions Section -->
-            <div class="question-types-section">
-                <h3 class="types-main-heading">أنواع الأسئلة والآلية</h3>
-                <div class="types-list">
-                    <div class="type-item blue-type">
-                        <p><strong>أسئلة عامة:</strong> لكل فريق إجابة واحدة فقط.</p>
+                <!-- Tool 5: Call a Friend -->
+                <div class="tool-card-premium green-border">
+                    <div class="tool-icon-circle green-bg">
+                        <img src="اتصال بصديق.png" alt="Call a Friend">
                     </div>
-                    <div class="type-item gold-type">
-                        <p><strong>ولا كلمة:</strong> شرح لمدة دقيقة؛ المجيب هو صاحب الدور فقط، وفي حال انتهاء الوقت يحق للخصم جواب واحد.</p>
-                    </div>
-                    <div class="type-item red-type">
-                        <p><strong>تحدي الـ 30 (نظام المزاد):</strong> يبدأ المزاد بين الفريقين اللي يثبت عليه المزاد يعدد الإجابات في 30 ثانية، وإذا ما قدر يفوز الخصم.</p>
-                    </div>
+                    <h4 class="tool-name">اتصال بصديق</h4>
+                    <p class="tool-description">تتصل بصديق يساعدك بالحل</p>
                 </div>
             </div>
 
@@ -257,6 +291,27 @@
                         <div class="detail-box opacity-60">
                             <span class="detail-box-title text-light-gray">ولا كلمة</span>
                             <p class="detail-box-desc">غير متاحة لصاحب الدور. (للفريق الخصم جوابين في نهاية الوقت)</p>
+                        </div>
+                    </div>
+
+                    <!-- Details Card: Call a Friend -->
+                    <div class="detail-card">
+                        <div class="tool-icon-circle green-bg mx-auto">
+                            <img src="اتصال بصديق.png" alt="Call a Friend">
+                        </div>
+                        <h4 class="detail-card-title">اتصال بصديق</h4>
+                        
+                        <div class="detail-box">
+                            <span class="detail-box-title text-dark">الأسئلة العامة</span>
+                            <p class="detail-box-desc">متاحة؛ يتم إيقاف الوقت مؤقتاً للاتصال بصديق.</p>
+                        </div>
+                        <div class="detail-box opacity-60">
+                            <span class="detail-box-title text-light-gray">تحدي 30</span>
+                            <p class="detail-box-desc">غير متاحة نهائياً.</p>
+                        </div>
+                        <div class="detail-box opacity-60">
+                            <span class="detail-box-title text-light-gray">ولا كلمة</span>
+                            <p class="detail-box-desc">غير متاحة نهائياً.</p>
                         </div>
                     </div>
 
